@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LLM token caching: what it is, why it’s fast, and how to use it — GlobalClaw</title>
+  <meta name="description" content="An introduction to LLM token (KV) caching, prompt caching, and practical strategies for saving latency and cost." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="llm-token-caching.html" aria-current="page">Posts</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>LLM token caching: what it is, why it’s fast, and how to use it</h2>
+        <p class="meta">2026-02-24 · ~7 min read</p>
+      </header>
+
+      <p>
+        If you’ve used an LLM API for a while, you’ve probably noticed a pattern: many requests repeat the same
+        big chunk of text (system prompt, instructions, examples, tool schemas, policies), and only the last part
+        changes (the user’s question, the next document, the next code diff).
+      </p>
+
+      <p>
+        <strong>Token caching</strong> is the umbrella idea of reusing work the model already did for the repeated part.
+        In practice, providers implement some variant of <strong>prefix / prompt caching</strong>: if the beginning of your
+        request is identical to a recent request, the provider can skip a large portion of compute. You typically get:
+      </p>
+
+      <ul>
+        <li><strong>Lower latency</strong> (responses start faster)</li>
+        <li><strong>Lower cost</strong> for cached input tokens (varies by provider/model)</li>
+      </ul>
+
+      <h3>Two caches people mix up</h3>
+
+      <p>
+        There are (at least) two different “caches” involved in LLM systems:
+      </p>
+
+      <ol>
+        <li>
+          <strong>KV cache (a.k.a. attention cache) inside the model</strong> — when the model reads tokens, it produces
+          intermediate key/value tensors used by the attention mechanism. Reusing those tensors is what makes
+          “resume from a prefix” fast.
+        </li>
+        <li>
+          <strong>Semantic / application caches</strong> — you store the final answer yourself (or store embeddings, etc.).
+          This is separate from token caching. It’s about reusing <em>results</em>, not reusing <em>prefill compute</em>.
+        </li>
+      </ol>
+
+      <p>
+        This article is mainly about #1 (KV/prompt caching) and how to structure prompts to benefit from it.
+      </p>
+
+      <h3>The “prefill” cost (why long prompts hurt)</h3>
+      <p>
+        An LLM request has two phases:
+      </p>
+      <ul>
+        <li><strong>Prefill</strong>: the model reads your entire prompt and builds internal state (including KV tensors).</li>
+        <li><strong>Decode</strong>: the model generates output tokens step-by-step.</li>
+      </ul>
+
+      <p>
+        If your prompt is huge, prefill can dominate latency and cost. Prompt caching targets that prefill phase:
+        when the prefix matches, the provider can reuse the already-computed KV tensors for that prefix.
+      </p>
+
+      <h3>How prompt caching works (mental model)</h3>
+      <p>
+        Most implementations work like this:
+      </p>
+      <ol>
+        <li>You send a request.</li>
+        <li>The provider hashes some <strong>prefix</strong> of your input and checks a cache.</li>
+        <li>If there’s an <strong>exact match</strong>, they reuse cached KV state for that prefix.</li>
+        <li>If not, they compute normally and may store the prefix KV state for later.</li>
+      </ol>
+
+      <p>
+        The key thing: <strong>cache hits generally require an exact prefix match</strong>. Small differences early in the prompt
+        (timestamps, random IDs, “today is…”, a reordered tool schema) can destroy hit rates.
+      </p>
+
+      <h3>How to structure prompts to get cache hits</h3>
+
+      <p>
+        Think: <strong>static first, dynamic last</strong>.
+      </p>
+
+      <ul>
+        <li>
+          Put stable content at the beginning:
+          <ul>
+            <li>system instructions</li>
+            <li>few-shot examples</li>
+            <li>tool schemas</li>
+            <li>format requirements</li>
+          </ul>
+        </li>
+        <li>
+          Put per-request content at the end:
+          <ul>
+            <li>the user question</li>
+            <li>the specific document/code to analyze</li>
+            <li>recent chat turns only if needed</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>When is token caching worth caring about?</h3>
+      <p>
+        You usually benefit when:
+      </p>
+      <ul>
+        <li>You have a <strong>long repeated prefix</strong> (policies/examples/tools).</li>
+        <li>You make <strong>many similar requests</strong> (batching, agents, evals, copilots, support bots).</li>
+        <li>You have <strong>latency-sensitive</strong> UX (autocomplete, interactive tools).</li>
+      </ul>
+
+      <p>
+        If every request is totally different, caching won’t do much.
+      </p>
+
+      <h3>Common pitfalls</h3>
+      <ul>
+        <li><strong>Prefix churn</strong>: putting changing data (timestamps, “user ID”, random nonce) near the top.</li>
+        <li><strong>Tool list drift</strong>: changing tool schemas/order between calls.</li>
+        <li><strong>Hidden differences</strong>: whitespace/JSON key order differences if the provider tokenizes them differently.</li>
+        <li><strong>Over-caching</strong>: caching huge prefixes when only a small part is reused (may not be free).</li>
+      </ul>
+
+      <h3>Provider differences (high level)</h3>
+      <p>
+        Different vendors expose caching differently:
+      </p>
+      <ul>
+        <li>
+          Some do it <strong>automatically</strong> when prompts are long enough and prefixes match.
+        </li>
+        <li>
+          Some let you specify an explicit <strong>cache breakpoint</strong> or cache-control hint.
+        </li>
+        <li>
+          Cache lifetimes vary (minutes to hours), and pricing can distinguish “cache write” vs “cache read”.
+        </li>
+      </ul>
+
+      <p>
+        Regardless of the exact API: the best strategy is still “stable prefix, variable suffix”.
+      </p>
+
+      <h3>A practical checklist</h3>
+      <ol>
+        <li>Move stable instructions/examples to the top.</li>
+        <li>Keep tool schemas stable (order + content).</li>
+        <li>Don’t include time/randomness in the prefix.</li>
+        <li>Log usage metrics (cached tokens / latency) to verify it’s working.</li>
+        <li>Group requests by shared prefix when possible.</li>
+      </ol>
+
+      <h3>Further reading</h3>
+      <ul>
+        <li><a href="https://developers.openai.com/api/docs/guides/prompt-caching" target="_blank" rel="noopener">OpenAI: Prompt caching</a></li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank" rel="noopener">Anthropic: Prompt caching</a></li>
+      </ul>
+
+      <p class="backlink"><a href="../index.html">← Back home</a></p>
+    </article>
+
+    <footer class="site-footer">
+      <p>© GlobalClaw</p>
+    </footer>
+  </main>
+</body>
+</html>
