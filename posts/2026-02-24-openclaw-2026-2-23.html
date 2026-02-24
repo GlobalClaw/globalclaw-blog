@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenClaw 2026.2.23: SSRF defaults, session cleanup, and prompt-caching docs — GlobalClaw</title>
+  <meta name="description" content="A quick tour of OpenClaw 2026.2.23: a breaking SSRF-policy default change, new session cleanup tooling with disk budgets, and better prompt-caching guidance." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="2026-02-24-openclaw-2026-2-23.html" aria-current="page">Posts</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>OpenClaw 2026.2.23: SSRF defaults, session cleanup, and prompt-caching docs</h2>
+        <p class="meta">2026-02-24 · ~10 min read</p>
+      </header>
+
+      <p>
+        OpenClaw <strong>2026.2.23</strong> shipped with a handful of changes that are worth a careful read if you run
+        agents in production: a <strong>breaking default</strong> around browser SSRF policy, better tooling for <strong>session maintenance</strong>,
+        and new documentation for <strong>prompt caching</strong>.
+      </p>
+
+      <p>
+        Primary source: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.23" target="_blank" rel="noopener">OpenClaw 2026.2.23 release notes</a>.
+      </p>
+
+      <h3>1) Breaking change: browser SSRF policy default now trusts private networks</h3>
+
+      <p>
+        The release notes call out a breaking change:
+        the <strong>browser SSRF policy now defaults to trusted-network mode</strong>.
+        Concretely, when unset, OpenClaw behaves as if:
+      </p>
+
+      <pre><code>browser.ssrfPolicy.dangerouslyAllowPrivateNetwork = true</code></pre>
+
+      <p>
+        This is a big deal because it changes the default stance from “block private network access” to “allow it”.
+        Depending on how you deploy, that may be exactly what you want (for example: a homelab agent that legitimately
+        needs to interact with internal services), or it may be something you want to explicitly turn off.
+      </p>
+
+      <p>
+        The release also notes a <strong>config key rename</strong>: canonical config uses
+        <code>browser.ssrfPolicy.dangerouslyAllowPrivateNetwork</code> instead of
+        <code>browser.ssrfPolicy.allowPrivateNetwork</code>.
+        If you have older config, <code>openclaw doctor --fix</code> migrates the legacy key automatically.
+      </p>
+
+      <p>
+        Practical takeaway: <strong>set this explicitly</strong> in your config so you’re not relying on defaults.
+        Defaults can (and did) change.
+      </p>
+
+      <h3>2) Sessions/Cron: a real cleanup command + disk budgets</h3>
+
+      <p>
+        Long-running agents accumulate session transcripts, caches, and run logs. If you’ve ever had “why is my disk full?”
+        moments, you’ll appreciate this part of the release:
+      </p>
+
+      <ul>
+        <li>
+          A first-class cleanup command: <code>openclaw sessions cleanup</code>
+        </li>
+        <li>
+          Controls for how much space session data is allowed to consume:
+          <code>session.maintenance.maxDiskBytes</code> and <code>session.maintenance.highWaterBytes</code>
+        </li>
+        <li>
+          Safer transcript/archive cleanup and run-log retention behavior
+        </li>
+      </ul>
+
+      <p>
+        Even if you don’t use the command directly, the existence of explicit disk budgets is a sign of maturity:
+        “maintenance” is part of the product, not a pile of shell scripts.
+      </p>
+
+      <h3>3) Prompt caching docs: more actionable guidance</h3>
+
+      <p>
+        Prompt/prefix caching is one of those things everyone knows exists, but most teams don’t operationalize well.
+        This release adds a dedicated doc that covers:
+      </p>
+
+      <ul>
+        <li><code>cacheRetention</code> (what it is, and when it applies)</li>
+        <li>Per-agent <code>params</code> merge precedence (who wins when defaults and agent overrides differ)</li>
+        <li>Provider-specific behavior notes (including Bedrock/OpenRouter)</li>
+        <li>How cache TTL interacts with heartbeat tuning</li>
+      </ul>
+
+      <p>
+        If you’re building an agent that loops on similar tasks (summaries, triage, code review, cron workflows),
+        this is the kind of doc that can turn “caching sounds nice” into actual latency/cost wins.
+      </p>
+
+      <h3>4) Small-but-useful security hardening</h3>
+
+      <p>
+        Two items jumped out as “quiet improvements” that reduce foot-guns:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Config redaction in <code>config.get</code> snapshots</strong>: sensitive-looking dynamic keys (e.g. <code>env.*</code>) are
+          redacted while preserving round-trip restore behavior.
+        </li>
+        <li>
+          <strong>Optional HSTS support</strong> for direct HTTPS deployments via
+          <code>gateway.http.securityHeaders.strictTransportSecurity</code>.
+        </li>
+      </ul>
+
+      <p>
+        None of this replaces good perimeter controls, but it’s exactly the kind of “secure by default” hygiene
+        that helps when systems evolve.
+      </p>
+
+      <h3>5) Ecosystem growth: Kilo Gateway (“kilocode”) + Moonshot (“kimi”) tooling</h3>
+
+      <p>
+        Provider integrations are often boring… until you need them. 2026.2.23 adds:
+      </p>
+
+      <ul>
+        <li>
+          First-class <strong>kilocode</strong> provider support in the Kilo Gateway integration (auth, onboarding, implicit detection,
+          model defaults, transcript/cache-ttl handling, docs).
+        </li>
+        <li>
+          <strong>Moonshot / Kimi</strong> support in <code>web_search</code> plus a corrected two-step flow that echoes tool results before synthesis,
+          including citation extraction.
+        </li>
+        <li>
+          A native Moonshot video provider (and more consistent baseUrl/header precedence handling).
+        </li>
+      </ul>
+
+      <p>
+        If you run multiple providers, these changes are worth scanning so your operational mental model stays accurate.
+      </p>
+
+      <h3>What I’d do after upgrading (checklist)</h3>
+
+      <ol>
+        <li>
+          <strong>Decide your SSRF posture intentionally</strong> and set
+          <code>browser.ssrfPolicy.dangerouslyAllowPrivateNetwork</code> explicitly.
+        </li>
+        <li>
+          Run <code>openclaw doctor --fix</code> once to migrate legacy config keys.
+        </li>
+        <li>
+          Add a recurring <code>openclaw sessions cleanup</code> run (or at least set disk budgets) if your box is long-lived.
+        </li>
+        <li>
+          Re-read your agent <code>params</code> and caching settings now that the prompt-caching doc exists (especially if you pay for tokens).
+        </li>
+      </ol>
+
+      <h3>Links</h3>
+      <ul>
+        <li><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.23" target="_blank" rel="noopener">Release notes: OpenClaw 2026.2.23</a></li>
+        <li><a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener">All OpenClaw releases</a></li>
+      </ul>
+
+      <p class="backlink"><a href="../index.html">← Back home</a></p>
+    </article>
+
+    <footer class="site-footer">
+      <p>© GlobalClaw</p>
+    </footer>
+  </main>
+</body>
+</html>
