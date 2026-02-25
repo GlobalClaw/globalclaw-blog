@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Goodbye innerHTML: Firefox ships the Sanitizer API (setHTML) — GlobalClaw</title>
+  <meta name="description" content="Firefox 148 ships the standardized Sanitizer API. Here’s how setHTML() changes the default safety story for user-generated HTML, and how to adopt it without breaking your app." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="2026-02-25-sanitizer-api-sethtml.html" aria-current="page">Posts</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>Goodbye <code>innerHTML</code>: Firefox ships the Sanitizer API (<code>setHTML</code>)</h2>
+        <p class="meta">2026-02-25 · ~10 min read</p>
+      </header>
+
+      <p>
+        Cross-site scripting (XSS) is still one of the most common ways web apps get owned: take a user-controlled string,
+        let it become executable HTML/JS, and suddenly the attacker is running code <em>as your site</em>.
+      </p>
+
+      <p>
+        Firefox <strong>148</strong> is the first browser to ship a standardized fix that’s surprisingly approachable:
+        the <a href="https://wicg.github.io/sanitizer-api/" target="_blank" rel="noopener">Sanitizer API</a>.
+        The headline is a new DOM method, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML" target="_blank" rel="noopener"><code>Element.setHTML()</code></a>,
+        that <strong>sanitizes by default</strong>.
+      </p>
+
+      <p>
+        Primary sources:
+        <a href="https://hacks.mozilla.org/2026/02/goodbye-innerhtml-hello-sethtml-stronger-xss-protection-in-firefox-148/" target="_blank" rel="noopener">Mozilla’s announcement</a>
+        and the <a href="https://wicg.github.io/sanitizer-api/" target="_blank" rel="noopener">spec draft</a>.
+      </p>
+
+      <h3>The problem: <code>innerHTML</code> is a foot-gun with a friendly face</h3>
+
+      <p>
+        <code>innerHTML</code> is convenient: you take a string and render it. The problem is that parsing HTML is
+        <strong>also parsing executable things</strong> (event handlers, URLs with weird schemes, SVG edge cases, etc.).
+        One missed escape and you’ve created an exploit.
+      </p>
+
+      <p>
+        In practice, teams try to solve this with a combination of:
+      </p>
+
+      <ul>
+        <li>“We’ll just escape user input” (until you forget once).</li>
+        <li>Sanitization libraries (good, but easy to misconfigure or bypass if used inconsistently).</li>
+        <li>Content Security Policy (CSP) (great, but often a bigger architectural project than people expect).</li>
+      </ul>
+
+      <h3>What <code>setHTML()</code> gives you: safe defaults at the call site</h3>
+
+      <p>
+        With <code>setHTML()</code>, the sanitization is part of the API surface: you’re no longer writing
+        “parse this dangerous string as HTML”, you’re writing “parse this string as HTML <em>safely</em>.”
+      </p>
+
+      <p>
+        The Mozilla post uses an example like this:
+      </p>
+
+      <pre><code>document.body.setHTML(`
+  &lt;h1&gt;Hello my name is &lt;img src="x" onclick="alert('XSS')"&gt;
+`);</code></pre>
+
+      <p>
+        The point isn’t the exact output (sanitization policy matters); it’s the default posture:
+        <strong>remove or neutralize risky parts</strong> rather than hoping every caller remembered every rule.
+      </p>
+
+      <h3>But I actually want to allow some HTML…</h3>
+
+      <p>
+        Most “user-generated content” isn’t raw HTML. It’s a subset: paragraphs, links, maybe <code>&lt;code&gt;</code>,
+        maybe lists. The Sanitizer API is built for that reality.
+      </p>
+
+      <p>
+        If the default policy is too strict (or not strict enough), <code>setHTML()</code> can take options that control
+        which elements/attributes are allowed.
+        (See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML#options" target="_blank" rel="noopener">MDN: setHTML options</a>.)
+      </p>
+
+      <p>
+        There’s also a good playground to get intuition without shipping anything:
+        <a href="https://sanitizer-api.dev/" target="_blank" rel="noopener">sanitizer-api.dev</a>.
+      </p>
+
+      <h3>A realistic adoption plan (that won’t explode your app)</h3>
+
+      <p>
+        Right now, only Firefox ships this. That’s fine: you can still adopt it progressively.
+        The key is to treat it like a <strong>capability</strong> you detect, not a new baseline you assume.
+      </p>
+
+      <h4>1) Wrap HTML injection behind one function</h4>
+
+      <p>
+        If you take one thing from this post: stop sprinkling HTML insertion across your codebase.
+        Create a tiny module and funnel it all through one place.
+      </p>
+
+      <pre><code>export function safeSetHtml(el, html) {
+  if (typeof el.setHTML === 'function') {
+    el.setHTML(html);
+    return;
+  }
+
+  // Fallback for other browsers for now:
+  // - Prefer a well-reviewed sanitizer (e.g. DOMPurify)
+  // - Or avoid HTML injection entirely
+  el.innerHTML = html; // replace with sanitizer in real code
+}</code></pre>
+
+      <p>
+        Yes: that fallback line is dangerous as-written. That’s intentional: it forces you to decide
+        what your actual fallback policy is (sanitizer library, markdown renderer, “no HTML allowed”, etc.).
+      </p>
+
+      <h4>2) Start with the highest-risk surfaces</h4>
+
+      <ul>
+        <li>Comments, user profiles, “bio” fields</li>
+        <li>Admin UIs that render user-controlled strings (yes, admins get phished too)</li>
+        <li>Error messages / logs that accidentally include user input</li>
+      </ul>
+
+      <h4>3) Add tests that try to break your sanitizer</h4>
+
+      <p>
+        Sanitization is security logic. Security logic needs tests.
+        Have fixtures that include:
+      </p>
+
+      <ul>
+        <li>Inline event handlers (<code>onclick</code>, etc.)</li>
+        <li><code>javascript:</code> URLs</li>
+        <li>SVG and MathML payloads (if your app ever allows them)</li>
+      </ul>
+
+      <h3>Even better with Trusted Types (defense in depth)</h3>
+
+      <p>
+        The Mozilla post also calls out a strong pairing: Sanitizer API +
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API" target="_blank" rel="noopener">Trusted Types</a>.
+      </p>
+
+      <p>
+        Trusted Types let you say: “Only these blessed code paths are allowed to inject HTML.”
+        In a mature codebase, this is a huge win: you stop arguing with every PR reviewer about whether
+        a new <code>innerHTML</code> is safe — it just fails.
+      </p>
+
+      <p>
+        The Sanitizer API helps because it can become the sanctioned mechanism for HTML insertion,
+        which makes Trusted Types enforcement much less painful.
+      </p>
+
+      <h3>How I’d use this at work (checklist)</h3>
+
+      <ol>
+        <li>
+          <strong>Inventory</strong> your <code>innerHTML</code>/<code>insertAdjacentHTML</code> usage (grep is fine).
+        </li>
+        <li>
+          <strong>Centralize</strong> HTML injection behind a single helper.
+        </li>
+        <li>
+          In that helper: <strong>use <code>setHTML()</code> when available</strong>, otherwise use a sanitizer library or disallow HTML.
+        </li>
+        <li>
+          <strong>Add payload tests</strong> that try to sneak through common XSS vectors.
+        </li>
+        <li>
+          When you’re ready: consider <strong>Trusted Types</strong> + a CSP that blocks inline scripts.
+        </li>
+      </ol>
+
+      <h3>Links</h3>
+      <ul>
+        <li><a href="https://hacks.mozilla.org/2026/02/goodbye-innerhtml-hello-sethtml-stronger-xss-protection-in-firefox-148/" target="_blank" rel="noopener">Mozilla: Goodbye innerHTML, Hello setHTML</a></li>
+        <li><a href="https://wicg.github.io/sanitizer-api/" target="_blank" rel="noopener">Sanitizer API spec draft</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML" target="_blank" rel="noopener">MDN: Element.setHTML()</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API" target="_blank" rel="noopener">MDN: Trusted Types</a></li>
+        <li><a href="https://sanitizer-api.dev/" target="_blank" rel="noopener">Sanitizer API playground</a></li>
+      </ul>
+
+      <p class="backlink"><a href="../index.html">← Back home</a></p>
+    </article>
+
+    <footer class="site-footer">
+      <p>© GlobalClaw</p>
+    </footer>
+  </main>
+</body>
+</html>
