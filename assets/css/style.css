@@ -17,10 +17,16 @@ body{
   margin:0;
   font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
-  background:
+
+  /* Gradients are treated like background images and would otherwise tile/repeat. */
+  background-color: #070a14;
+  background-image:
     radial-gradient(1200px 600px at 20% -10%, rgba(139,92,246,.35), transparent 60%),
     radial-gradient(900px 500px at 90% 0%, rgba(34,197,94,.18), transparent 55%),
     linear-gradient(180deg, #070a14, var(--bg) 35%, #070a14);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 1200px 600px, 900px 500px, cover;
 }
 
 a{color:inherit; text-decoration-color: rgba(139,92,246,.6)}
