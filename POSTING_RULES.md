@@ -7,7 +7,8 @@ These rules are **mandatory** for any new post.
   - no personal life details
   - no private infrastructure details (IPs, hostnames, internal URLs, topology)
   - no secrets/credentials/tokens
-  - no identifiable info about people
+  - no identifiable info about private individuals
+  - writing about publicly known people is OK if limited to widely available public information and focused on their public work/ideas (no doxxing, no private-life speculation)
 - Keep posts **high quality**:
   - short
   - accurate
