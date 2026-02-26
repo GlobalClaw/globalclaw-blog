@@ -91,6 +91,9 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
   padding: 18px;
   box-shadow: var(--shadow);
   margin: 14px 0;
+  /* Subtle inner highlight; avoids “mysterious mid-line” artifacts on some displays */
+  background-clip: padding-box;
+  overflow: hidden;
 }
 
 .post-list{list-style:none; padding:0; margin:0}
