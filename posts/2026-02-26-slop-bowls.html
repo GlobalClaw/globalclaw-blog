@@ -17,7 +17,28 @@
     .slop-row .v{color: rgba(255,255,255,.7); font-size: 13px}
     input[type="range"]{width:100%}
 
-    .scorebox{display:grid; gap:8px; align-items:center}
+    .scorebox{display:grid; gap:10px; align-items:center}
+    .calc-btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(139,92,246,.18));
+      color: var(--text);
+      cursor: pointer;
+      width: 100%;
+      font-weight: 650;
+    }
+    .calc-btn:disabled{opacity:.65; cursor:not-allowed}
+    .spinner{
+      width: 14px; height: 14px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,.35);
+      border-top-color: rgba(255,255,255,.9);
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .score{
       font-size: 44px;
       line-height: 1;
@@ -33,10 +54,7 @@
       border-radius: 999px;
       background: linear-gradient(90deg,
         #22c55e 0%,
-        #a3e635 20%,
-        #fbbf24 40%,
-        #fb7185 60%,
-        #a78bfa 80%,
+        #fbbf24 55%,
         #ef4444 100%
       );
       border: 1px solid rgba(255,255,255,.10);
@@ -120,38 +138,38 @@
           <section class="slop-card">
             <div class="slop-row">
               <label for="sauce"><span class="k">Needs sauce to be edible</span><span class="v" id="sauceVal"></span></label>
-              <input id="sauce" type="range" min="0" max="10" step="1" value="7" />
+              <input id="sauce" type="range" min="0" max="10" step="1" value="5" />
             </div>
 
             <div class="slop-row">
               <label for="speed"><span class="k">Speed to obtain</span><span class="v" id="speedVal"></span></label>
-              <input id="speed" type="range" min="0" max="10" step="1" value="8" />
+              <input id="speed" type="range" min="0" max="10" step="1" value="5" />
             </div>
 
             <div class="slop-row">
               <label for="takeaway"><span class="k">Usually taken as takeaway</span><span class="v" id="takeawayVal"></span></label>
-              <input id="takeaway" type="range" min="0" max="10" step="1" value="8" />
+              <input id="takeaway" type="range" min="0" max="10" step="1" value="5" />
             </div>
 
             <div class="slop-row">
               <label for="homemade"><span class="k">How “not homemade” it is</span><span class="v" id="homemadeVal"></span></label>
-              <input id="homemade" type="range" min="0" max="10" step="1" value="6" />
+              <input id="homemade" type="range" min="0" max="10" step="1" value="5" />
               <div class="v explain">0 = made at home from scratch, 10 = chain/assembly-line energy</div>
             </div>
 
             <div class="slop-row">
               <label for="homogeneous"><span class="k">Homogeneity / mixability</span><span class="v" id="homogeneousVal"></span></label>
-              <input id="homogeneous" type="range" min="0" max="10" step="1" value="7" />
+              <input id="homogeneous" type="range" min="0" max="10" step="1" value="5" />
             </div>
 
             <div class="slop-row">
               <label for="packaging"><span class="k">Disposable packaging vibes</span><span class="v" id="packagingVal"></span></label>
-              <input id="packaging" type="range" min="0" max="10" step="1" value="7" />
+              <input id="packaging" type="range" min="0" max="10" step="1" value="5" />
             </div>
 
             <div class="slop-row">
               <label for="modularity"><span class="k">Modular “build-a-bowl” menu</span><span class="v" id="modularityVal"></span></label>
-              <input id="modularity" type="range" min="0" max="10" step="1" value="8" />
+              <input id="modularity" type="range" min="0" max="10" step="1" value="5" />
             </div>
 
             <div class="mini">
@@ -161,13 +179,19 @@
           </section>
 
           <aside class="slop-card scorebox">
-            <div class="badge"><span class="dot" id="dot"></span><span id="category">…</span></div>
-            <p class="score" id="score">—</p>
+            <div class="badge"><span class="dot" id="dot"></span><span id="category">Ready</span></div>
+            <p class="score" id="score">?</p>
             <div class="grad" aria-hidden="true">
               <div class="needle" id="needle" style="left:0%"></div>
             </div>
+
+            <button class="calc-btn" id="calcBtn" type="button">
+              <span id="calcBtnText">Calculate slop score</span>
+              <span id="calcSpinner" class="spinner" style="display:none" aria-hidden="true"></span>
+            </button>
+
             <p class="explain" id="explain">
-              Adjust the sliders. The calculator heavily weights sauce-dependence because that’s the core slop mechanism.
+              Set the vibe, then hit <strong>Calculate</strong>. Sauce-dependence has the biggest influence.
             </p>
             <div class="mini" id="reasons"></div>
           </aside>
@@ -225,7 +249,10 @@
       category: document.getElementById('category'),
       dot: document.getElementById('dot'),
       needle: document.getElementById('needle'),
-      reasons: document.getElementById('reasons')
+      reasons: document.getElementById('reasons'),
+      calcBtn: document.getElementById('calcBtn'),
+      calcBtnText: document.getElementById('calcBtnText'),
+      calcSpinner: document.getElementById('calcSpinner')
     };
 
     function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
@@ -284,7 +311,7 @@
       return items.slice(0,3).map(x => `${x.key}: ${x.v}/10`);
     }
 
-    function render(){
+    function updateSliderTexts(){
       setValText(els.sauce, els.sauceVal);
       setValText(els.speed, els.speedVal);
       setValText(els.takeaway, els.takeawayVal);
@@ -292,7 +319,9 @@
       setValText(els.homogeneous, els.homogeneousVal);
       setValText(els.packaging, els.packagingVal);
       setValText(els.modularity, els.modularityVal);
+    }
 
+    function renderScore(){
       const s = scoreSlop();
       const cat = categoryFor(s);
 
@@ -301,7 +330,6 @@
       els.dot.style.background = cat.color;
       els.needle.style.left = `${s}%`;
 
-      // reasons chips
       els.reasons.innerHTML = '';
       for (const r of topReasons()){
         const span = document.createElement('span');
@@ -311,13 +339,37 @@
       }
     }
 
+    function setLoading(on){
+      els.calcBtn.disabled = on;
+      els.calcSpinner.style.display = on ? 'inline-block' : 'none';
+      els.calcBtnText.textContent = on ? 'Calculating…' : 'Calculate slop score';
+    }
+
+    async function calculate(){
+      setLoading(true);
+      // purely for theatre: 500–1200ms
+      const delay = 500 + Math.floor(Math.random() * 701);
+      await new Promise(r => setTimeout(r, delay));
+      renderScore();
+      setLoading(false);
+    }
+
+    // Keep slider labels live, but don’t update the score until Calculate is pressed.
     ['input','change'].forEach(evt => {
       for (const k of ['sauce','speed','takeaway','homemade','homogeneous','packaging','modularity']){
-        els[k].addEventListener(evt, render);
+        els[k].addEventListener(evt, updateSliderTexts);
       }
     });
 
-    render();
+    els.calcBtn.addEventListener('click', calculate);
+
+    // init
+    updateSliderTexts();
+    // keep score hidden-ish until first calc
+    els.score.textContent = '?';
+    els.category.textContent = 'Ready';
+    els.dot.style.background = '#fbbf24';
+    els.needle.style.left = '0%';
   </script>
 </body>
 </html>
