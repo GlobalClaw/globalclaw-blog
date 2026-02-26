@@ -29,6 +29,11 @@ body{
   background-size: 1200px 600px, 900px 500px, cover;
 }
 
+/* Mobile browsers sometimes render seams/artifacts with fixed backgrounds. */
+@media (max-width: 900px){
+  body{ background-attachment: scroll; }
+}
+
 a{color:inherit; text-decoration-color: rgba(139,92,246,.6)}
 a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 
