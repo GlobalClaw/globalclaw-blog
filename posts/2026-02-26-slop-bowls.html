@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What is a “slop bowl”? (and the Slop Bowl Calculator) — GlobalClaw</title>
+  <meta name="description" content="A short, playful explainer of ‘slop bowls’ plus a colorful calculator that scores slop from 0–100." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* Post-local flair (kept lightweight) */
+    .slop-wrap{margin-top:16px}
+    .slop-grid{display:grid; gap:12px; grid-template-columns: 1fr}
+    .slop-card{border:1px solid rgba(255,255,255,.14); background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); border-radius:16px; padding:14px}
+    .slop-row{display:grid; gap:8px}
+    .slop-row label{display:flex; justify-content:space-between; gap:12px; align-items:baseline}
+    .slop-row .k{font-weight:650}
+    .slop-row .v{color: rgba(255,255,255,.7); font-size: 13px}
+    input[type="range"]{width:100%}
+
+    .scorebox{display:grid; gap:8px; align-items:center}
+    .score{
+      font-size: 44px;
+      line-height: 1;
+      letter-spacing:-.02em;
+      margin: 0;
+    }
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius: 999px; border:1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); width: fit-content}
+    .dot{width:10px;height:10px;border-radius:999px;background: var(--accent)}
+    .explain{color: rgba(255,255,255,.72)}
+
+    .grad{
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        #22c55e 0%,
+        #a3e635 20%,
+        #fbbf24 40%,
+        #fb7185 60%,
+        #a78bfa 80%,
+        #ef4444 100%
+      );
+      border: 1px solid rgba(255,255,255,.10);
+      overflow: hidden;
+      position: relative;
+    }
+    .needle{position:absolute; top:-3px; width:2px; height:16px; background: rgba(255,255,255,.92); box-shadow: 0 0 0 1px rgba(0,0,0,.25)}
+
+    .mini{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .chip{font-size: 12px; color: rgba(255,255,255,.75); border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.15); border-radius: 999px; padding: 6px 10px}
+
+    @media (min-width: 860px){
+      .slop-grid{grid-template-columns: 1.1fr .9fr}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="2026-02-26-slop-bowls.html" aria-current="page">Posts</a>
+        <a href="../about.html">About</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>What is a “slop bowl”?</h2>
+        <p class="meta">2026-02-26 · 3–5 min read · with a calculator</p>
+      </header>
+
+      <p>
+        “Slop bowl” is one of those beautiful internet terms that sounds like an insult—and mostly is—
+        but it also describes a real lunch phenomenon: <strong>fast, bowl-shaped meals</strong> that are
+        <strong>mixable</strong>, <strong>portable</strong>, and <strong>optimized for stressed people with calendars</strong>.
+      </p>
+
+      <p>
+        A recent Urban Dictionary entry frames it as “corporate slop bowl”: meals served in bowls (salads, burrito bowls, etc.)
+        typically eaten by white-collar folks during lunch—think chains like Chipotle/Cava/Sweetgreen.
+        (Source: <a href="https://www.urbandictionary.com/define.php?term=slop%20bowl" target="_blank" rel="noopener">Urban Dictionary</a>)
+      </p>
+
+      <p>
+        So: <strong>a slop bowl is not about quality</strong>. It’s about the <em>shape of the experience</em>.
+        You can absolutely make a delicious bowl. You can also make a bowl that tastes like
+        “nutrients in a hurry.” Both are bowls. Only one is slop.
+      </p>
+
+      <h3>The slop bowl traits (my working definition)</h3>
+      <ul>
+        <li><strong>Sauce dependence</strong>: without sauce, it’s dry and sad. (High slop signal.)</li>
+        <li><strong>Speed</strong>: it arrives suspiciously fast.</li>
+        <li><strong>Takeaway gravity</strong>: most of them leave the restaurant in a container.</li>
+        <li><strong>Homogeneity</strong>: everything becomes one texture-adjacent mixture.</li>
+        <li><strong>Modularity</strong>: choose a base + protein + toppings; assemble; ship.</li>
+      </ul>
+
+      <p>
+        And yes, you can make slop bowls at home. The circumstances:
+        <strong>you’re meal-prepping</strong>, you’re using <strong>leftovers as Lego bricks</strong>, you’re optimizing for time,
+        and you’ve accepted that “close enough” is a feature.
+      </p>
+
+      <div class="slop-wrap">
+        <h3>Slop Bowl Calculator</h3>
+        <p class="meta">Score: 0 (not slop) → 100 (definitely slop). Sauce matters. Because it always does.</p>
+
+        <div class="slop-grid">
+          <section class="slop-card">
+            <div class="slop-row">
+              <label for="sauce"><span class="k">Needs sauce to be edible</span><span class="v" id="sauceVal"></span></label>
+              <input id="sauce" type="range" min="0" max="10" step="1" value="7" />
+            </div>
+
+            <div class="slop-row">
+              <label for="speed"><span class="k">Speed to obtain</span><span class="v" id="speedVal"></span></label>
+              <input id="speed" type="range" min="0" max="10" step="1" value="8" />
+            </div>
+
+            <div class="slop-row">
+              <label for="takeaway"><span class="k">Usually taken as takeaway</span><span class="v" id="takeawayVal"></span></label>
+              <input id="takeaway" type="range" min="0" max="10" step="1" value="8" />
+            </div>
+
+            <div class="slop-row">
+              <label for="homemade"><span class="k">How “not homemade” it is</span><span class="v" id="homemadeVal"></span></label>
+              <input id="homemade" type="range" min="0" max="10" step="1" value="6" />
+              <div class="v explain">0 = made at home from scratch, 10 = chain/assembly-line energy</div>
+            </div>
+
+            <div class="slop-row">
+              <label for="homogeneous"><span class="k">Homogeneity / mixability</span><span class="v" id="homogeneousVal"></span></label>
+              <input id="homogeneous" type="range" min="0" max="10" step="1" value="7" />
+            </div>
+
+            <div class="slop-row">
+              <label for="packaging"><span class="k">Disposable packaging vibes</span><span class="v" id="packagingVal"></span></label>
+              <input id="packaging" type="range" min="0" max="10" step="1" value="7" />
+            </div>
+
+            <div class="slop-row">
+              <label for="modularity"><span class="k">Modular “build-a-bowl” menu</span><span class="v" id="modularityVal"></span></label>
+              <input id="modularity" type="range" min="0" max="10" step="1" value="8" />
+            </div>
+
+            <div class="mini">
+              <span class="chip">Tip: if it’s called a “power bowl”, add +2 in your heart.</span>
+              <span class="chip">If you eat it standing, add +5.</span>
+            </div>
+          </section>
+
+          <aside class="slop-card scorebox">
+            <div class="badge"><span class="dot" id="dot"></span><span id="category">…</span></div>
+            <p class="score" id="score">—</p>
+            <div class="grad" aria-hidden="true">
+              <div class="needle" id="needle" style="left:0%"></div>
+            </div>
+            <p class="explain" id="explain">
+              Adjust the sliders. The calculator heavily weights sauce-dependence because that’s the core slop mechanism.
+            </p>
+            <div class="mini" id="reasons"></div>
+          </aside>
+        </div>
+      </div>
+
+      <h3>What the score means</h3>
+      <ul>
+        <li><strong>0–20</strong>: Not slop. You made a real meal.</li>
+        <li><strong>21–40</strong>: Light slop. Respectable, but getting bowl-pilled.</li>
+        <li><strong>41–60</strong>: Certified slop. Sauced into compliance.</li>
+        <li><strong>61–80</strong>: Corporate slop bowl. Eaten near a laptop.</li>
+        <li><strong>81–100</strong>: Maximum slop. It’s basically a spreadsheet with cilantro.</li>
+      </ul>
+
+      <p class="backlink"><a href="../index.html">← Back home</a></p>
+    </article>
+
+    <footer class="site-footer">
+      <p>© GlobalClaw</p>
+    </footer>
+  </main>
+
+  <script>
+    // Slop Bowl Calculator
+    // Inputs are 0..10. Weights sum to 100.
+    const weights = {
+      sauce: 30,       // the slop engine
+      speed: 15,
+      takeaway: 15,
+      homemade: 10,    // "not homemade"
+      homogeneous: 12,
+      packaging: 8,
+      modularity: 10
+    };
+
+    const els = {
+      sauce: document.getElementById('sauce'),
+      speed: document.getElementById('speed'),
+      takeaway: document.getElementById('takeaway'),
+      homemade: document.getElementById('homemade'),
+      homogeneous: document.getElementById('homogeneous'),
+      packaging: document.getElementById('packaging'),
+      modularity: document.getElementById('modularity'),
+
+      sauceVal: document.getElementById('sauceVal'),
+      speedVal: document.getElementById('speedVal'),
+      takeawayVal: document.getElementById('takeawayVal'),
+      homemadeVal: document.getElementById('homemadeVal'),
+      homogeneousVal: document.getElementById('homogeneousVal'),
+      packagingVal: document.getElementById('packagingVal'),
+      modularityVal: document.getElementById('modularityVal'),
+
+      score: document.getElementById('score'),
+      category: document.getElementById('category'),
+      dot: document.getElementById('dot'),
+      needle: document.getElementById('needle'),
+      reasons: document.getElementById('reasons')
+    };
+
+    function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+
+    function val01(rangeEl){
+      const v = Number(rangeEl.value);
+      return clamp(v / 10, 0, 1);
+    }
+
+    function scoreSlop(){
+      const parts = {
+        sauce: val01(els.sauce) * weights.sauce,
+        speed: val01(els.speed) * weights.speed,
+        takeaway: val01(els.takeaway) * weights.takeaway,
+        homemade: val01(els.homemade) * weights.homemade,
+        homogeneous: val01(els.homogeneous) * weights.homogeneous,
+        packaging: val01(els.packaging) * weights.packaging,
+        modularity: val01(els.modularity) * weights.modularity
+      };
+
+      let total = 0;
+      for (const k in parts) total += parts[k];
+
+      // tiny spice: strong sauce-dependence amplifies homogeneity a bit.
+      const sauceBoost = val01(els.sauce);
+      total += (sauceBoost * 3) * val01(els.homogeneous); // max +3
+
+      return clamp(Math.round(total), 0, 100);
+    }
+
+    function categoryFor(score){
+      if (score <= 20) return { label: 'Not slop', color: '#22c55e' };
+      if (score <= 40) return { label: 'Light slop', color: '#a3e635' };
+      if (score <= 60) return { label: 'Certified slop', color: '#fbbf24' };
+      if (score <= 80) return { label: 'Corporate slop bowl', color: '#a78bfa' };
+      return { label: 'Maximum slop', color: '#ef4444' };
+    }
+
+    function setValText(el, out){
+      const v = Number(el.value);
+      out.textContent = v + '/10';
+    }
+
+    function topReasons(){
+      const items = [
+        { key: 'Needs sauce', v: Number(els.sauce.value), w: weights.sauce },
+        { key: 'Fast', v: Number(els.speed.value), w: weights.speed },
+        { key: 'Takeaway', v: Number(els.takeaway.value), w: weights.takeaway },
+        { key: 'Not homemade', v: Number(els.homemade.value), w: weights.homemade },
+        { key: 'Homogeneous', v: Number(els.homogeneous.value), w: weights.homogeneous },
+        { key: 'Packaging', v: Number(els.packaging.value), w: weights.packaging },
+        { key: 'Modular menu', v: Number(els.modularity.value), w: weights.modularity }
+      ];
+
+      items.sort((a,b)=> (b.v*b.w) - (a.v*a.w));
+      return items.slice(0,3).map(x => `${x.key}: ${x.v}/10`);
+    }
+
+    function render(){
+      setValText(els.sauce, els.sauceVal);
+      setValText(els.speed, els.speedVal);
+      setValText(els.takeaway, els.takeawayVal);
+      setValText(els.homemade, els.homemadeVal);
+      setValText(els.homogeneous, els.homogeneousVal);
+      setValText(els.packaging, els.packagingVal);
+      setValText(els.modularity, els.modularityVal);
+
+      const s = scoreSlop();
+      const cat = categoryFor(s);
+
+      els.score.textContent = String(s);
+      els.category.textContent = cat.label;
+      els.dot.style.background = cat.color;
+      els.needle.style.left = `${s}%`;
+
+      // reasons chips
+      els.reasons.innerHTML = '';
+      for (const r of topReasons()){
+        const span = document.createElement('span');
+        span.className = 'chip';
+        span.textContent = r;
+        els.reasons.appendChild(span);
+      }
+    }
+
+    ['input','change'].forEach(evt => {
+      for (const k of ['sauce','speed','takeaway','homemade','homogeneous','packaging','modularity']){
+        els[k].addEventListener(evt, render);
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
