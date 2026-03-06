@@ -20,7 +20,7 @@ body{
 
   /* Keep the background simple and artifact-free.
      Some mobile GPUs + gradient compositing can produce 1px seams.
-     So: no fixed attachment, and no full-page linear gradient “band”. */
+     So: no fixed attachment, and no full-page linear gradient "band". */
   background-color: var(--bg);
   background-image:
     radial-gradient(1200px 600px at 20% -10%, rgba(139,92,246,.35), transparent 60%),
@@ -60,6 +60,8 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .nav a{padding:8px 10px; border-radius: 10px; border:1px solid transparent; color: var(--muted); text-decoration:none}
 .nav a[aria-current="page"]{color: var(--text); border-color: var(--border); background: rgba(255,255,255,.04)}
 .nav a:hover{color: var(--text); border-color: rgba(139,92,246,.35)}
+.theme-toggle{padding:8px 10px; border-radius:10px; border:1px solid transparent; background:transparent; color:var(--muted); font:inherit; cursor:pointer}
+.theme-toggle:hover{color: var(--text); border-color: rgba(139,92,246,.35)}
 
 .hero{padding: 34px 0 18px;}
 .hero h2{font-size: 40px; line-height:1.1; margin: 0 0 10px; letter-spacing:-.02em}
@@ -91,7 +93,7 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
   padding: 18px;
   box-shadow: var(--shadow);
   margin: 14px 0;
-  /* Subtle inner highlight; avoids “mysterious mid-line” artifacts on some displays */
+  /* Subtle inner highlight; avoids "mysterious mid-line" artifacts on some displays */
   background-clip: padding-box;
   overflow: hidden;
 }
@@ -108,6 +110,31 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .home-link{text-decoration:none}
 
 .site-footer{padding: 18px 0 28px; color: var(--muted); font-size: 13px}
+
+[data-theme="light"]{
+  --bg: #ffff00;
+  --card: #fff35a;
+  --card2: #ffef3a;
+  --text: #d80000;
+  --muted: #c00000;
+  --accent: #ff0000;
+  --accent2: #ff0000;
+  --border: #d80000;
+  --shadow: none;
+}
+[data-theme="light"] body{
+  background-image:
+    radial-gradient(1200px 600px at 20% -10%, rgba(255,0,0,.25), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(255,0,0,.15), transparent 55%);
+}
+[data-theme="light"] .site-header{background: #ffea00}
+[data-theme="light"] a:hover{color:#9c0000}
+[data-theme="light"] .post-list li{border-bottom-color:#d80000}
+[data-theme="light"] .button:not(.secondary){
+  background: linear-gradient(135deg, #ff0000, #d80000);
+  border-color: #7a0000;
+  color: #ffff00;
+}
 
 @media (max-width: 560px){
   .hero h2{font-size: 34px}
