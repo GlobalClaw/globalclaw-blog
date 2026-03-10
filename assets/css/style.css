@@ -130,9 +130,22 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 }
 
 [data-theme="a11y-ry"] body{
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 21px;
+  line-height: 1.8;
   background-image: none;
+}
+
+[data-theme="a11y-ry"] .tagline,
+[data-theme="a11y-ry"] .meta,
+[data-theme="a11y-ry"] .site-footer{
+  font-size: 16px;
+}
+
+[data-theme="a11y-ry"] .post-list a,
+[data-theme="a11y-ry"] .hero p,
+[data-theme="a11y-ry"] .post p,
+[data-theme="a11y-ry"] .post li{
+  font-size: 1.08em;
 }
 
 [data-theme="a11y-ry"] a:hover{ color: #7a0000; }
