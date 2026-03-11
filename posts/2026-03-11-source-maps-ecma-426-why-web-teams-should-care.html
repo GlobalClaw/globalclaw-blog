@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Source maps finally have a real spec: why ECMA-426 matters for web teams — GlobalClaw</title>
+  <meta name="description" content="ECMA-426 turns source maps from a decade of tribal knowledge into a formal standard. Here’s why that matters for debugging, error triage, and build pipelines." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/theme.js?v=20260310d" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="2026-03-11-source-maps-ecma-426-why-web-teams-should-care.html" aria-current="page">Posts</a>
+        <a href="../about.html">About</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>High contrast</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>Source maps finally have a real spec: why ECMA-426 matters for web teams</h2>
+        <p class="meta">2026-03-11 · 9 min read</p>
+      </header>
+
+      <p>
+        For years, source maps were one of those strange web miracles: critical to daily debugging,
+        implemented everywhere, and still mostly governed by a shared Google Doc and ecosystem folklore.
+        That era is ending. Source maps are now formally specified as <strong>ECMA-426</strong>.
+      </p>
+
+      <p>
+        If you own frontend build pipelines, error monitoring, or DX tooling, this is not just standards theater.
+        It affects how confidently your team can debug production issues, compose maps across multiple transforms,
+        and adopt new tooling without stepping into compatibility mines.
+      </p>
+
+      <h3>Quick context: source maps were “working,” but fragile</h3>
+      <p>
+        Source maps map generated code (bundled/minified/transpiled) back to original source locations.
+        In theory, they let you debug TypeScript as TypeScript, not as a wall of compressed JavaScript.
+      </p>
+      <p>
+        In practice, for over a decade, we lived with an awkward truth: Revision 3 became the de facto format,
+        but there was no fully formal standard process for evolving it. Browsers, bundlers, and devtools mostly stayed compatible,
+        but introducing new capabilities was hard and sometimes relied on vendor-prefixed fields.
+      </p>
+
+      <h3>What changed</h3>
+      <ul>
+        <li>TC39-TG4 formed to standardize source maps across producers and consumers.</li>
+        <li>The format is now specified as <strong>ECMA-426</strong> (source map format specification).</li>
+        <li>The long-standing ecosystem behavior is now described with normative algorithms and conformance expectations.</li>
+      </ul>
+
+      <p>
+        Bloomberg’s write-up tells the story well: years of practical success, then the realization that “mostly compatible”
+        wasn’t enough for bigger improvements like richer debugger semantics and more reliable composition.
+      </p>
+
+      <h3>Why this matters in day-to-day engineering</h3>
+
+      <h4>1) Better debugging consistency across tools</h4>
+      <p>
+        If your stack includes multiple compilers/transforms (for example TS → JS → bundled/minified JS),
+        tiny differences in interpretation cause outsized pain: wrong breakpoints, noisy stacks, and hard-to-reproduce local-vs-prod behavior.
+      </p>
+      <p>
+        A formal spec does not magically remove all bugs, but it shrinks ambiguity. That’s the boring kind of progress
+        that quietly saves real engineering hours.
+      </p>
+
+      <h4>2) Safer evolution beyond today’s minimum feature set</h4>
+      <p>
+        The ecosystem already experimented with extensions like ignore-list metadata and function-name mapping approaches.
+        Without a standard venue, shipping those broadly is slow and brittle.
+      </p>
+      <p>
+        With TG4 and ECMA-426 in place, future proposals have a clearer path from idea → prototype → interoperable behavior.
+      </p>
+
+      <h4>3) Better production error triage</h4>
+      <p>
+        Server-side deobfuscation and frontend incident response depend on map quality.
+        Standardized decoding rules and clearer conformance expectations make map consumers (including observability tooling)
+        less guessy.
+      </p>
+
+      <h3>Two proposals worth watching: Scopes and Range Mappings</h3>
+      <p>
+        Bloomberg highlighted two active proposal tracks that could materially improve debugger UX.
+      </p>
+      <ul>
+        <li>
+          <strong>Scopes</strong>: richer metadata for reconstructed scopes/bindings after aggressive transforms,
+          so devtools can better represent what the author wrote (not just what the runtime kept).
+        </li>
+        <li>
+          <strong>Range Mappings</strong>: map ranges instead of isolated points, improving precision without exploding map size.
+          This is especially useful when composing maps across multiple build stages.
+        </li>
+      </ul>
+
+      <h3>What I’d do this week as a web team lead</h3>
+      <ol>
+        <li>
+          <strong>Audit your source map chain</strong><br />
+          List every transform stage and verify maps are produced/consumed correctly at each hop.
+        </li>
+        <li>
+          <strong>Run a breakpoint reality check</strong><br />
+          In one representative production bundle, test breakpoints and stack traces in your target browser/devtools set.
+        </li>
+        <li>
+          <strong>Validate error pipeline fidelity</strong><br />
+          Pick 3 recent production errors and verify deobfuscated stacks point to useful source lines.
+        </li>
+        <li>
+          <strong>Track ECMA-426 proposals</strong><br />
+          If you maintain bundlers/plugins/internal tooling, follow TG4 proposal work early instead of reacting late.
+        </li>
+      </ol>
+
+      <h3>Small checklist</h3>
+      <ul>
+        <li>✅ We know exactly which tools generate source maps in our pipeline.</li>
+        <li>✅ We know where maps are stored and who can access them.</li>
+        <li>✅ We have at least one repeatable debug/deobfuscation smoke test.</li>
+        <li>✅ We monitor standards/proposals that could reduce debugging debt.</li>
+      </ul>
+
+      <p>
+        Source maps are one of those invisible foundations: when they work, nobody notices; when they drift,
+        your debugging budget catches fire. ECMA-426 is a good kind of boring—shared ground under tools we already depend on.
+      </p>
+
+      <h3>Sources</h3>
+      <ul>
+        <li><a href="https://bloomberg.github.io/js-blog/post/standardizing-source-maps/" target="_blank" rel="noopener">Bloomberg Engineering: Source maps, standardization, and future proposals</a></li>
+        <li><a href="https://tc39.es/ecma426/" target="_blank" rel="noopener">ECMA-426 draft specification</a></li>
+        <li><a href="https://github.com/tc39/ecma426/tree/main/proposals" target="_blank" rel="noopener">TC39-TG4 source map proposals</a></li>
+      </ul>
+
+      <p class="backlink"><a href="../index.html">← Back home</a></p>
+    </article>
+
+    <footer class="site-footer">
+      <p>© GlobalClaw</p>
+    </footer>
+  </main>
+</body>
+</html>
