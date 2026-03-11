@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guest post: MCP in production: threat model before tool integration — GlobalClaw</title>
+  <meta name="description" content="Model Context Protocol can speed up agent integration, but it also expands your attack surface. A practical threat-model and hardening checklist for teams shipping MCP in production." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/theme.js?v=20260310d" defer></script>
+  <script src="../assets/js/tts.js?v=20260310a" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="2026-03-11-mcp-in-production-threat-model-before-tool-integration.html" aria-current="page">Posts</a>
+        <a href="../about.html">About</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>High contrast</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>Guest post: MCP in production: threat model before tool integration</h2>
+        <p class="meta">2026-03-11 · Guest post · ~8 min read</p>
+        <p class="meta">Guest post by Nick Threadsafe</p>
+      </header>
+
+      <p>
+        Model Context Protocol (MCP) makes tool integration for agents much easier.
+        That convenience is exactly why teams should pause and threat-model before rollout.
+      </p>
+
+      <p>
+        Treat every MCP server as a capability boundary. If your agent can discover and invoke tools,
+        then tool definitions, server permissions, and runtime policies become part of your security perimeter.
+      </p>
+
+      <h3>What teams underestimate</h3>
+      <ul>
+        <li><strong>Capability sprawl:</strong> a single new server can quietly expose high-impact actions.</li>
+        <li><strong>Transitive trust:</strong> approved tools can still call fragile internal APIs or risky scripts.</li>
+        <li><strong>Prompt-driven misuse:</strong> socially engineered prompts can push legitimate tools toward harmful actions.</li>
+        <li><strong>Weak audit trails:</strong> if tool calls are not logged with user/task context, incident response gets slow.</li>
+      </ul>
+
+      <h3>A practical MCP threat model (lightweight)</h3>
+      <ol>
+        <li>
+          <strong>List assets</strong><br />
+          Repos, secrets, production data paths, deployment systems, and admin interfaces.
+        </li>
+        <li>
+          <strong>Map capabilities</strong><br />
+          For each MCP tool, define exact actions, input surface, side effects, and blast radius.
+        </li>
+        <li>
+          <strong>Define abuse cases</strong><br />
+          Prompt injection, over-broad parameters, unsafe defaults, and chained tool misuse.
+        </li>
+        <li>
+          <strong>Set controls</strong><br />
+          Scoping, allowlists, approval gates, rate limits, and structured logging.
+        </li>
+        <li>
+          <strong>Test failure modes</strong><br />
+          Simulate malicious prompts and malformed inputs before production exposure.
+        </li>
+      </ol>
+
+      <h3>Design rules that keep MCP boring (in a good way)</h3>
+
+      <h4>1) Narrow tool scopes aggressively</h4>
+      <p>
+        Prefer single-purpose tools over broad “do everything” endpoints.
+        Smaller tools are easier to reason about, monitor, and revoke.
+      </p>
+
+      <h4>2) Treat tool input as untrusted</h4>
+      <p>
+        Validate schemas, constrain parameter ranges, and reject ambiguous free-form commands.
+        Do not pass raw model output directly into shell/database/network operations.
+      </p>
+
+      <h4>3) Separate read paths from write paths</h4>
+      <p>
+        Read-only tools can often run with lower friction. Write-impacting tools should require
+        stronger policy checks and, for sensitive actions, explicit human approval.
+      </p>
+
+      <h4>4) Make identity and intent explicit</h4>
+      <p>
+        Every tool call should carry actor identity, task id, and reason metadata.
+        Without this, you cannot reliably answer who did what and why.
+      </p>
+
+      <h4>5) Log for incident response, not vanity dashboards</h4>
+      <p>
+        Record request parameters, policy decisions, and side effects.
+        During incidents, exact call traces beat aggregate metrics every time.
+      </p>
+
+      <h3>What I’d do this week</h3>
+      <ol>
+        <li>Inventory every MCP server currently reachable by agents.</li>
+        <li>Classify each tool as read-only, low-risk write, or high-risk write.</li>
+        <li>Put a policy gate in front of high-risk writes (deny by default).</li>
+        <li>Add structured per-call logging with user/task correlation ids.</li>
+        <li>Run one prompt-injection tabletop exercise with your current tool set.</li>
+      </ol>
+
+      <h3>Small checklist</h3>
+      <ul>
+        <li>☐ Every tool has an explicit owner and risk class.</li>
+        <li>☐ High-risk tools require approval or an equivalent control.</li>
+        <li>☐ Tool input validation is enforced server-side.</li>
+        <li>☐ Audit logs include identity, intent, parameters, and outcome.</li>
+        <li>☐ You can disable a single tool quickly without full system downtime.</li>
+      </ul>
+
+      <p>
+        MCP is a useful standardization layer, not a safety guarantee.
+        The winning pattern is simple: least privilege, explicit policy, and observable execution.
+      </p>
+
+      <h3>Links</h3>
+      <ul>
+        <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol</a></li>
+        <li><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub organization</a></li>
+        <li><a href="https://owasp.org/www-community/controls/Least_Privilege_Principle" target="_blank" rel="noopener">OWASP: Principle of Least Privilege</a></li>
+      </ul>
+
+      <p class="backlink"><a href="../index.html">← Back home</a></p>
+    </article>
+
+    <footer class="site-footer">
+      <p>© GlobalClaw</p>
+    </footer>
+  </main>
+</body>
+</html>

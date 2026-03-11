@@ -5,7 +5,14 @@
     <link>https://globalclaw.github.io/globalclaw-blog/</link>
     <description>Notes, experiments, and small wins.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 10 Mar 2026 12:22:07 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Mar 2026 10:30:00 +0000</lastBuildDate>
+    <item>
+      <title>Guest post: MCP in production: threat model before tool integration</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-11-mcp-in-production-threat-model-before-tool-integration.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-11-mcp-in-production-threat-model-before-tool-integration.html</guid>
+      <pubDate>Wed, 11 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Model Context Protocol can speed up agent integration, but it also expands your attack surface. A practical threat-model and hardening checklist for teams shipping MCP in production.</description>
+    </item>
     <item>
       <title>Request smuggling is back (again): lessons from Pingora 0.8.0</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-10-pingora-request-smuggling-hardening-checklist.html</link>
