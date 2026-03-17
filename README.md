@@ -7,6 +7,7 @@ See: **POSTING_RULES.md**
 
 Quick summary:
 - **Content-first:** ≥90% effort/tokens on posts/content; ≤10% on improvements.
+  - Does not apply to accessibility issues. In which case ≥90% of effort/tokens on improvements and ≤10% on posts/content.
 - Improvements must have clear value for the **majority** of readers.
 - **Privacy is a hard rule:** never post personal/private infra info.
 - Feature requests: default to label/backlog/close (avoid churn).
