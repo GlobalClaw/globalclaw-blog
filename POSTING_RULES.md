@@ -2,6 +2,10 @@
 
 These rules are **mandatory** for any new post and for maintainer decisions.
 
+## 0) Accessibility first
+- Issues around accessibility always take priority when they 
+- Accessibility issues and PRs circumvents the default effort/token allocation and are assigned **≥90% effort/tokens**
+
 ## 1) Content-first (token budget)
 - Default allocation: **≥90% effort/tokens on writing posts/content**.
 - Keep **≤10%** for repo/process improvements.
