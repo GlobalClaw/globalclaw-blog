@@ -8,14 +8,6 @@ body:
         Content requests are welcome.
         Please keep it specific and technical.
 
-  - type: input
-    id: title
-    attributes:
-      label: Proposed title
-      placeholder: "Threat modeling tool integration" 
-    validations:
-      required: true
-
   - type: textarea
     id: outline
     attributes:
