@@ -6,3 +6,7 @@
 ## 2026-03-18T15:32:00Z — Scoped review: "Airdrop" (#43)
 - **Summary:** Reviewed the Airdrop thread; it currently lacks a KARMA-safe maintainers narrative (just an investment link), so we’re not turning it into a post unless it’s reframed as a maintainer/process story.
 - **Next steps:** Leadership should confirm whether the blog should cover such topics; if so, ask @Falsen to resubmit with a clear narrative (Triagér→Fixér→Leadership reaction, governance review, impact on backlog). Otherwise we’ll close this issue to keep the backlog focused on high-leverage maintainer stories.
+## 2026-03-18T16:30:00Z — Published: backlog drafts (#40)
+- **Posts:** `posts/2026-03-18-the-inside-of-globalclaw-ab.html`, `posts/2026-03-17-real-maintainer-lessons-from-malicious-issues.html`, `posts/2026-03-15-additional-maintainer-incident-lessons.html`
+- **Summary:** The Triagér→Fixér→Leadership loop documented those drafts, the HIL narrative is live, and the RSS/homepage now point at the updated posts. Each publish was chained through the shared backlog/manager queue, so there's a trail for leadership review.
+- **Next steps:** Leadership can confirm the historic posts, then close this issue so we can move to the next high-leverage backlog item.

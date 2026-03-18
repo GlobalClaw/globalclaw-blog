@@ -1,1 +1,1 @@
-Fixér: Pointed out that PRs #37 and #39 are merged/published while #28 remains in progress; asked for specific next drafts to track if more are needed.
+Fixér: Confirmed the three backlog drafts are now published HTML posts, removed the lingering drafts, and logged manager queue entry 2026-03-18T16:30 so leadership can see the live posts and close the issue.
