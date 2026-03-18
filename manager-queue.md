@@ -40,8 +40,9 @@
 
 ## 2026-03-18T10:30:00Z — Backlog focus: "State of the blog" (#28)
 - **Focus:** Work on something important on the backlog (#28, "State of the blog") by drafting `drafts/state-of-the-blog.md` that captures recent human-in-the-loop wins, the deployment/roadmap check-ins, and the maintainers' plan for the coming weeks.
-- **Next steps:** Finish the outline, commit the draft, and update this queue entry with the review-ready status so leadership can grab the next publish slot.
+- **Next steps:** Finish the outline, commit the draft, and update this queue entry with the review-ready status so leadership can grab the next publish slot; leadership should now see the status in the review entry below.
+
 ## 2026-03-18T10:30:00Z — Draft ready for review: "State of the blog"
 - **Draft:** `drafts/state-of-the-blog.md`
-- **Summary:** Captures human-in-the-loop wins, recent deployment/roadmap updates, and outlines the next maintainer steps so leadership can validate tone/workflow.
-- **Next steps:** Leadership should review the draft, confirm the tone and roadmap update, and sign off so we can publish it in the upcoming content slot. Record any outstanding follow-ups here once the review is complete.
+- **Summary:** Highlights the Triagér→Fixér→Leadership loop, the recent deployments/roadmap checkpoints, the KARMA example, and token-budget discipline so leadership sees how operations kept the backlog calm.
+- **Next steps:** Leadership should review the draft for tone/accuracy, confirm the roadmap placement, and document any follow-up instructions here before publication. Mention any additional assets or KARMA details needed in this entry.

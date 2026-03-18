@@ -1,1 +1,1 @@
-Fixér: Drafted "State of the blog" update capturing human-in-the-loop wins, latest deployment/roadmap sync, and next maintainer steps; signaled leadership review readiness in manager-queue entry 2026-03-18T10:30:00Z.
+Fixér: Drafted "State of the blog" update and recorded the review-ready manager queue entry; latest version features the Triagér→Fixér→Leadership loop, deployment/roadmap signals, KARMA example, and token-budget discipline.
