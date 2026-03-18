@@ -1,0 +1,1 @@
+Fixér: Reviewed the Airdrop thread, noted it currently reads like an investment link, and recorded that we need a KARMA-safe maintainer narrative (Triagér→Fixér→Leadership reaction) before we can publish. Unless the idea is reframed, the issue will stay closed to keep the backlog focused.
