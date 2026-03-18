@@ -13,8 +13,10 @@
 ## 2026-03-18T08:30:00Z — Draft ready for review: "Additional maintainer incident lessons"
 - **Draft:** `drafts/additional-maintainer-incident-lessons.md`
 - **Summary:** Captures the broader string of malicious accessibility probes, narrates the Triagér → Fixér → leadership path, and explicitly notes the manager queue follow-up that keeps leadership in the loop.
-- **Next steps:** Leadership should review this draft, confirm the tone and references (keeping names general unless someone consents), and approve it if there are no policy objections. Update this entry once the draft is ready to publish or if additional follow-ups are required."}   ## 2026-03-18T09:02:08Z — Token budget focus for issue #29
-- **Summary:** Reviewed the backlog & manager queue for low-impact threads (#5/#14, generic notifications) and drafted a plan to batch triage, cache templated replies, and pause automatic notifications so Fixér can keep ∼90% effort on content. 
+- **Next steps:** Leadership should review this draft, confirm the tone and references (keeping names general unless someone consents), and approve it if there are no policy objections. Update this entry once the draft is ready to publish or if additional follow-ups are required.
+
+## 2026-03-18T09:02:08Z — Token budget focus for issue #29
+- **Summary:** Reviewed the backlog & manager queue for low-impact threads (#5/#14, generic notifications) and drafted a plan to batch triage, cache templated replies, and pause automatic notifications so Fixér can keep ∼90% effort on content.
 - **Next steps:** Leadership should note the deprioritized threads (#5/#14) so they stay on hold, and confirm this stays the weekly token practice; once this plan is acknowledged we’ll keep watching the budget for the next node.
 
 ## 2026-03-15T08:20:00Z — Published: "Additional maintainer incident lessons"
@@ -31,6 +33,15 @@
 - **Post:** `posts/2026-03-18-the-inside-of-globalclaw-ab.html`
 - **Summary:** A tour of the tiny maintainer company, the shared backlog/context/manager queue workspace, and why the triage loop stays calm. Leadership can reference this when new contributors ask how the automation works.
 - **Next steps:** Continue logging any automation changes in the manager queue so this behind-the-scenes story stays accurate.
+
 ## 2026-03-18T09:32:00Z — Next content whip via #28
 - **Plan:** Prioritize the "State of the blog" piece (#28) as the next publishable story; the draft outline currently highlights human-in-the-loop progress and will now include the fresh deployment timeline plus roadmap check-ins.
 - **Next steps:** Fixér will finalize the #28 narrative once the next writing chunk lands, then tag the manager queue with the updated outline so leadership can review tone/accuracy before we publish. Keeping #33/#38 only for follow-ups keeps this thread focused on one top priority at a time.
+
+## 2026-03-18T10:30:00Z — Backlog focus: "State of the blog" (#28)
+- **Focus:** Work on something important on the backlog (#28, "State of the blog") by drafting `drafts/state-of-the-blog.md` that captures recent human-in-the-loop wins, the deployment/roadmap check-ins, and the maintainers' plan for the coming weeks.
+- **Next steps:** Finish the outline, commit the draft, and update this queue entry with the review-ready status so leadership can grab the next publish slot.
+## 2026-03-18T10:30:00Z — Draft ready for review: "State of the blog"
+- **Draft:** `drafts/state-of-the-blog.md`
+- **Summary:** Captures human-in-the-loop wins, recent deployment/roadmap updates, and outlines the next maintainer steps so leadership can validate tone/workflow.
+- **Next steps:** Leadership should review the draft, confirm the tone and roadmap update, and sign off so we can publish it in the upcoming content slot. Record any outstanding follow-ups here once the review is complete.
