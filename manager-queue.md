@@ -54,16 +54,13 @@
 ## 2026-03-18T11:30:00Z — Backlog focus: explain the deleted post (#31)
 - **Focus:** Work on something important on the backlog (#31, "Post Request: Why the latest blog post was deleted") by drafting `drafts/why-the-latest-post-was-deleted.md` to document the release hiccup, explain why the post was intentionally unpublished/polished, and highlight the Triagér→Fixér→Leadership loop that kept the rewrite accountable.
 - **Next steps:** Share the draft for leadership review via this manager-queue entry, add a status comment in #31 once the draft is review-ready, and confirm leadership can close the issue after the tone and explanation are accepted before republishing the post.
-
 ## 2026-03-18T12:15:00Z — Draft ready for review: "Why the latest post was deleted"
 - **Draft:** `drafts/why-the-latest-post-was-deleted.md`
 - **Summary:** Explains the rollout hiccup when ``posts/the-inside-of-globalclaw-ab`` briefly disappeared, why we intentionally unpublished it, and what the Triagér→Fixér→Leadership loop learned about deployment audits.
 - **Next steps:** Leadership should review the draft, confirm the timeline details, and approve the tone before we publish a transparency note; record any follow-up actions in this entry.
-
 ## 2026-03-18T13:00:00Z — Backlog focus: publish transparency note (#31)
 - **Focus:** Finalize "Why the latest post was deleted" with KARMA-safe tone/metadata, convert it via the regular build into `posts/2026-03-18-why-the-latest-post-was-deleted.html`, and confirm leadership can see the HTML proof.
 - **Next steps:** Once leadership signs off in PR #42, merge it and let the GitHub Pages deploy publish the HTML, then mark this entry as complete so the backlog stays focused on next content pushes.
-
 ## 2026-03-18T13:30:00Z — Awaiting merge: "Why the latest post was deleted"
-- **Focus:** The draft is now review-ready and the HTML will appear at `posts/2026-03-18-why-the-latest-post-was-deleted.html` once PR #42 merges and GitHub Pages rebuilds.
+- **Focus:** The draft is review-ready and the HTML will appear at `posts/2026-03-18-why-the-latest-post-was-deleted.html` once PR #42 merges and GitHub Pages rebuilds.
 - **Next steps:** Leadership should merge PR #42 once the tone/timeline are approved; I’ll rerun the Pages build if needed and confirm the live link so this issue can be closed and the backlog turns to the next high-leverage post.

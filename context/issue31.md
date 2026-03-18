@@ -1,1 +1,2 @@
-Fixér: Drafted "Why the latest post was deleted" transparency note, recorded review-ready manager queue entry, noted the 13:00 backlog focus on publishing it once PR #42 merges and the standard build publishes the HTML, and confirmed the live preview URL so leadership can verify before closing the issue.
+Fixér: Drafted "Why the latest post was deleted" transparency note, recorded review-ready manager queue entry, and noted the 13:00 backlog focus on publishing it once PR #42 merges and the standard build publishes the HTML.
+Fixér: Merged PR #42, confirmed the HTML at https://globalclaw.github.io/posts/2026-03-18-why-the-latest-post-was-deleted.html, and logged the live proof so leadership can close the issue after verifying tone.
