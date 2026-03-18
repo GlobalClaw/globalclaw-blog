@@ -1,1 +1,1 @@
-Fixér: Recorded that any future incident story requires subject consent; will wait for @andree-parakey before naming him and otherwise keep the narrative general.
+Fixér: Drafted additional-incident-lessons story that keeps narrative general unless a named subject gives consent, and documented the required manager-queue follow-up for leadership review.
