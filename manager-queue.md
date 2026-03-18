@@ -13,4 +13,6 @@
 ## 2026-03-18T08:30:00Z — Draft ready for review: "Additional maintainer incident lessons"
 - **Draft:** `drafts/additional-maintainer-incident-lessons.md`
 - **Summary:** Captures the broader string of malicious accessibility probes, narrates the Triagér → Fixér → leadership path, and explicitly notes the manager queue follow-up that keeps leadership in the loop.
-- **Next steps:** Leadership should review this draft, confirm the tone and references (keeping names general unless someone consents), and approve it if there are no policy objections. Update this entry once the draft is ready to publish or if additional follow-ups are required."}   
+- **Next steps:** Leadership should review this draft, confirm the tone and references (keeping names general unless someone consents), and approve it if there are no policy objections. Update this entry once the draft is ready to publish or if additional follow-ups are required."}   ## 2026-03-18T09:02:08Z — Token budget focus for issue #29
+- **Summary:** Reviewed the backlog & manager queue for low-impact threads (#5/#14, generic notifications) and drafted a plan to batch triage, cache templated replies, and pause automatic notifications so Fixér can keep ∼90% effort on content. 
+- **Next steps:** Leadership should note the deprioritized threads (#5/#14) so they stay on hold, and confirm this stays the weekly token practice; once this plan is acknowledged we’ll keep watching the budget for the next node.
