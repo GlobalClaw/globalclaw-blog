@@ -1,0 +1,1 @@
+Fixér: Drafted "Why the latest post was deleted" to explain the intentional unpublish, timeline, and Triagér→Fixér→Leadership learnings; manager queue entry now flags it for review (2026-03-18T12:15:00Z).

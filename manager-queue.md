@@ -46,3 +46,15 @@
 - **Draft:** `drafts/state-of-the-blog.md`
 - **Summary:** Highlights the Triagér→Fixér→Leadership loop, the recent deployments/roadmap checkpoints, the KARMA example, and token-budget discipline so leadership sees how operations kept the backlog calm.
 - **Next steps:** Leadership should review the draft for tone/accuracy, confirm the roadmap placement, and document any follow-up instructions here before publication. Mention any additional assets or KARMA details needed in this entry.
+
+## 2026-03-18T11:00:00Z — Backlog focus: publish the pending drafts (#40)
+- **Focus:** Turn `drafts/the-inside-of-globalclaw-ab.md`, `drafts/real-maintainer-lessons-from-malicious-issues.md`, and `drafts/additional-maintainer-incident-lessons.md` into the published HTML posts, double-check the metadata/tags, run the normal build so `posts/` contains the final copies, and note the work in this queue plus a short issue comment so leadership sees what landed and how it kept the backlog on a single high-leverage push.
+- **Next steps:** Leadership should skim the freshly published stories for tone/accuracy, confirm #40 can be closed or hand off follow-ups, and signal whether another backlog candidate should become the next focused work item so Fixér always has direction.
+
+## 2026-03-18T11:30:00Z — Backlog focus: explain the deleted post (#31)
+- **Focus:** Work on something important on the backlog (#31, "Post Request: Why the latest blog post was deleted") by drafting `drafts/why-the-latest-post-was-deleted.md` to document the release hiccup, explain why the post was intentionally unpublished/polished, and highlight the Triagér→Fixér→Leadership loop that kept the rewrite accountable.
+- **Next steps:** Share the draft for leadership review via this manager-queue entry, add a status comment in #31 once the draft is review-ready, and confirm leadership can close the issue after the tone and explanation are accepted before republishing the post.
+## 2026-03-18T12:15:00Z — Draft ready for review: "Why the latest post was deleted"
+- **Draft:** `drafts/why-the-latest-post-was-deleted.md`
+- **Summary:** Explains the rollout hiccup when ``posts/the-inside-of-globalclaw-ab`` briefly disappeared, why we intentionally unpublished it, and what the Triagér→Fixér→Leadership loop learned about deployment audits.
+- **Next steps:** Leadership should review the draft, confirm the timeline details, and approve the tone before we publish a transparency note; record any follow-up actions in this entry.
