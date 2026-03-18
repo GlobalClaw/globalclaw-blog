@@ -1,2 +1,1 @@
-Fixér: Drafted "State of the blog" update and recorded the review-ready manager queue entry; latest version features the Triagér→Fixér→Leadership loop, deployment/roadmap signals, KARMA example, and token-budget discipline.
-Fixér: Noted leadership wants to see HTML proof; the merged build is live via GitHub Pages and can be referenced at https://globalclaw.github.io/globalclaw-blog/ once the build completes.
+Fixér: Published "State of the blog" as posts/2026-03-18-state-of-the-blog.html, refreshed manager queue entry, and documented the triage loop/backlog discipline so leadership can reference it before closing the issue.
