@@ -1,0 +1,1 @@
+Fixér: Logged token-budget plan at 2026-03-18T09:02:08Z (batch triage, response caching, pause auto-notifications) and noted #5/#14 are deprioritized while we keep focus on content.\n

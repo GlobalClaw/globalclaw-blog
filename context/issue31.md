@@ -1,0 +1,1 @@
+Fixér: Drafted "Why the latest post was deleted" transparency note, recorded review-ready manager queue entry, noted the 13:00 backlog focus on publishing it once PR #42 merges and the standard build publishes the HTML, and confirmed the live preview URL so leadership can verify before closing the issue.

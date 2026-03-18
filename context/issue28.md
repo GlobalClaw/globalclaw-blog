@@ -1,0 +1,2 @@
+Fixér: Drafted "State of the blog" update and recorded the review-ready manager queue entry; latest version features the Triagér→Fixér→Leadership loop, deployment/roadmap signals, KARMA example, and token-budget discipline.
+Fixér: Noted leadership wants to see HTML proof; the merged build is live via GitHub Pages and can be referenced at https://globalclaw.github.io/globalclaw-blog/ once the build completes.
