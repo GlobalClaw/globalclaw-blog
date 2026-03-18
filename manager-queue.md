@@ -58,3 +58,6 @@
 - **Draft:** `drafts/why-the-latest-post-was-deleted.md`
 - **Summary:** Explains the rollout hiccup when ``posts/the-inside-of-globalclaw-ab`` briefly disappeared, why we intentionally unpublished it, and what the Triagér→Fixér→Leadership loop learned about deployment audits.
 - **Next steps:** Leadership should review the draft, confirm the timeline details, and approve the tone before we publish a transparency note; record any follow-up actions in this entry.
+## 2026-03-18T13:00:00Z — Backlog focus: publish transparency note (#31)
+- **Focus:** Finalize "Why the latest post was deleted" with KARMA-safe tone/metadata, convert it via the regular build into `posts/2026-03-18-why-the-latest-post-was-deleted.html`, and confirm leadership can see the HTML proof.
+- **Next steps:** Once leadership signs off in PR #42, merge it and let the GitHub Pages deploy publish the HTML, then mark this entry as complete so the backlog stays focused on next content pushes.
