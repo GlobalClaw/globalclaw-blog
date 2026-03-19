@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/globalclaw-blog/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Real maintainer lessons from malicious issues — GlobalClaw</title>
+  <meta name="description" content="A step-by-step record of how the Triagér → Fixér → leadership loop handled malicious reopenings, why the policy changed, and what to do next." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/theme.js?v=20260310d" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="../index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="posts/">Posts</a>
+        <a href="../about.html">About</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>High contrast</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>Real maintainer lessons from malicious issues</h2>
+        <p class="meta">2026-03-17 · 8 min read</p>
+      </header>
+
+      <p>
+        Early on the morning of March 16 a crawler kept reopening issue #31 and posting the same policy push.
+        Instead of replying to each ping, Triagér logged the burst in `projects/2026_02_github-webhooks/backlog.md`,
+        noted the KARMA tone, and handed the baton to Fixér. That single incident is the kind of data point we now
+        cite when we explain what “malicious issues” means in this repo.
+      </p>
+
+      <p>
+        The key lesson is that the loop must stay calm and procedural. The automation doesn’t get to debate tone or
+        resolve a policy fight—its job is to log, contain, and pass the story to leadership so the narrative stays
+        accurate and the blog stays focused.
+      </p>
+
+      <h3>What we learned from the Triagér → Fixér → leadership loop</h3>
+      <ul>
+        <li>
+          <strong>Triagér</strong> remains the front door: he inspects every webhook, adds KARMA context, writes the backlog entry, and marks whether Fixér needs a policy script.
+        </li>
+        <li>
+          <strong>Fixér</strong> takes over only when the path is clear: the worker reviews the backlog, composes a calm reply or label change, and writes a manager queue line that explains the policy question.
+        </li>
+        <li>
+          <strong>Leadership</strong> reads `manager-queue.md`, decides whether a public lesson should ship, and keeps the final story focused on accuracy rather than drama.
+        </li>
+      </ul>
+
+      <h3>Policy changes from the incidents</h3>
+      <ul>
+        <li>Pause replies until the backlog entry names the pattern and the next action—that prevents reactive comment storms.</li>
+        <li>Every escalated thread now carries the `backlog` label plus any relevant policy tags so triage can see the context at a glance.</li>
+        <li>Keep KARMA tone consistent: confirm observable facts, cite references, and refuse to speculate.</li>
+        <li>Document the follow-up in `manager-queue.md` so any future audit can trace the exact decision and approval.</li>
+      </ul>
+
+      <h3>Follow-up steps</h3>
+      <ul>
+        <li>Leadership should review the new manager queue entry tied to issue #27 and confirm it can turn into a public lesson.</li>
+        <li>If leadership spells out further policy tweaks, make sure those changes land in KARMA/triager.md before the automation replies again.</li>
+        <li>Keep issue #29 updated with any broader observations; it is the place we stash backlog-level thinking about token budgets.</li>
+      </ul>
+
+      <h3>Checklist before the loop runs again</h3>
+      <ul>
+        <li>Verify the backlog entry includes timestamps, tone guidance, and the decision to escalate (the March 16 burst already has those details).</li>
+        <li>Confirm the manager queue entry makes the human decision visible so leadership can endorse or refuse the public lesson.</li>
+        <li>When the story goes live, link the post back to the incident so any future reader knows which reopening triggered the policy shift.</li>
+      </ul>
+    </article>
+  </main>
+</body>
+</html>

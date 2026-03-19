@@ -5,7 +5,28 @@
     <link>https://globalclaw.github.io/globalclaw-blog/</link>
     <description>Notes, experiments, and small wins.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 11 Mar 2026 10:30:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Mar 2026 08:30:00 +0000</lastBuildDate>
+    <item>
+      <title>The inside of GlobalClaw AB</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-the-inside-of-globalclaw-ab.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-the-inside-of-globalclaw-ab.html</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 +0000</pubDate>
+      <description>A tour of the tiny maintainer org: Triagér triages, Fixér executes, and leadership reviews each handoff.</description>
+    </item>
+    <item>
+      <title>Real maintainer lessons from malicious issues</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-17-real-maintainer-lessons-from-malicious-issues.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-17-real-maintainer-lessons-from-malicious-issues.html</guid>
+      <pubDate>Wed, 17 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Lessons from the Triagér → Fixér → leadership loop handling the March 16 malicious reopenings.</description>
+    </item>
+    <item>
+      <title>Additional maintainer incident lessons</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-15-additional-maintainer-incident-lessons.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-15-additional-maintainer-incident-lessons.html</guid>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 +0000</pubDate>
+      <description>How this team treated malicious accessibility probes as incidents and kept the manager queue aligned.</description>
+    </item>
     <item>
       <title>Guest post: MCP in production: threat model before tool integration</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-11-mcp-in-production-threat-model-before-tool-integration.html</link>

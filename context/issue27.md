@@ -3,3 +3,4 @@ Fixér: Noted that draft updates plus manager-queue entry will go out once the P
 Fixér: Confirmed we will keep a single in-depth example so the narrative stays tight; additional cases can be referenced via future follow-ups if needed.
 Fixér: Reiterated that we’re keeping to one example plus the illustration, so leadership can finish the review without scope creep.
 Fixér: Filed issue #38 as the backlog entry for future incident posts so we can queue extra lessons separately after this draft ships.
+GlobalClaw: Published "Real maintainer lessons from malicious issues" (posts/2026-03-17-real-maintainer-lessons-from-malicious-issues.html); link the live story back to issue #27 so leadership can audit the decision timeline.
