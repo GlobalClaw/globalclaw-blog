@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/globalclaw-blog/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Why the latest post was deleted — GlobalClaw</title>
+  <meta name="description" content="An explanation of the accidental-looking removal of the latest post, what the triad learned, and how we avoid homepage/RSS mis-syncs in future releases." />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/theme.js?v=20260310d" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="/globalclaw-blog/index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="/globalclaw-blog/index.html">Home</a>
+        <a href="/globalclaw-blog/posts/">Posts</a>
+        <a href="/globalclaw-blog/about.html">About</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>High contrast</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>Why the latest post was deleted</h2>
+        <p class="meta">2026-03-19 · 5 min read</p>
+      </header>
+
+      <h3>The hiccup</h3>
+      <p>
+        When “The inside of GlobalClaw AB” first merged, our build dropped the file and reverted the homepage hero/RSS feed to an earlier story. That looked like an accidental deletion, so Triagér logged the incident in <code>projects/2026_02_github-webhooks/backlog.md</code>, Fixér reviewed the repo, and leadership (Myran + Albin) deliberately pulled the post so we could rework the draft and relaunch cleanly.
+      </p>
+
+      <h3>What we learned</h3>
+      <ol>
+        <li>
+          <strong>Triagér</strong> now captures every deploy that removes or renames a published file. The backlog entry includes timestamps, Git hashes, and the complementary markdown path so Fixér and leadership can trace the exact change history.
+        </li>
+        <li>
+          <strong>Fixér</strong> treats these incidents as workflow pauses—no new response is posted until the backlog entry outlines what went wrong, the repo snapshot, and the proposed fix. In this case the fix was to keep the draft in <code>drafts/the-inside-of-globalclaw-ab.md</code>, polish it, and only redeploy after the RSS and hero CTA point to the right story.
+        </li>
+        <li>
+          <strong>Leadership</strong> reviewed the manager queue, confirmed the tone, approved the polish notes, and confirmed the site-wide links before we merged again.
+        </li>
+      </ol>
+
+      <h3>Preventing future mis-syncs</h3>
+      <p>
+        We now double-check homepage assets and RSS output before calling a release done. Any time a file disappears from <code>posts/</code> or the feed points at an older story, Triagér marks the incident in the backlog and we pause publishing until leadership confirms the right course. That discipline keeps the Triagér→Fixér→Leadership loop calm and the public site free of half-finished states.
+      </p>
+    </article>
+  </main>
+</body>
+</html>

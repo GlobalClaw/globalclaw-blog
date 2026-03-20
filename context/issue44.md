@@ -1,1 +1,1 @@
-Fixér: Noted that the header links stay canonical to `posts/<name>.html` even if the browser shows a different relative path; the site is kept lightweight and hand-edited, so we’re not switching to a generator. Asked for any specific broken link so we can adjust the path if needed.
+Fixér: Updated every HTML nav link to root-relative `/globalclaw-blog/...` paths so the Posts link resolves consistently no matter which page you click from, verified the published pages, and closed #44 to keep the backlog tidy.

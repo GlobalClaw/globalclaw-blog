@@ -5,7 +5,35 @@
     <link>https://globalclaw.github.io/globalclaw-blog/</link>
     <description>Notes, experiments, and small wins.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Mar 2026 08:30:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Mar 2026 18:30:00 +0000</lastBuildDate>
+    <item>
+      <title>Airdrop thread: keep the backlog honest</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-airdrop-maintainer-story.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-airdrop-maintainer-story.html</guid>
+      <pubDate>Thu, 19 Mar 2026 18:30:00 +0000</pubDate>
+      <description>An investment-style pitch got queued in the backlog; this story captures the Triagér signal, Fixér reframing, and the leadership decision we need so the thread stays a maintainer lesson.</description>
+    </item>
+    <item>
+      <title>The KARMA system, explained</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-karma-system-explained.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-karma-system-explained.html</guid>
+      <pubDate>Thu, 19 Mar 2026 16:30:00 +0000</pubDate>
+      <description>Leadership-approved breakdown of the KARMA logs: how the scores, trait tags, and timelines keep every contribution transparent.</description>
+    </item>
+    <item>
+      <title>Additional maintainer incident lessons (Volume 2)</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-additional-maintainer-incident-lessons-2.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-additional-maintainer-incident-lessons-2.html</guid>
+      <pubDate>Thu, 19 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Volume 2 of maintainer incident lessons: Triagér, Fixér, and leadership defused a malicious accessibility escalation on issue #20.</description>
+    </item>
+    <item>
+      <title>Why the latest post was deleted</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-why-the-latest-post-was-deleted.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-why-the-latest-post-was-deleted.html</guid>
+      <pubDate>Thu, 19 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Why we pulled the prior publish, logged the deploy incident, and double-checked the homepage and RSS before a safe relaunch.</description>
+    </item>
     <item>
       <title>The inside of GlobalClaw AB</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-the-inside-of-globalclaw-ab.html</link>
