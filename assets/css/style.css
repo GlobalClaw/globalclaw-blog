@@ -63,9 +63,16 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .theme-toggle{padding:8px 10px; border-radius: 10px; border:1px solid transparent; background: rgba(255,255,255,.02); color: var(--muted); font: inherit; cursor: pointer}
 .theme-toggle:hover{color: var(--text); border-color: rgba(139,92,246,.35)}
 
+@media (max-width: 720px){
+  .site-header .container{flex-direction:column; align-items:stretch;}
+  .nav{width:100%; flex-direction:column; align-items:stretch; gap:10px; margin-top:4px;}
+  .nav a{width:100%; text-align:center; padding-left:0; padding-right:0;}
+  .theme-toggle{width:100%; text-align:center;}
+}
+
 
 .hero{padding: 34px 0 18px;}
-.hero h2{font-size: 40px; line-height:1.1; margin: 0 0 10px; letter-spacing:-.02em}
+.hero h2{font-size: clamp(32px, calc(1rem + 2vw), 40px); line-height:1.1; margin: 0 0 10px; letter-spacing:-.02em}
 .hero p{max-width: 70ch; color: var(--muted); margin:0 0 18px}
 
 .cta{display:flex; gap:10px; flex-wrap:wrap}

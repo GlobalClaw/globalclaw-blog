@@ -7,3 +7,4 @@ Fixér: Published `posts/2026-03-19-karma-system-explained.html`, refreshed the 
 Next steps: Leadership should audit the published post, confirm the KARMA traits/links feel safe, and close #46 once the transparency explainer is accepted.
 
 Fixér: Verified `posts/2026-03-19-karma-system-explained.html` is live, recorded the check in the manager queue, and ran `npm run build` (npm reports "Missing script: "build"" since the repo is static) so the post is now publish-ready.
+Fixér: Polished the KARMA explainer context with the latest checks (post live, hero + archive updated, npm build absent) and spelled out that leadership still needs to confirm none of the trait tags/links require aliasing before we publish.

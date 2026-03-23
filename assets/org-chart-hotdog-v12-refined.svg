@@ -1,0 +1,113 @@
+<svg width="2200" height="1320" viewBox="0 0 2200 1320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GlobalClaw operations map refined v12">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffaf4"/>
+      <stop offset="100%" stop-color="#fff0d6"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd978"/>
+      <stop offset="100%" stop-color="#f4ad62"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff4c8"/>
+      <stop offset="100%" stop-color="#ffdd97"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#7a3300" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arr" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#b71c1c"/>
+    </marker>
+    <style>
+      .title{font:700 56px Inter,Segoe UI,Arial,sans-serif;fill:#7d1b1b}
+      .subtitle{font:500 24px Inter,Segoe UI,Arial,sans-serif;fill:#8b3a16}
+      .section{font:700 30px Inter,Segoe UI,Arial,sans-serif;fill:#6b1f1f}
+      .box-core{fill:url(#core);stroke:#b71c1c;stroke-width:4;filter:url(#soft)}
+      .box-side{fill:url(#side);stroke:#b71c1c;stroke-width:3;filter:url(#soft)}
+      .name{font:700 42px Inter,Segoe UI,Arial,sans-serif;fill:#4f1453;text-anchor:middle;dominant-baseline:middle}
+      .meta{font:500 22px Inter,Segoe UI,Arial,sans-serif;fill:#5d2a2a;text-anchor:middle;dominant-baseline:middle}
+      .smallH{font:700 28px Inter,Segoe UI,Arial,sans-serif;fill:#4f1453;text-anchor:middle;dominant-baseline:middle}
+      .smallB{font:500 22px Inter,Segoe UI,Arial,sans-serif;fill:#5d2a2a;text-anchor:middle;dominant-baseline:middle}
+      .line-core{stroke:#b71c1c;stroke-width:5;fill:none;marker-start:url(#arr);marker-end:url(#arr)}
+      .line-read{stroke:#1f4e79;stroke-width:4;fill:none;marker-start:url(#arr);marker-end:url(#arr);stroke-dasharray:9 8}
+      .line-write{stroke:#8a2a2a;stroke-width:4;fill:none;marker-start:url(#arr);marker-end:url(#arr);stroke-dasharray:9 8}
+      .lane-label{font:600 18px Inter,Segoe UI,Arial,sans-serif;fill:#333}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="2200" height="1320" fill="url(#bg)"/>
+  <text x="1100" y="84" class="title" text-anchor="middle">GlobalClaw AB — Operations Map</text>
+  <text x="1100" y="124" class="subtitle" text-anchor="middle">External webhook trigger + shared read/write state</text>
+
+  <text x="320" y="210" class="section" text-anchor="middle">Shared state</text>
+  <text x="1100" y="210" class="section" text-anchor="middle">Core org</text>
+  <text x="1880" y="210" class="section" text-anchor="middle">External surfaces</text>
+
+  <!-- left column -->
+  <rect x="90" y="260" width="460" height="140" rx="18" class="box-side"/>
+  <text x="320" y="312" class="smallH">KARMA logs</text>
+  <text x="320" y="352" class="smallB">Read tone history • Write outcomes</text>
+
+  <rect x="90" y="440" width="460" height="140" rx="18" class="box-side"/>
+  <text x="320" y="492" class="smallH">Backlog + manager queue</text>
+  <text x="320" y="532" class="smallB">Read priorities • Write decisions</text>
+
+  <rect x="90" y="620" width="460" height="140" rx="18" class="box-side"/>
+  <text x="320" y="672" class="smallH">Context files / workspace</text>
+  <text x="320" y="712" class="smallB">Read context • Write artifacts</text>
+
+  <!-- right column -->
+  <rect x="1650" y="260" width="460" height="140" rx="18" class="box-side"/>
+  <text x="1880" y="312" class="smallH">GitHub webhooks (trigger)</text>
+  <text x="1880" y="352" class="smallB">External event source</text>
+
+  <rect x="1650" y="440" width="460" height="140" rx="18" class="box-side"/>
+  <text x="1880" y="492" class="smallH">GitHub repo surfaces</text>
+  <text x="1880" y="532" class="smallB">Read issues/PRs • Write labels/comments</text>
+
+  <rect x="1650" y="620" width="460" height="140" rx="18" class="box-side"/>
+  <text x="1880" y="672" class="smallH">Signal + blog outputs</text>
+  <text x="1880" y="712" class="smallB">Read feedback • Write updates/files</text>
+
+  <!-- core -->
+  <rect x="770" y="260" width="660" height="120" rx="20" class="box-core"/>
+  <text x="1100" y="304" class="name">Albin — Board of Directors</text>
+  <text x="1100" y="340" class="meta">Strategic direction • final governance</text>
+
+  <rect x="770" y="430" width="660" height="120" rx="20" class="box-core"/>
+  <text x="1100" y="474" class="name">Myran</text>
+  <text x="1100" y="510" class="meta">Operational leadership • human checkpoint</text>
+
+  <rect x="660" y="660" width="430" height="120" rx="20" class="box-core"/>
+  <text x="875" y="704" class="name">Fixér</text>
+  <text x="875" y="740" class="meta">Execution • shipping</text>
+
+  <rect x="1110" y="660" width="430" height="120" rx="20" class="box-core"/>
+  <text x="1325" y="704" class="name">Triagér</text>
+  <text x="1325" y="740" class="meta">Triage • tone • routing</text>
+
+  <!-- core relations -->
+  <path d="M1100 380 L1100 430" class="line-core"/>
+  <path d="M1040 550 L930 650" class="line-core"/>
+  <path d="M1160 550 L1270 650" class="line-core"/>
+  <path d="M1090 820 L1110 820" class="line-core"/>
+
+  <!-- dedicated lanes for read/write under boxes -->
+  <text x="1100" y="860" class="lane-label" text-anchor="middle">Read lane (blue) and write lane (red), both bidirectional</text>
+
+  <!-- read lane (upper lane) -->
+  <path d="M550 890 L1650 890" class="line-read"/>
+  <path d="M630 330 L630 890" class="line-read"/>
+  <path d="M1570 330 L1570 890" class="line-read"/>
+  <path d="M875 780 L875 890" class="line-read"/>
+  <path d="M1325 780 L1325 890" class="line-read"/>
+  <path d="M1100 550 L1100 890" class="line-read"/>
+
+  <!-- write lane (lower lane) -->
+  <path d="M550 950 L1650 950" class="line-write"/>
+  <path d="M590 510 L590 950" class="line-write"/>
+  <path d="M1610 510 L1610 950" class="line-write"/>
+  <path d="M830 780 L830 950" class="line-write"/>
+  <path d="M1370 780 L1370 950" class="line-write"/>
+  <path d="M1100 380 L1100 950" class="line-write"/>
+</svg>

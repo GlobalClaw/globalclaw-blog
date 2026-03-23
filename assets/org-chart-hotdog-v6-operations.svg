@@ -1,0 +1,108 @@
+<svg width="1800" height="1100" viewBox="0 0 1800 1100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GlobalClaw operations org chart with inputs outputs and interfaces">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffaf0"/>
+      <stop offset="100%" stop-color="#ffeccc"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd978"/>
+      <stop offset="100%" stop-color="#f4ad62"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff1b8"/>
+      <stop offset="100%" stop-color="#ffd37a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#7a3300" flood-opacity="0.18"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#b71c1c"/>
+    </marker>
+    <style>
+      .title { font: 700 56px Inter,Segoe UI,Arial,sans-serif; fill:#7d1b1b; }
+      .subtitle { font: 500 24px Inter,Segoe UI,Arial,sans-serif; fill:#8b3a16; }
+      .section { font: 700 30px Inter,Segoe UI,Arial,sans-serif; fill:#6b1f1f; }
+      .core { fill:url(#core); stroke:#b71c1c; stroke-width:6; filter:url(#shadow); }
+      .side { fill:url(#side); stroke:#b71c1c; stroke-width:4; filter:url(#shadow); }
+      .name { font:700 44px Inter,Segoe UI,Arial,sans-serif; fill:#4f1453; text-anchor:middle; dominant-baseline:middle; }
+      .meta { font:500 27px Inter,Segoe UI,Arial,sans-serif; fill:#6d2a2a; text-anchor:middle; dominant-baseline:middle; }
+      .small { font:600 23px Inter,Segoe UI,Arial,sans-serif; fill:#5c2626; text-anchor:middle; dominant-baseline:middle; }
+      .flow { stroke:#b71c1c; stroke-width:5; fill:none; marker-end:url(#arrow); }
+      .sync { stroke:#8f2d2d; stroke-width:3; opacity:0.55; fill:none; marker-end:url(#arrow); stroke-dasharray:6 8; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1100" fill="url(#bg)"/>
+
+  <text x="900" y="85" text-anchor="middle" class="title">GlobalClaw AB — Operations Map</text>
+  <text x="900" y="125" text-anchor="middle" class="subtitle">Hot dog theme · leadership stack + real-world inputs, interfaces, and outputs</text>
+
+  <text x="300" y="190" text-anchor="middle" class="section">Inputs</text>
+  <text x="900" y="190" text-anchor="middle" class="section">Core org</text>
+  <text x="1500" y="190" text-anchor="middle" class="section">Outputs</text>
+
+  <!-- Inputs -->
+  <rect x="80" y="230" width="440" height="110" rx="20" class="side"/>
+  <text x="300" y="275" class="small">GitHub webhooks</text>
+  <text x="300" y="310" class="small">Issues • PRs • CI signals</text>
+
+  <rect x="80" y="370" width="440" height="110" rx="20" class="side"/>
+  <text x="300" y="415" class="small">KARMA + context files</text>
+  <text x="300" y="450" class="small">Tone rules • history • thread state</text>
+
+  <rect x="80" y="510" width="440" height="110" rx="20" class="side"/>
+  <text x="300" y="555" class="small">Backlog + manager queue</text>
+  <text x="300" y="590" class="small">Priorities • escalation handoff</text>
+
+  <!-- Core -->
+  <rect x="620" y="230" width="560" height="120" rx="22" class="core"/>
+  <text x="900" y="275" class="name">Albin — Board of Directors</text>
+  <text x="900" y="313" class="meta">Strategic direction • final governance</text>
+
+  <rect x="620" y="390" width="560" height="120" rx="22" class="core"/>
+  <text x="900" y="435" class="name">Myran</text>
+  <text x="900" y="473" class="meta">Operational leadership • human checkpoint</text>
+
+  <rect x="620" y="550" width="560" height="120" rx="22" class="core"/>
+  <text x="900" y="595" class="name">Triagér</text>
+  <text x="900" y="633" class="meta">Fast triage • tone control • routing</text>
+
+  <rect x="620" y="710" width="560" height="120" rx="22" class="core"/>
+  <text x="900" y="755" class="name">Fixér</text>
+  <text x="900" y="793" class="meta">Execution • comments/tags • implementation</text>
+
+  <!-- Interfaces -->
+  <rect x="620" y="880" width="560" height="140" rx="22" class="side"/>
+  <text x="900" y="928" class="small">Interfaces / runtime fabric</text>
+  <text x="900" y="962" class="small">OpenClaw runtime • GitHub API • Signal • Filesystem</text>
+  <text x="900" y="996" class="small">Where automation and humans meet</text>
+
+  <!-- Outputs -->
+  <rect x="1280" y="230" width="440" height="110" rx="20" class="side"/>
+  <text x="1500" y="275" class="small">GitHub actions</text>
+  <text x="1500" y="310" class="small">Labels • comments • PR updates</text>
+
+  <rect x="1280" y="370" width="440" height="110" rx="20" class="side"/>
+  <text x="1500" y="415" class="small">Decision artifacts</text>
+  <text x="1500" y="450" class="small">Manager notes • reviewed escalations</text>
+
+  <rect x="1280" y="510" width="440" height="110" rx="20" class="side"/>
+  <text x="1500" y="555" class="small">Public outputs</text>
+  <text x="1500" y="590" class="small">Blog posts • status updates • roadmap signals</text>
+
+  <!-- Vertical core flow -->
+  <path d="M900 350 L900 380" class="flow"/>
+  <path d="M900 510 L900 540" class="flow"/>
+  <path d="M900 670 L900 700" class="flow"/>
+  <path d="M900 830 L900 870" class="flow"/>
+
+  <!-- Input to core (elbow routes to avoid text overlap) -->
+  <path d="M520 285 L570 285 L570 595 L610 595" class="sync"/>
+  <path d="M520 425 L560 425 L560 745 L610 745" class="sync"/>
+  <path d="M520 565 L580 565 L580 435 L610 435" class="sync"/>
+
+  <!-- Core to output (elbow routes outside text regions) -->
+  <path d="M1180 595 L1235 595 L1235 285 L1280 285" class="sync"/>
+  <path d="M1180 745 L1245 745 L1245 425 L1280 425" class="sync"/>
+  <path d="M1180 435 L1225 435 L1225 565 L1280 565" class="sync"/>
+</svg>

@@ -1,3 +1,35 @@
+## 2026-03-20T18:30:00Z — Fixed: CSS + TTS asset paths (#49)
+- **Summary:** Updated every published HTML page so the CSS, theme.js, and tts.js tags point at `/globalclaw-blog/assets/...` instead of the old `../assets/` roots that left the console reporting 404s and the presentation layer unstyled.
+- **Verification:** Confirmed via `grep -R '../assets'` that no leaked `../assets` references remain, so the site now loads the style, theme, and TTS scripts from the right root and the console should stay clean once deployed.
+- **Next steps:** Leadership can spot-check the homepage and close #49 if the minimalist shell looks acceptable.
+
+## 2026-03-20T15:50:00Z — Fixed CSS asset paths for #49
+- **Summary:** Updated every published HTML page so the CSS and theme.js references use `/globalclaw-blog/assets/...`, removing the `../assets/` roots that triggered 404s.
+- **Verification:** Confirmed via a repo-wide grep that no `../assets/css/style.css` or `../assets/js/theme.js` remain and the site now loads the assets from the correct `/globalclaw-blog` root, so the console should no longer show those 404s once deployed.
+- **Next steps:** Nothing outstanding; the issue can stay closed while we keep an eye on future 404 signals.
+
+## 2026-03-20T14:45:00Z — Prepping evidence for the visual redesign backlog (#5)
+- **Summary:** Focused work on #5 by updating the feedback summary with a clear action plan tied to the remaining mobile seam shots and contrast/typography tracking so the backlog captures next-layer proof points before the sprint.
+- **Deliverables:** Documentation plus an evidence queue (mobile seam screenshots, hero/nav/card/TTS contrast checklist) ready for leadership review.
+- **Next steps:** Leadership should review the called-out evidence, decide whether it justifies green-lighting the sprint, and either give the go-ahead or ask for additional captures before we change the visual generator.
+
+## 2026-03-20T13:31:00Z — Responsive tweaks for visual redesign (#5)
+- **Summary:** Nav links now stack and stretch to full width on narrow viewports, the theme toggle also fills the width for easier tapping, and the hero heading clamps between 32px and 40px so the first fold stays legible without overpowering the layout; these small responsive tweaks directly address issue #5’s mobile/typography scope by smoothing the hero/nav experience before we change the visual generator.
+- **Next steps:** Capture updated mobile screenshots of the nav/hero/cards/TTS flow plus contrast notes (before/after) so leadership can see the new behavior, then gather any remaining seam/contrast evidence before asking for the sprint green light.
+
+## 2026-03-20T12:00:00Z — Context check: KARMA system explainer (#46)
+- **Summary:** Added the latest verification note to `context/issue46.md`, reiterated that the hero/index/RSS all surface `posts/2026-03-19-karma-system-explained.html`, and documented that no `npm run build` script exists.
+- **Open question:** Leadership still needs to confirm whether any tags or links need aliasing/redaction before we treat the draft as done.
+- **Next steps:** Wait on leadership sign-off/closing comment for #46; no further engineering changes until they confirm the publish boundaries.
+
+## 2026-03-20T11:30:00Z — Context: visual redesign backlog (#5)
+- **Summary:** Added `context/issue5.md` that lays out the scope (mobile seams, readability/contrast, constrained motion), references the CSS/dom fixes already shipped, and marks the next stage as gathering responsive proofs-of-concept before any generator work.
+- **Next steps:** Keep collecting screenshots/feedback, then schedule the design sprint once leadership confirms the priority.
+
+## 2026-03-20T11:00:00Z — Verified: Airdrop thread story (#43)
+- **Summary:** Confirmed `posts/2026-03-19-airdrop-maintainer-story.html` appears in the home hero CTA, the latest list on `index.html`, and the RSS feed so the published maintainer lesson is consistent everywhere.
+- **Next steps:** Leadership can either close #43 or instruct us to turn the thread into a governance-approved rewrite; the hero/list verification keeps the backlog honest while we wait.
+
 ## 2026-03-20T08:55:00Z — Verified: KARMA system explainer (#46)
 - **Summary:** Confirmed `posts/2026-03-19-karma-system-explained.html` is live and included in the archive, and noted that `npm run build` fails because the repo has no build script (static HTML).
 - **Next steps:** Leadership can spot-check the published post and close #46 once the KARMA transparency explanation is signed off.

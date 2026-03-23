@@ -1,0 +1,106 @@
+<svg width="2200" height="1300" viewBox="0 0 2200 1300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GlobalClaw operations map with peer layer for Triagér and Fixér">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffaf2"/>
+      <stop offset="100%" stop-color="#ffefcf"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd978"/>
+      <stop offset="100%" stop-color="#f4ad62"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff3c4"/>
+      <stop offset="100%" stop-color="#ffda8f"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#7a3300" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arr" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#b71c1c"/>
+    </marker>
+    <style>
+      .title { font: 700 62px Inter,Segoe UI,Arial,sans-serif; fill:#7d1b1b; }
+      .subtitle { font: 500 28px Inter,Segoe UI,Arial,sans-serif; fill:#8b3a16; }
+      .section { font: 700 34px Inter,Segoe UI,Arial,sans-serif; fill:#6b1f1f; }
+      .core { fill:url(#core); stroke:#b71c1c; stroke-width:6; filter:url(#shadow); }
+      .side { fill:url(#side); stroke:#b71c1c; stroke-width:4; filter:url(#shadow); }
+      .name { font:700 48px Inter,Segoe UI,Arial,sans-serif; fill:#4f1453; text-anchor:middle; dominant-baseline:middle; }
+      .meta { font:500 27px Inter,Segoe UI,Arial,sans-serif; fill:#6d2a2a; text-anchor:middle; dominant-baseline:middle; }
+      .small { font:600 25px Inter,Segoe UI,Arial,sans-serif; fill:#5c2626; text-anchor:middle; dominant-baseline:middle; }
+      .bi { stroke:#b71c1c; stroke-width:6; fill:none; marker-start:url(#arr); marker-end:url(#arr); }
+      .link { stroke:#8a2a2a; stroke-width:4; opacity:.75; fill:none; marker-start:url(#arr); marker-end:url(#arr); stroke-dasharray:9 10; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="2200" height="1300" fill="url(#bg)"/>
+  <text x="1100" y="92" text-anchor="middle" class="title">GlobalClaw AB — Operations Map</text>
+  <text x="1100" y="140" text-anchor="middle" class="subtitle">Peer execution layer: Fixér and Triagér at the same seniority</text>
+
+  <text x="360" y="230" text-anchor="middle" class="section">Shared state (read + write)</text>
+  <text x="1100" y="230" text-anchor="middle" class="section">Core org</text>
+  <text x="1840" y="230" text-anchor="middle" class="section">External surfaces (read + write)</text>
+
+  <!-- Shared state -->
+  <rect x="90" y="280" width="540" height="140" rx="22" class="side"/>
+  <text x="360" y="332" class="small">KARMA logs</text>
+  <text x="360" y="374" class="small">Read tone history • Write interaction outcomes</text>
+
+  <rect x="90" y="470" width="540" height="140" rx="22" class="side"/>
+  <text x="360" y="522" class="small">Backlog + manager queue</text>
+  <text x="360" y="564" class="small">Read priorities • Write escalations/decisions</text>
+
+  <rect x="90" y="660" width="540" height="140" rx="22" class="side"/>
+  <text x="360" y="712" class="small">Context files / workspace</text>
+  <text x="360" y="754" class="small">Read thread context • Write status artifacts</text>
+
+  <!-- Core hierarchy -->
+  <rect x="740" y="280" width="720" height="130" rx="24" class="core"/>
+  <text x="1100" y="330" class="name">Albin — Board of Directors</text>
+  <text x="1100" y="370" class="meta">Strategic direction • final governance</text>
+
+  <rect x="740" y="470" width="720" height="130" rx="24" class="core"/>
+  <text x="1100" y="520" class="name">Myran</text>
+  <text x="1100" y="560" class="meta">Operational leadership • human checkpoint</text>
+
+  <!-- Peer level -->
+  <rect x="660" y="700" width="460" height="130" rx="24" class="core"/>
+  <text x="890" y="750" class="name">Fixér</text>
+  <text x="890" y="790" class="meta">Executes work • ships changes</text>
+
+  <rect x="1080" y="700" width="460" height="130" rx="24" class="core"/>
+  <text x="1310" y="750" class="name">Triagér</text>
+  <text x="1310" y="790" class="meta">Triage • tone • routing</text>
+
+  <!-- Surfaces -->
+  <rect x="1570" y="280" width="540" height="140" rx="22" class="side"/>
+  <text x="1840" y="332" class="small">GitHub</text>
+  <text x="1840" y="374" class="small">Read issues/PRs • Write comments/labels</text>
+
+  <rect x="1570" y="470" width="540" height="140" rx="22" class="side"/>
+  <text x="1840" y="522" class="small">Signal + chat channels</text>
+  <text x="1840" y="564" class="small">Read requests • Write replies/files</text>
+
+  <rect x="1570" y="660" width="540" height="140" rx="22" class="side"/>
+  <text x="1840" y="712" class="small">Blog / public artifacts</text>
+  <text x="1840" y="754" class="small">Read feedback • Write posts/status</text>
+
+  <!-- Core vertical bidirectional links -->
+  <path d="M1100 410 L1100 470" class="bi"/>
+
+  <!-- Myran to peer layer (split lanes, bidirectional) -->
+  <path d="M1040 600 L980 690" class="bi"/>
+  <path d="M1160 600 L1220 690" class="bi"/>
+
+  <!-- Peer handoff loop -->
+  <path d="M1120 885 L1080 885" class="bi"/>
+
+  <!-- Shared state links to peers (bidirectional dashed, routed below labels) -->
+  <path d="M630 350 L700 350 L700 865 L660 865" class="link"/>
+  <path d="M630 540 L690 540 L690 865 L1080 865" class="link"/>
+  <path d="M630 730 L670 730 L670 640 L1100 640" class="link"/>
+
+  <!-- External surface links to peers (bidirectional dashed, routed below labels) -->
+  <path d="M1540 865 L1570 865 L1570 350 L1510 350" class="link"/>
+  <path d="M1540 865 L1590 865 L1590 540 L1570 540" class="link"/>
+  <path d="M1120 640 L1500 640 L1500 730 L1570 730" class="link"/>
+</svg>

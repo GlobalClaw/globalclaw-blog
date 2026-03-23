@@ -1,0 +1,114 @@
+<svg width="2000" height="1200" viewBox="0 0 2000 1200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GlobalClaw operations org chart improved spacing">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffaf1"/>
+      <stop offset="100%" stop-color="#ffefcf"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd978"/>
+      <stop offset="100%" stop-color="#f4ad62"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff3c0"/>
+      <stop offset="100%" stop-color="#ffd98a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#7a3300" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrDown" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#b71c1c"/></marker>
+    <marker id="arrUp" markerWidth="10" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M10,0 L0,4 L10,8 z" fill="#b71c1c"/></marker>
+    <style>
+      .title { font: 700 58px Inter,Segoe UI,Arial,sans-serif; fill:#7d1b1b; }
+      .subtitle { font: 500 26px Inter,Segoe UI,Arial,sans-serif; fill:#8b3a16; }
+      .section { font: 700 32px Inter,Segoe UI,Arial,sans-serif; fill:#6b1f1f; }
+      .core { fill:url(#core); stroke:#b71c1c; stroke-width:6; filter:url(#shadow); }
+      .side { fill:url(#side); stroke:#b71c1c; stroke-width:4; filter:url(#shadow); }
+      .name { font:700 46px Inter,Segoe UI,Arial,sans-serif; fill:#4f1453; text-anchor:middle; dominant-baseline:middle; }
+      .meta { font:500 26px Inter,Segoe UI,Arial,sans-serif; fill:#6d2a2a; text-anchor:middle; dominant-baseline:middle; }
+      .small { font:600 24px Inter,Segoe UI,Arial,sans-serif; fill:#5c2626; text-anchor:middle; dominant-baseline:middle; }
+      .flowDown { stroke:#b71c1c; stroke-width:5; fill:none; marker-end:url(#arrDown); }
+      .flowUp { stroke:#b71c1c; stroke-width:5; fill:none; marker-end:url(#arrUp); }
+      .laneA { stroke:#8f2d2d; stroke-width:4; opacity:.6; fill:none; marker-end:url(#arrDown); stroke-dasharray:7 8; }
+      .laneB { stroke:#a13a2d; stroke-width:4; opacity:.6; fill:none; marker-end:url(#arrDown); stroke-dasharray:7 8; }
+      .laneC { stroke:#7f2a46; stroke-width:4; opacity:.6; fill:none; marker-end:url(#arrDown); stroke-dasharray:7 8; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="2000" height="1200" fill="url(#bg)"/>
+  <text x="1000" y="88" text-anchor="middle" class="title">GlobalClaw AB — Operations Map</text>
+  <text x="1000" y="132" text-anchor="middle" class="subtitle">Hot dog theme · clearer spacing · distinct interface lanes</text>
+
+  <text x="280" y="205" text-anchor="middle" class="section">Inputs</text>
+  <text x="1000" y="205" text-anchor="middle" class="section">Core org</text>
+  <text x="1720" y="205" text-anchor="middle" class="section">Outputs</text>
+
+  <!-- Inputs -->
+  <rect x="70" y="250" width="420" height="120" rx="20" class="side"/>
+  <text x="280" y="295" class="small">GitHub webhooks</text>
+  <text x="280" y="332" class="small">Issues • PRs • CI signals</text>
+
+  <rect x="70" y="410" width="420" height="120" rx="20" class="side"/>
+  <text x="280" y="455" class="small">KARMA + context files</text>
+  <text x="280" y="492" class="small">Tone rules • history • thread state</text>
+
+  <rect x="70" y="570" width="420" height="120" rx="20" class="side"/>
+  <text x="280" y="615" class="small">Backlog + manager queue</text>
+  <text x="280" y="652" class="small">Priorities • escalation handoff</text>
+
+  <!-- Core -->
+  <rect x="610" y="250" width="780" height="120" rx="22" class="core"/>
+  <text x="1000" y="295" class="name">Albin — Board of Directors</text>
+  <text x="1000" y="332" class="meta">Strategic direction • final governance</text>
+
+  <rect x="610" y="430" width="780" height="120" rx="22" class="core"/>
+  <text x="1000" y="475" class="name">Myran</text>
+  <text x="1000" y="512" class="meta">Operational leadership • human checkpoint</text>
+
+  <rect x="610" y="610" width="780" height="120" rx="22" class="core"/>
+  <text x="1000" y="655" class="name">Triagér</text>
+  <text x="1000" y="692" class="meta">Fast triage • tone control • routing</text>
+
+  <rect x="610" y="790" width="780" height="120" rx="22" class="core"/>
+  <text x="1000" y="835" class="name">Fixér</text>
+  <text x="1000" y="872" class="meta">Execution • comments/tags • implementation</text>
+
+  <rect x="610" y="970" width="780" height="150" rx="22" class="side"/>
+  <text x="1000" y="1018" class="small">Interfaces / runtime fabric</text>
+  <text x="1000" y="1055" class="small">OpenClaw runtime • GitHub API • Signal • Filesystem</text>
+
+  <!-- Outputs -->
+  <rect x="1510" y="250" width="420" height="120" rx="20" class="side"/>
+  <text x="1720" y="295" class="small">GitHub actions</text>
+  <text x="1720" y="332" class="small">Labels • comments • PR updates</text>
+
+  <rect x="1510" y="410" width="420" height="120" rx="20" class="side"/>
+  <text x="1720" y="455" class="small">Decision artifacts</text>
+  <text x="1720" y="492" class="small">Manager notes • reviewed escalations</text>
+
+  <rect x="1510" y="570" width="420" height="120" rx="20" class="side"/>
+  <text x="1720" y="615" class="small">Public outputs</text>
+  <text x="1720" y="652" class="small">Blog posts • status updates • roadmap</text>
+
+  <!-- Core vertical flow (side-by-side arrows) -->
+  <path d="M992 370 L992 420" class="flowDown"/>
+  <path d="M1008 420 L1008 370" class="flowUp"/>
+
+  <path d="M992 550 L992 600" class="flowDown"/>
+  <path d="M1008 600 L1008 550" class="flowUp"/>
+
+  <path d="M992 730 L992 780" class="flowDown"/>
+  <path d="M1008 780 L1008 730" class="flowUp"/>
+
+  <path d="M992 910 L992 960" class="flowDown"/>
+  <path d="M1008 960 L1008 910" class="flowUp"/>
+
+  <!-- Left lanes (separated) -->
+  <path d="M490 310 L560 310 L560 655 L610 655" class="laneA"/>
+  <path d="M490 470 L540 470 L540 835 L610 835" class="laneB"/>
+  <path d="M490 630 L520 630 L520 475 L610 475" class="laneC"/>
+
+  <!-- Right lanes (separated) -->
+  <path d="M1390 655 L1460 655 L1460 310 L1510 310" class="laneA"/>
+  <path d="M1390 835 L1440 835 L1440 470 L1510 470" class="laneB"/>
+  <path d="M1390 475 L1420 475 L1420 630 L1510 630" class="laneC"/>
+</svg>
