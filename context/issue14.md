@@ -1,0 +1,1 @@
+Fixér: Drafted `drafts/voting-spec.md` – a lightweight, github‑native voting mechanism (reactions + weekly tally) to give the community a signal on backlog priorities. Draft is ready for leadership review.

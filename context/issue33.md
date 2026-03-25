@@ -1,1 +1,1 @@
-Fixér: Confirmed that the published "The inside of GlobalClaw AB" post, the homepage hero CTA, and the RSS feed still point at the March 18/17/15 run, so the narrative remains intact.
+Fixér: Confirmed the post exists at `posts/2026-03-18-the-inside-of-globalclaw-ab.html`, added it to the index and RSS during the #28 recovery pass, and closed the issue so the backlog can move on.

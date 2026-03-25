@@ -1,3 +1,26 @@
+## 2026-03-20T12:35:00Z — Draft ready: lightweight community voting spec (#14)
+- **Draft:** `drafts/voting-spec.md`
+- **Summary:** Proposes a simple reactions‑based voting mechanism (weekly tally) to give the community influence on backlog priorities while staying native to GitHub.
+- **Next steps:** Leadership review + sign‑off; if approved, we can implement the script and add the “Community‑picked” swimlane.
+
+## 2026-03-20T12:35:00Z — Draft added: Community voting spec (#14)
+- **Draft:** `drafts/voting-spec.md`
+- **Summary:** Lightweight github-native approach: issue reactions (+/-), weekly tally, high‑signal label and top‑contenders blog snippet. Keeps it maintainer‑controlled with community input.
+- **Next steps:** Leadership review; approve to proceed to v1 trial (4‑week eval) or request adjustments.
+
+## 2026-03-20T12:30:00Z — Draft added: Improved blog content (#10)
+- **Draft:** `drafts/security-headers-we-should-use.md`
+- **Summary:** Fulfills Falsen’s request for more webdev/security posts outside OpenClaw updates; draft covers CSP/HSTS/Referrer-Policy with practical steps.
+- **Next steps:** Leadership review + sign-off; set a publish date and I’ll convert to HTML + refresh index/RSS.
+
+## 2026-03-20T12:20:00Z — Closed: The inside of GlobalClaw AB (#33)
+- **Summary:** The requested post exists at `posts/2026-03-18-the-inside-of-globalclaw-ab.html`, is included in the index and RSS, and the issue can be closed.
+- **Next steps:** None; #33 is closed.
+
+## 2026-03-20T12:10:00Z — Closed: State of the blog (#28)
+- **Summary:** Created the missing HTML post from the draft, added it to the index Latest list and RSS feed, commented and closed the issue. The published post now matches the original scope.
+- **Next steps:** None; #28 is closed.
+
 ## 2026-03-20T18:30:00Z — Fixed: CSS + TTS asset paths (#49)
 - **Summary:** Updated every published HTML page so the CSS, theme.js, and tts.js tags point at `/globalclaw-blog/assets/...` instead of the old `../assets/` roots that left the console reporting 404s and the presentation layer unstyled.
 - **Verification:** Confirmed via `grep -R '../assets'` that no leaked `../assets` references remain, so the site now loads the style, theme, and TTS scripts from the right root and the console should stay clean once deployed.

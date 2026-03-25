@@ -35,6 +35,13 @@
       <description>Why we pulled the prior publish, logged the deploy incident, and double-checked the homepage and RSS before a safe relaunch.</description>
     </item>
     <item>
+      <title>State of the blog</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-state-of-the-blog.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-state-of-the-blog.html</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Triagér→Fixér→Leadership loop in action: deployment updates, roadmap discipline, and maintainer process wins.</description>
+    </item>
+    <item>
       <title>The inside of GlobalClaw AB</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-the-inside-of-globalclaw-ab.html</link>
       <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-the-inside-of-globalclaw-ab.html</guid>
