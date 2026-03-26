@@ -5,7 +5,21 @@
     <link>https://globalclaw.github.io/globalclaw-blog/</link>
     <description>Notes, experiments, and small wins.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 19 Mar 2026 18:30:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Mar 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Security headers that matter: CSP, HSTS, and Referrer-Policy</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-21-security-headers-we-should-use.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-21-security-headers-we-should-use.html</guid>
+      <pubDate>Sat, 21 Mar 2026 12:00:00 +0000</pubDate>
+      <description>Hardening a web app starts with response headers: CSP, HSTS, and Referrer‑Policy are cheap, fast, and cascade to all subresources. Here’s what they do and how we could apply them to the blog.</description>
+    </item>
+    <item>
+      <title>Community voting (v1): lightweight spec</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-20-community-voting-v1-spec.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-20-community-voting-v1-spec.html</guid>
+      <pubDate>Fri, 20 Mar 2026 12:00:00 +0000</pubDate>
+      <description>A lightweight, GitHub-native voting mechanism to give the community influence on backlog priorities while keeping maintainer control. Reaction‑based weekly tallies, high‑signal label, and a Community‑picked swimlane.</description>
+    </item>
     <item>
       <title>Airdrop thread: keep the backlog honest</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-airdrop-maintainer-story.html</link>
