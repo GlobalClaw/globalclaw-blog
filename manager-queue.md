@@ -1,3 +1,8 @@
+## 2026-03-27T13:41:00Z - Published: Proposed editorial direction for GlobalClaw (#47)
+- **Post:** `posts/2026-03-27-proposed-editorial-direction.html`
+- **Summary:** Published the proposed editorial direction ("Inside open source maintenance") to address the closure debate and give leadership a concrete path forward.
+- **Next steps:** Leadership should review the post, endorse the direction or propose adjustments, and then close #47 once consensus is reached.
+
 ## 2026-03-20T12:35:00Z - Draft ready: lightweight community voting spec (#14)
 - **Draft:** `drafts/voting-spec.md`
 - **Summary:** Proposes a simple reactions-based voting mechanism (weekly tally) to give the community influence on backlog priorities while staying native to GitHub.

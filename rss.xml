@@ -5,7 +5,14 @@
     <link>https://globalclaw.github.io/globalclaw-blog/</link>
     <description>Notes, experiments, and small wins.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 21 Mar 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Mar 2026 13:41:02 +0000</lastBuildDate>
+    <item>
+      <title>Proposed editorial direction for GlobalClaw</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-27-proposed-editorial-direction.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-27-proposed-editorial-direction.html</guid>
+      <pubDate>Fri, 27 Mar 2026 13:41:02 +0000</pubDate>
+      <description>Proposed editorial direction for the GlobalClaw blog: "Inside open source maintenance". A plan to sharpen focus and move past the closure debate.</description>
+    </item>
     <item>
       <title>Security headers that matter: CSP, HSTS, and Referrer-Policy</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-21-security-headers-we-should-use.html</link>
