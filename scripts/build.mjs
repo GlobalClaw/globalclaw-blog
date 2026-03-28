@@ -3,6 +3,7 @@ import path from 'node:path';
 import { marked } from 'marked';
 
 const root = process.cwd();
+const outDir = path.join(root, 'dist');
 const site = JSON.parse(await fs.readFile(path.join(root, 'content/site.json'), 'utf8'));
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -38,6 +39,26 @@ function formatRssDate(dateStr) {
 
 function formatDisplayDate(dateStr, readTime) {
   return readTime ? `${dateStr} · ${readTime}` : dateStr;
+}
+
+async function ensureDir(p) {
+  await fs.mkdir(p, { recursive: true });
+}
+
+async function copyDir(src, dest) {
+  await ensureDir(dest);
+  for (const entry of await fs.readdir(src, { withFileTypes: true })) {
+    const from = path.join(src, entry.name);
+    const to = path.join(dest, entry.name);
+    if (entry.isDirectory()) await copyDir(from, to);
+    else await fs.copyFile(from, to);
+  }
+}
+
+async function cleanDist() {
+  await fs.rm(outDir, { recursive: true, force: true });
+  await ensureDir(outDir);
+  await ensureDir(path.join(outDir, 'posts'));
 }
 
 function shell({ title, description, navCurrent, body, rss = true }) {
@@ -94,7 +115,6 @@ async function readMarkdownPosts() {
   } catch {
     return [];
   }
-
   const posts = [];
   for (const name of names) {
     const raw = await fs.readFile(path.join(dir, name), 'utf8');
@@ -122,25 +142,16 @@ async function readLegacyPosts(markdownSlugs) {
   const dir = path.join(root, 'posts');
   const names = (await fs.readdir(dir)).filter((n) => n.endsWith('.html') && n !== 'index.html');
   const posts = [];
-
   for (const name of names) {
     const slug = name.replace(/\.html$/, '');
     if (markdownSlugs.has(slug)) continue;
     const raw = await fs.readFile(path.join(dir, name), 'utf8');
     const title = raw.match(/<title>(.*?)\s+—\s+GlobalClaw<\/title>/s)?.[1] || raw.match(/<title>(.*?)<\/title>/s)?.[1] || slug;
-    const description = raw.match(/<meta name="description" content="([^"]*)"\s*\/>/)?.[1] || '';
+    const description = raw.match(/<meta name="description" content="([^"]*)"\s*\/?>/)?.[1] || '';
     const meta = raw.match(/<p class="meta">(.*?)<\/p>/s)?.[1] || '';
     const date = (meta.match(/(\d{4}-\d{2}-\d{2})/) || slug.match(/(\d{4}-\d{2}-\d{2})/))?.[1] || '1970-01-01';
     const readTime = (meta.match(/·\s*(.*?)$/)?.[1] || '').trim();
-    posts.push({
-      source: 'legacy',
-      slug,
-      title: stripTags(title),
-      description,
-      date,
-      readTime,
-      outputPath: `/posts/${slug}.html`
-    });
+    posts.push({ source: 'legacy', slug, title: stripTags(title), description, date, readTime, outputPath: `/posts/${slug}.html`, raw });
   }
   return posts;
 }
@@ -173,7 +184,13 @@ async function buildMarkdownPost(post) {
       <p class="backlink"><a href="/index.html">← Back home</a></p>
     </article>`
   });
-  await fs.writeFile(path.join(root, 'posts', `${post.slug}.html`), html);
+  await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), html);
+}
+
+async function copyLegacyPosts(posts) {
+  for (const post of posts) {
+    await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), post.raw);
+  }
 }
 
 async function buildAbout() {
@@ -194,7 +211,7 @@ async function buildAbout() {
       <p class="backlink"><a href="/index.html">← Back home</a></p>
     </article>`
   });
-  await fs.writeFile(path.join(root, 'about.html'), html);
+  await fs.writeFile(path.join(outDir, 'about.html'), html);
 }
 
 async function buildIndexes(allPosts) {
@@ -218,7 +235,6 @@ async function buildIndexes(allPosts) {
       </ul>
     </section>`
   });
-
   const postsIndexHtml = shell({
     title: `Posts — ${site.siteTitle}`,
     description: 'Every new note and experiment from the GlobalClaw blog.',
@@ -238,9 +254,8 @@ async function buildIndexes(allPosts) {
       </ul>
     </section>`
   });
-
-  await fs.writeFile(path.join(root, 'index.html'), indexHtml);
-  await fs.writeFile(path.join(root, 'posts/index.html'), postsIndexHtml);
+  await fs.writeFile(path.join(outDir, 'index.html'), indexHtml);
+  await fs.writeFile(path.join(outDir, 'posts', 'index.html'), postsIndexHtml);
 }
 
 async function buildRss(allPosts) {
@@ -251,7 +266,6 @@ async function buildRss(allPosts) {
       <pubDate>${formatRssDate(post.date)}</pubDate>
       <description>${escapeHtml(post.description)}</description>
     </item>`).join('\n');
-
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -263,19 +277,22 @@ async function buildRss(allPosts) {
 ${items}
   </channel>
 </rss>`;
-
-  await fs.writeFile(path.join(root, 'rss.xml'), rss);
+  await fs.writeFile(path.join(outDir, 'rss.xml'), rss);
 }
 
+async function copyStaticBits() {
+  await copyDir(path.join(root, 'assets'), path.join(outDir, 'assets'));
+  await fs.copyFile(path.join(root, 'CNAME'), path.join(outDir, 'CNAME'));
+}
+
+await cleanDist();
+await copyStaticBits();
 const markdownPosts = await readMarkdownPosts();
-for (const post of markdownPosts) {
-  await buildMarkdownPost(post);
-}
+for (const post of markdownPosts) await buildMarkdownPost(post);
+const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slug)));
+await copyLegacyPosts(legacyPosts);
 await buildAbout();
-const allPosts = sortPosts([
-  ...markdownPosts,
-  ...(await readLegacyPosts(new Set(markdownPosts.map((p) => p.slug))))
-]);
+const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
 await buildIndexes(allPosts);
 await buildRss(allPosts);
-console.log(`Built ${markdownPosts.length} markdown posts and refreshed site indexes/RSS.`);
+console.log(`Built dist/ with ${markdownPosts.length} markdown posts and ${legacyPosts.length} legacy posts.`);

@@ -21,7 +21,7 @@ GitHub Projects v2 is account-owned (not repo-owned), so this board lives under 
 npm install
 npm run build
 ```
-Then open `index.html` in your browser.
+Then open `dist/index.html` in your browser.
 
 ## Content workflow (MVP)
 - New posts go in `content/posts/*.md` with simple frontmatter.
