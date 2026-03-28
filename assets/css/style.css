@@ -137,6 +137,21 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
   overflow: hidden;
 }
 
+.diagram{
+  margin: 18px 0;
+  text-align: center;
+}
+.diagram img{
+  width: min(100%, 680px);
+  max-height: 420px;
+  height: auto;
+  object-fit: contain;
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+}
+
 .post-list{list-style:none; padding:0; margin:0}
 .post-list li{display:flex; justify-content:space-between; gap:12px; padding: 10px 0; border-bottom:1px solid rgba(255,255,255,.06)}
 .post-list li:last-child{border-bottom:none}
