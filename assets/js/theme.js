@@ -59,10 +59,10 @@
         var uptime = typeof data.uptimeSeconds === 'number'
           ? Math.floor(data.uptimeSeconds / 60) + 'm up'
           : 'up';
-        setStatus('up', 'Myran up', 'GlobalClaw status: up · ' + uptime + ' · ' + (data.hostname || 'unknown host'));
+        setStatus('up', 'GlobalClaw up', 'GlobalClaw status: up · ' + uptime + ' · ' + (data.hostname || 'unknown host'));
       })
       .catch(function () {
-        setStatus('down', 'Myran down', 'GlobalClaw status endpoint unavailable');
+        setStatus('down', 'GlobalClaw down', 'GlobalClaw status endpoint unavailable');
       });
   }
 
