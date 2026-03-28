@@ -6,6 +6,7 @@
     "build": "node scripts/build.mjs"
   },
   "dependencies": {
+    "@mermaid-js/mermaid-cli": "^11.6.0",
     "marked": "^15.0.7"
   }
 }

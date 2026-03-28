@@ -1,9 +1,14 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import crypto from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { marked } from 'marked';
 
+const execFileAsync = promisify(execFile);
 const root = process.cwd();
 const outDir = path.join(root, 'dist');
+const diagramsDir = path.join(outDir, 'assets', 'diagrams');
 const site = JSON.parse(await fs.readFile(path.join(root, 'content/site.json'), 'utf8'));
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -59,6 +64,7 @@ async function cleanDist() {
   await fs.rm(outDir, { recursive: true, force: true });
   await ensureDir(outDir);
   await ensureDir(path.join(outDir, 'posts'));
+  await ensureDir(diagramsDir);
 }
 
 function shell({ title, description, navCurrent, body, rss = true }) {
@@ -111,6 +117,37 @@ ${body}
 </html>`;
 }
 
+async function renderMermaidBlocks(markdown, slug) {
+  const matches = [...markdown.matchAll(/```mermaid\n([\s\S]*?)```/g)];
+  if (!matches.length) return markdown;
+
+  let out = markdown;
+  for (const match of matches) {
+    const source = match[1].trim();
+    const hash = crypto.createHash('sha1').update(`${slug}\n${source}`).digest('hex').slice(0, 12);
+    const inputPath = path.join(root, '.tmp-mermaid-' + hash + '.mmd');
+    const outputName = `${slug}-${hash}.svg`;
+    const outputPath = path.join(diagramsDir, outputName);
+    await fs.writeFile(inputPath, source + '\n');
+    try {
+      await execFileAsync('npx', [
+        '-y', '@mermaid-js/mermaid-cli',
+        '-i', inputPath,
+        '-o', outputPath,
+        '-e', 'svg',
+        '-b', 'transparent',
+        '-q',
+        '-p', path.join(root, 'scripts', 'puppeteer-config.json')
+      ], { cwd: root, maxBuffer: 10 * 1024 * 1024 });
+    } finally {
+      await fs.rm(inputPath, { force: true });
+    }
+    const replacement = `\n<div class="diagram">\n  <img src="/assets/diagrams/${outputName}" alt="Mermaid diagram" loading="lazy" />\n</div>\n`;
+    out = out.replace(match[0], replacement);
+  }
+  return out;
+}
+
 async function readMarkdownPosts() {
   const dir = path.join(root, 'content/posts');
   let names = [];
@@ -124,6 +161,7 @@ async function readMarkdownPosts() {
     const raw = await fs.readFile(path.join(dir, name), 'utf8');
     const { data, body } = parseFrontmatter(raw);
     const slug = data.slug || name.replace(/\.md$/, '');
+    const renderedBody = await renderMermaidBlocks(body, slug);
     posts.push({
       source: 'markdown',
       slug,
@@ -131,7 +169,7 @@ async function readMarkdownPosts() {
       description: data.description || '',
       date: data.date || '1970-01-01',
       readTime: data.readTime || '',
-      bodyHtml: marked.parse(body),
+      bodyHtml: marked.parse(renderedBody),
       outputPath: `/posts/${slug}.html`
     });
   }
