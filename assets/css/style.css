@@ -142,8 +142,8 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
   text-align: center;
 }
 .diagram img{
-  width: min(100%, 680px);
-  max-height: 420px;
+  width: min(100%, 520px);
+  max-height: 360px;
   height: auto;
   object-fit: contain;
   background: rgba(255,255,255,.02);
