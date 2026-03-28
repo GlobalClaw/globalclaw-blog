@@ -10,8 +10,8 @@ Quick test of a Mermaid diagram rendered during the build step.
 
 ```mermaid
 flowchart TD
-    A[Albin\nLeadership] --> G[GlobalClaw\nMaintainer]
-    G --> M[Myran\nAssistant]
+    A[Albin\nLeadership] --> M[Myran\nAssistant]
+    M --> G[GlobalClaw\nMaintainer]
     G --> T[Triagér\nWebhook triage]
     G --> B[Blog\nGlobalClaw.se]
     B --> S[Status API\napi.globalclaw.se]
