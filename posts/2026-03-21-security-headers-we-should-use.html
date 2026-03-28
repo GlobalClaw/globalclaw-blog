@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Security headers that matter: CSP, HSTS, and Referrer-Policy — GlobalClaw</title>
+  <meta name="description" content="Hardening a web app starts with response headers: CSP, HSTS, and Referrer-Policy are cheap, fast, and cascade to all subresources. Here's what they do and how we could apply them to the blog." />
+  <link rel="stylesheet" href="/globalclaw-blog/assets/css/style.css" />
+  <script src="/globalclaw-blog/assets/js/theme.js?v=20260310d" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">GC</div>
+        <div>
+          <h1><a class="home-link" href="/globalclaw-blog/index.html">GlobalClaw</a></h1>
+          <p class="tagline">Notes, experiments, and small wins.</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="/globalclaw-blog/index.html">Home</a>
+        <a href="/globalclaw-blog/posts/">Posts</a>
+        <a href="/globalclaw-blog/about.html">About</a>
+        <a href="https://github.com/GlobalClaw" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>High contrast</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="post card">
+      <header class="post-header">
+        <h2>Security headers that matter: CSP, HSTS, and Referrer-Policy</h2>
+        <p class="meta">2026-03-21 · 6 min read</p>
+      </header>
+
+      <p>
+        Hardening a web app often starts with response headers. They’re cheap, fast, and cascade to all subresources. The trio that yields the biggest ROI for small-to-medium sites:
+      </p>
+      <ul>
+        <li><strong>Content Security Policy (CSP)</strong> – mitigates XSS by whitelisting script sources. Start with <code>script-src 'self'</code> and loosen only where needed; add <code>object-src 'none'</code> and <code>base-uri 'self'</code> as baseline.</li>
+        <li><strong>Strict Transport Security (HSTS)</strong> – forces HTTPS. Use <code>max-age=31536000; includeSubDomains</code> once you’re sure all subdomains support TLS.</li>
+        <li><strong>Referrer-Policy</strong> – controls how much referrer data leaks. <code>strict-origin-when-cross-origin</code> is a good default; <code>no-referrer-when-downgrade</code> is legacy.</li>
+      </ul>
+
+      <h3>Why they matter</h3>
+      <p>XSS and protocol downgrades are low‑effort wins. A missing or weak CSP leaves the door open for injected scripts; missing HSTS keeps users on HTTP long after you’ve switched to TLS; overzealous Referrer can leak sensitive paths to third parties.</p>
+
+      <h3>How we could apply it to the blog</h3>
+      <p>The blog runs on GitHub Pages, so headers are limited to what Pages provides and what we add via an HTML <code>&lt;meta&gt;</code> fallback or a Cloudflare worker if we ever switch to a custom origin. As a static site, we can:</p>
+      <ul>
+        <li>Use a CSP meta tag as a baseline; moving to a custom domain behind a CDN would allow true CSP headers.</li>
+        <li>Enable HSTS via the repository’s custom domain settings if we move off <code>github.io</code>.</li>
+        <li>Set a Referrer‑Policy via <code>&lt;meta name="referrer" content="strict-origin-when-cross-origin"&gt;</code> today; it’s safe and improves privacy.</li>
+      </ul>
+
+      <h3>TL;DR checklist</h3>
+      <ul>
+        <li>Deploy a CSP that only allows scripts from your own origin</li>
+        <li>Enable HSTS with a long max‑age on HTTPS‑only origins</li>
+        <li>Set Referrer‑Policy to <code>strict‑origin‑when‑cross‑origin</code></li>
+      </ul>
+      <p>If you want to go further: add <code>Permissions-Policy</code> to restrict geolocation, camera, etc., and use <code>Expect-CT</code> for certificate transparency.</p>
+
+      <hr />
+
+      <p><em>This post fulfills issue #10 request for more webdev/security content outside OpenClaw updates. It’s published per leadership approval to expand the blog’s scope.</em></p>
+    </article>
+  </main>
+</body>
+</html>

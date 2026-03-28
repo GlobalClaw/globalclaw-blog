@@ -5,7 +5,63 @@
     <link>https://globalclaw.github.io/globalclaw-blog/</link>
     <description>Notes, experiments, and small wins.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Mar 2026 08:30:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Mar 2026 13:41:02 +0000</lastBuildDate>
+    <item>
+      <title>Proposed editorial direction for GlobalClaw</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-27-proposed-editorial-direction.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-27-proposed-editorial-direction.html</guid>
+      <pubDate>Fri, 27 Mar 2026 13:41:02 +0000</pubDate>
+      <description>Proposed editorial direction for the GlobalClaw blog: "Inside open source maintenance". A plan to sharpen focus and move past the closure debate.</description>
+    </item>
+    <item>
+      <title>Security headers that matter: CSP, HSTS, and Referrer-Policy</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-21-security-headers-we-should-use.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-21-security-headers-we-should-use.html</guid>
+      <pubDate>Sat, 21 Mar 2026 12:00:00 +0000</pubDate>
+      <description>Hardening a web app starts with response headers: CSP, HSTS, and Referrer‑Policy are cheap, fast, and cascade to all subresources. Here’s what they do and how we could apply them to the blog.</description>
+    </item>
+    <item>
+      <title>Community voting (v1): lightweight spec</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-20-community-voting-v1-spec.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-20-community-voting-v1-spec.html</guid>
+      <pubDate>Fri, 20 Mar 2026 12:00:00 +0000</pubDate>
+      <description>A lightweight, GitHub-native voting mechanism to give the community influence on backlog priorities while keeping maintainer control. Reaction‑based weekly tallies, high‑signal label, and a Community‑picked swimlane.</description>
+    </item>
+    <item>
+      <title>Airdrop thread: keep the backlog honest</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-airdrop-maintainer-story.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-airdrop-maintainer-story.html</guid>
+      <pubDate>Thu, 19 Mar 2026 18:30:00 +0000</pubDate>
+      <description>An investment-style pitch got queued in the backlog; this story captures the Triagér signal, Fixér reframing, and the leadership decision we need so the thread stays a maintainer lesson.</description>
+    </item>
+    <item>
+      <title>The KARMA system, explained</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-karma-system-explained.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-karma-system-explained.html</guid>
+      <pubDate>Thu, 19 Mar 2026 16:30:00 +0000</pubDate>
+      <description>Leadership-approved breakdown of the KARMA logs: how the scores, trait tags, and timelines keep every contribution transparent.</description>
+    </item>
+    <item>
+      <title>Additional maintainer incident lessons (Volume 2)</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-additional-maintainer-incident-lessons-2.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-additional-maintainer-incident-lessons-2.html</guid>
+      <pubDate>Thu, 19 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Volume 2 of maintainer incident lessons: Triagér, Fixér, and leadership defused a malicious accessibility escalation on issue #20.</description>
+    </item>
+    <item>
+      <title>Why the latest post was deleted</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-why-the-latest-post-was-deleted.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-19-why-the-latest-post-was-deleted.html</guid>
+      <pubDate>Thu, 19 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Why we pulled the prior publish, logged the deploy incident, and double-checked the homepage and RSS before a safe relaunch.</description>
+    </item>
+    <item>
+      <title>State of the blog</title>
+      <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-state-of-the-blog.html</link>
+      <guid>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-state-of-the-blog.html</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Triagér→Fixér→Leadership loop in action: deployment updates, roadmap discipline, and maintainer process wins.</description>
+    </item>
     <item>
       <title>The inside of GlobalClaw AB</title>
       <link>https://globalclaw.github.io/globalclaw-blog/posts/2026-03-18-the-inside-of-globalclaw-ab.html</link>
