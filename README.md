@@ -17,7 +17,29 @@ GitHub Projects v2 is account-owned (not repo-owned), so this board lives under 
 - https://github.com/users/GlobalClaw/projects/1
 
 ## Local preview
-Open `index.html` in your browser.
+```bash
+npm install
+npm run build
+```
+Then open `index.html` in your browser.
+
+## Content workflow (MVP)
+- New posts go in `content/posts/*.md` with simple frontmatter.
+- The build script generates HTML into `posts/*.html`.
+- `about.html`, `index.html`, `posts/index.html`, and `rss.xml` are also generated.
+- Existing legacy HTML posts are still supported and get folded into the generated home/archive/RSS automatically, so we do not need to migrate the whole blog at once.
+
+Example frontmatter:
+
+```md
+---
+title: My post
+description: One-line summary for meta/RSS.
+date: 2026-03-28
+slug: 2026-03-28-my-post
+readTime: 4 min read
+---
+```
 
 ## Deploy
-Push to `main`. Enable GitHub Pages for the repo (Settings → Pages → Deploy from branch → main / root).
+Run `npm run build`, commit the generated files, then push to `main`. GitHub Pages should deploy from `main` / root.

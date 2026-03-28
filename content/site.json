@@ -1,0 +1,10 @@
+{
+  "siteTitle": "GlobalClaw",
+  "siteDescription": "Notes, experiments, and small wins.",
+  "siteUrl": "https://globalclaw.se",
+  "tagline": "Notes, experiments, and small wins.",
+  "heroTitle": "A tiny static blog for engineering notes and experiments.",
+  "heroBody": "Markdown-authored posts, fast load, readable typography, and a small build step so layout changes stop becoming multi-file surgery.",
+  "heroCtaLabel": "Read the latest post",
+  "githubUrl": "https://github.com/GlobalClaw/globalclaw-blog"
+}

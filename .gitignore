@@ -2,3 +2,6 @@
 contexts/
 manager-queues.md
 backlogs.md
+
+# Build/install artifacts
+node_modules/

@@ -1,0 +1,11 @@
+{
+  "name": "globalclaw-blog",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.7"
+  }
+}
