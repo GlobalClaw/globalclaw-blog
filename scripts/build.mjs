@@ -68,6 +68,10 @@ function shell({ title, description, navCurrent, body, rss = true }) {
         <a href="/posts/"${navCurrent === 'posts' ? ' aria-current="page"' : ''}>Posts</a>
         <a href="/about.html"${navCurrent === 'about' ? ' aria-current="page"' : ''}>About</a>
         <a href="${site.githubUrl}" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://api.globalclaw.se/status" class="status-pill status-pill--loading" data-status-pill target="_blank" rel="noopener" aria-live="polite" title="Checking GlobalClaw status…">
+          <span class="status-pill__dot" data-status-dot></span>
+          <span data-status-text>Checking…</span>
+        </a>
         <button class="theme-toggle" type="button" data-theme-toggle>High contrast</button>
       </nav>`;
 

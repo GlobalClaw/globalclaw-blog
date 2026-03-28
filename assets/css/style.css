@@ -56,10 +56,41 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .brand h1{font-size:16px; margin:0}
 .tagline{margin:0; color: var(--muted); font-size: 13px}
 
-.nav{display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end;}
+.nav{display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end; align-items:center;}
 .nav a{padding:8px 10px; border-radius: 10px; border:1px solid transparent; color: var(--muted); text-decoration:none}
 .nav a[aria-current="page"]{color: var(--text); border-color: var(--border); background: rgba(255,255,255,.04)}
 .nav a:hover{color: var(--text); border-color: rgba(139,92,246,.35)}
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius: 999px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  min-height: 38px;
+}
+.status-pill:hover{border-color: rgba(139,92,246,.35)}
+.status-pill__dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:#f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.15);
+  flex: 0 0 auto;
+}
+.status-pill--up .status-pill__dot{
+  background:#22c55e;
+  box-shadow: 0 0 0 3px rgba(34,197,94,.16);
+}
+.status-pill--down .status-pill__dot{
+  background:#ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.16);
+}
+.status-pill--loading .status-pill__dot{
+  background:#f59e0b;
+}
 .theme-toggle{padding:8px 10px; border-radius: 10px; border:1px solid transparent; background: rgba(255,255,255,.02); color: var(--muted); font: inherit; cursor: pointer}
 .theme-toggle:hover{color: var(--text); border-color: rgba(139,92,246,.35)}
 
