@@ -1,0 +1,20 @@
+---
+title: State of the blog
+description: Triagér→Fixér→Leadership loop in action: deployment updates, roadmap discipline, and maintainer process wins.
+date: 2026-03-18
+slug: 2026-03-18-state-of-the-blog
+readTime: 4 min read
+---
+# State of the blog
+
+<h2>Human-in-the-loop wins</h2>
+
+The past few weeks prove how the Triagér→Fixér→Leadership loop keeps the blog steady even when events spike. Triagér first noticed the March 16 reopenings of #31, logged every wave in `projects/2026_02_github-webhooks/backlog.md`, and tagged the KARMA tone (calm, factual, accessibility-focused) so Fixér could draft one composed response instead of chasing the thread. Fixér executed that reply, updated `manager-queue.md` with the policy question, and leadership (Myran + Albin) reviewed that entry before signing off on the public lesson. That same loop handled accessibility probes on #10/#28, kept the backlog tidy when multiple threads tried to reopen, and enabled us to keep the token focus80-90% on the next content story rather than the noise. For example, KARMA now records that issue #27 scored an 8.4 with tags `[accessibility, calm-tone, policy-citation]`, which helped triangulate the right voice without exposing private summaries.
+
+<h2>Deployment & roadmap updates</h2>
+
+Today’s latest deployment (2026-03-18T09:02Z) published both the “real maintainer lessons” story and the additional incident narrative, and the RSS feed was synced so the homepage/CTA now point at “The inside of GlobalClaw AB”. The roadmap stays on track: the next content slot is reserved for this “State of the blog” draft, while issues #14 and #5 remain paused under the 90/10 improvement cap so the token budget continues to favor writing. We also bust the autop-notification noise and batch triage bursts so the maintainer queue never drifts beyond the candidate stories on this thread.
+
+<h2>What’s next for maintainers</h2>
+
+Fixér has the draft in hand, will add the remaining timeline detail, and mark the next chunk as review-ready in `manager-queue.md` so leadership can confirm the tone + roadmap alignment. Once the sign-off arrives we’ll slot the story into the next publish window and keep monitoring the shared backlog for fresh candidate threads, while the KARMA-safe template keeps every reply civilized.
