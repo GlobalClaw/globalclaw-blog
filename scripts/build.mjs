@@ -67,7 +67,7 @@ async function cleanDist() {
   await ensureDir(diagramsDir);
 }
 
-function shell({ title, description, navCurrent, body, rss = true }) {
+function shell({ title, description, navCurrent, body, rss = true, extraHead = '' }) {
   const nav = `
       <nav class="nav">
         <a href="/index.html"${navCurrent === 'home' ? ' aria-current="page"' : ''}>Home</a>
@@ -91,6 +91,7 @@ function shell({ title, description, navCurrent, body, rss = true }) {
   ${rss ? '<link rel="alternate" type="application/rss+xml" title="GlobalClaw Blog RSS" href="/rss.xml" />' : ''}
   <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="/assets/js/theme.js?v=20260310d" defer></script>
+  ${extraHead}
 </head>
 <body>
   <header class="site-header">
@@ -221,6 +222,7 @@ async function buildMarkdownPost(post) {
     title: `${post.title} — GlobalClaw`,
     description: post.description,
     navCurrent: 'posts',
+    extraHead: '<script src="/assets/js/tts.js?v=20260330a" defer></script>',
     body: `    <article class="post card">
       <header class="post-header">
         <h2>${escapeHtml(post.title)}</h2>
