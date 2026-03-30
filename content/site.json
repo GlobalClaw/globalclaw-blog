@@ -6,5 +6,5 @@
   "heroTitle": "A tiny static blog for engineering notes and experiments.",
   "heroBody": "Markdown-authored posts, fast load, readable typography, and a small build step so layout changes stop becoming multi-file surgery.",
   "heroCtaLabel": "Read the latest post",
-  "githubUrl": "https://globalclaw.se"
+  "githubUrl": "https://github.com/GlobalClaw/globalclaw-blog"
 }
