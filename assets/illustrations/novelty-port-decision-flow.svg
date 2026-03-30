@@ -1,0 +1,45 @@
+<svg width="960" height="540" viewBox="0 0 960 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="540" rx="24" fill="#0B1020"/>
+  <text x="60" y="72" fill="#E5F0FF" font-size="32" font-family="Arial, sans-serif" font-weight="700">Novelty port triage flow</text>
+  <text x="60" y="108" fill="#9FB3C8" font-size="18" font-family="Arial, sans-serif">A maintainer should force the pitch through value, cost, and support reality before it touches the roadmap.</text>
+
+  <rect x="60" y="170" width="200" height="84" rx="16" fill="#172033" stroke="#3A4A66" stroke-width="2"/>
+  <text x="160" y="205" text-anchor="middle" fill="#F8FAFC" font-size="24" font-family="Arial, sans-serif" font-weight="700">Idea arrives</text>
+  <text x="160" y="232" text-anchor="middle" fill="#9FB3C8" font-size="16" font-family="Arial, sans-serif">"What if we port it?"</text>
+
+  <rect x="340" y="150" width="260" height="124" rx="18" fill="#112A24" stroke="#2CB67D" stroke-width="2"/>
+  <text x="470" y="192" text-anchor="middle" fill="#D1FAE5" font-size="24" font-family="Arial, sans-serif" font-weight="700">Audience value?</text>
+  <text x="470" y="222" text-anchor="middle" fill="#A7F3D0" font-size="16" font-family="Arial, sans-serif">Useful beyond the joke, demo,</text>
+  <text x="470" y="244" text-anchor="middle" fill="#A7F3D0" font-size="16" font-family="Arial, sans-serif">or screenshot moment?</text>
+
+  <rect x="690" y="72" width="210" height="92" rx="16" fill="#3A1620" stroke="#F43F5E" stroke-width="2"/>
+  <text x="795" y="110" text-anchor="middle" fill="#FFE4E6" font-size="24" font-family="Arial, sans-serif" font-weight="700">No</text>
+  <text x="795" y="136" text-anchor="middle" fill="#FDA4AF" font-size="16" font-family="Arial, sans-serif">Decline politely or keep</text>
+  <text x="795" y="157" text-anchor="middle" fill="#FDA4AF" font-size="16" font-family="Arial, sans-serif">it as a tiny demo</text>
+
+  <rect x="340" y="338" width="260" height="124" rx="18" fill="#1F2430" stroke="#F59E0B" stroke-width="2"/>
+  <text x="470" y="380" text-anchor="middle" fill="#FEF3C7" font-size="24" font-family="Arial, sans-serif" font-weight="700">Can we afford it?</text>
+  <text x="470" y="410" text-anchor="middle" fill="#FCD34D" font-size="16" font-family="Arial, sans-serif">Implementation cost, testing,</text>
+  <text x="470" y="432" text-anchor="middle" fill="#FCD34D" font-size="16" font-family="Arial, sans-serif">deployment, and future support</text>
+
+  <rect x="690" y="250" width="210" height="92" rx="16" fill="#3C2A12" stroke="#F59E0B" stroke-width="2"/>
+  <text x="795" y="288" text-anchor="middle" fill="#FEF3C7" font-size="24" font-family="Arial, sans-serif" font-weight="700">Maybe</text>
+  <text x="795" y="314" text-anchor="middle" fill="#FCD34D" font-size="16" font-family="Arial, sans-serif">Prototype only, with</text>
+  <text x="795" y="335" text-anchor="middle" fill="#FCD34D" font-size="16" font-family="Arial, sans-serif">explicit bounds</text>
+
+  <rect x="690" y="390" width="210" height="92" rx="16" fill="#132B1E" stroke="#22C55E" stroke-width="2"/>
+  <text x="795" y="428" text-anchor="middle" fill="#DCFCE7" font-size="24" font-family="Arial, sans-serif" font-weight="700">Yes</text>
+  <text x="795" y="454" text-anchor="middle" fill="#86EFAC" font-size="16" font-family="Arial, sans-serif">Real roadmap candidate</text>
+
+  <path d="M260 212H320" stroke="#8AA1B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M600 212H660" stroke="#F43F5E" stroke-width="4" stroke-linecap="round"/>
+  <path d="M470 274V318" stroke="#8AA1B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M600 400H660" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M600 436H660" stroke="#22C55E" stroke-width="4" stroke-linecap="round"/>
+
+  <polygon points="320,212 304,202 304,222" fill="#8AA1B8"/>
+  <polygon points="660,212 644,202 644,222" fill="#F43F5E"/>
+  <polygon points="470,318 460,302 480,302" fill="#8AA1B8"/>
+  <polygon points="660,400 644,390 644,410" fill="#F59E0B"/>
+  <polygon points="660,436 644,426 644,446" fill="#22C55E"/>
+</svg>

@@ -9,6 +9,10 @@ Novelty ports are seductive because they are easy to picture and fun to retell. 
 
 Maintainers should evaluate novelty ports with the same discipline they use for any other proposal: who benefits, what it costs, and what keeps costing after the first demo wears off.
 
+<div class="diagram">
+  <img src="/assets/illustrations/novelty-port-decision-flow.svg" alt="Decision flow showing how maintainers should route a novelty port idea through audience value and support cost before giving it roadmap space." loading="lazy" />
+</div>
+
 ## The four questions that matter
 
 ### 1. Does it create audience value beyond the joke?
@@ -50,6 +54,10 @@ Examples of reusable outcomes:
 
 If the main output is reusable infrastructure or a clear maintainer lesson, the project may earn a small, bounded investment. If the only output is “look, we did the weird thing,” that is usually prototype territory.
 
+<div class="diagram">
+  <img src="/assets/illustrations/novelty-port-scoring-map.svg" alt="Quadrant map comparing audience value against maintenance burden, placing novelty ports into roadmap, prototype, or decline territory." loading="lazy" />
+</div>
+
 ## A practical scoring frame
 
 Before accepting a novelty port, write down four short scores from 1 to 5:
@@ -64,6 +72,10 @@ Then apply a boring rule on purpose:
 - High audience value + low ongoing burden = plausible roadmap work
 - Low audience value + high burden = decline
 - Low audience value + low burden + high learning = prototype/demo only
+
+<div class="diagram">
+  <img src="/assets/illustrations/novelty-port-roadmap-gravity.svg" alt="Illustration of a novelty demo growing into reader expectations, support work, and finally roadmap gravity." loading="lazy" />
+</div>
 
 The Game Boy blog-port lands in the last two buckets, not the first. It is a fine experiment, but a poor product surface.
 

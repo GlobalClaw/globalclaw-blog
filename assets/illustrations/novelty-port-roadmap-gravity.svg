@@ -1,0 +1,40 @@
+<svg width="960" height="560" viewBox="0 0 960 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="560" rx="24" fill="#0B1020"/>
+  <text x="60" y="72" fill="#E5F0FF" font-size="32" font-family="Arial, sans-serif" font-weight="700">How a novelty demo turns into roadmap gravity</text>
+  <text x="60" y="108" fill="#9FB3C8" font-size="18" font-family="Arial, sans-serif">The danger is not the first demo. The danger is what expectations do after the demo lands.</text>
+
+  <g>
+    <circle cx="150" cy="320" r="56" fill="#172033" stroke="#3A4A66" stroke-width="2"/>
+    <text x="150" y="312" text-anchor="middle" fill="#F8FAFC" font-size="24" font-family="Arial, sans-serif" font-weight="700">Fun</text>
+    <text x="150" y="338" text-anchor="middle" fill="#9FB3C8" font-size="16" font-family="Arial, sans-serif">demo</text>
+  </g>
+
+  <g>
+    <circle cx="340" cy="320" r="64" fill="#1E293B" stroke="#64748B" stroke-width="2"/>
+    <text x="340" y="312" text-anchor="middle" fill="#F8FAFC" font-size="24" font-family="Arial, sans-serif" font-weight="700">Reader</text>
+    <text x="340" y="338" text-anchor="middle" fill="#CBD5E1" font-size="16" font-family="Arial, sans-serif">expectations</text>
+  </g>
+
+  <g>
+    <circle cx="560" cy="320" r="78" fill="#3C2A12" stroke="#F59E0B" stroke-width="2"/>
+    <text x="560" y="312" text-anchor="middle" fill="#FEF3C7" font-size="24" font-family="Arial, sans-serif" font-weight="700">Support</text>
+    <text x="560" y="338" text-anchor="middle" fill="#FCD34D" font-size="16" font-family="Arial, sans-serif">work</text>
+  </g>
+
+  <g>
+    <circle cx="790" cy="320" r="104" fill="#3A1620" stroke="#F43F5E" stroke-width="2"/>
+    <text x="790" y="304" text-anchor="middle" fill="#FFE4E6" font-size="26" font-family="Arial, sans-serif" font-weight="700">Roadmap</text>
+    <text x="790" y="334" text-anchor="middle" fill="#FDA4AF" font-size="20" font-family="Arial, sans-serif">gravity</text>
+    <text x="790" y="364" text-anchor="middle" fill="#FDA4AF" font-size="16" font-family="Arial, sans-serif">special cases, regressions,</text>
+    <text x="790" y="386" text-anchor="middle" fill="#FDA4AF" font-size="16" font-family="Arial, sans-serif">and attention drain</text>
+  </g>
+
+  <path d="M206 320H266" stroke="#8AA1B8" stroke-width="6" stroke-linecap="round"/>
+  <path d="M404 320H470" stroke="#FCD34D" stroke-width="6" stroke-linecap="round"/>
+  <path d="M638 320H678" stroke="#F43F5E" stroke-width="6" stroke-linecap="round"/>
+  <polygon points="266,320 246,308 246,332" fill="#8AA1B8"/>
+  <polygon points="470,320 450,308 450,332" fill="#FCD34D"/>
+  <polygon points="678,320 658,308 658,332" fill="#F43F5E"/>
+
+  <text x="120" y="470" fill="#9FB3C8" font-size="18" font-family="Arial, sans-serif">If you ship the novelty, ship it with hard boundaries — otherwise the smallest sphere becomes the largest commitment.</text>
+</svg>

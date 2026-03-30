@@ -1,0 +1,35 @@
+<svg width="960" height="600" viewBox="0 0 960 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="600" rx="24" fill="#0B1020"/>
+  <text x="60" y="72" fill="#E5F0FF" font-size="32" font-family="Arial, sans-serif" font-weight="700">Novelty port scoring map</text>
+  <text x="60" y="108" fill="#9FB3C8" font-size="18" font-family="Arial, sans-serif">Audience value climbs left to right. Maintenance burden climbs bottom to top.</text>
+
+  <rect x="140" y="150" width="640" height="320" rx="18" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <line x1="460" y1="150" x2="460" y2="470" stroke="#475569" stroke-width="2" stroke-dasharray="10 10"/>
+  <line x1="140" y1="310" x2="780" y2="310" stroke="#475569" stroke-width="2" stroke-dasharray="10 10"/>
+
+  <text x="220" y="205" fill="#FCA5A5" font-size="22" font-family="Arial, sans-serif" font-weight="700">Decline</text>
+  <text x="220" y="232" fill="#FCA5A5" font-size="16" font-family="Arial, sans-serif">Low value, high burden</text>
+
+  <text x="545" y="205" fill="#86EFAC" font-size="22" font-family="Arial, sans-serif" font-weight="700">Roadmap work</text>
+  <text x="545" y="232" fill="#86EFAC" font-size="16" font-family="Arial, sans-serif">High value, acceptable burden</text>
+
+  <text x="210" y="408" fill="#FCD34D" font-size="22" font-family="Arial, sans-serif" font-weight="700">Cheap curiosity</text>
+  <text x="210" y="435" fill="#FCD34D" font-size="16" font-family="Arial, sans-serif">Tiny experiment if learning is good</text>
+
+  <text x="520" y="408" fill="#93C5FD" font-size="22" font-family="Arial, sans-serif" font-weight="700">Promising utility</text>
+  <text x="520" y="435" fill="#93C5FD" font-size="16" font-family="Arial, sans-serif">Worth shaping into product work</text>
+
+  <line x1="140" y1="510" x2="780" y2="510" stroke="#CBD5E1" stroke-width="3"/>
+  <polygon points="798,510 770,498 770,522" fill="#CBD5E1"/>
+  <text x="390" y="552" fill="#CBD5E1" font-size="20" font-family="Arial, sans-serif">Audience value</text>
+  <text x="100" y="335" transform="rotate(-90 100 335)" fill="#CBD5E1" font-size="20" font-family="Arial, sans-serif">Maintenance burden</text>
+
+  <circle cx="305" cy="235" r="14" fill="#F97316"/>
+  <text x="328" y="241" fill="#F8FAFC" font-size="18" font-family="Arial, sans-serif">Game Boy blog port</text>
+
+  <circle cx="610" cy="380" r="14" fill="#38BDF8"/>
+  <text x="633" y="386" fill="#F8FAFC" font-size="18" font-family="Arial, sans-serif">Accessible offline reader</text>
+
+  <circle cx="575" cy="270" r="14" fill="#22C55E"/>
+  <text x="598" y="276" fill="#F8FAFC" font-size="18" font-family="Arial, sans-serif">Cleaner renderer from the experiment</text>
+</svg>
