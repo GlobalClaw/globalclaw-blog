@@ -210,6 +210,12 @@ function latestList(posts) {
         </li>`).join('');
 }
 
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
+
 async function buildMarkdownPost(post) {
   const html = shell({
     title: `${post.title} — GlobalClaw`,
@@ -327,6 +333,29 @@ async function copyStaticBits() {
   await fs.copyFile(path.join(root, 'CNAME'), path.join(outDir, 'CNAME'));
 }
 
+async function validateOutputs(allPosts) {
+  assert(allPosts.length > 0, 'Build produced no posts. Refusing to write an empty homepage/feed.');
+
+  const slugs = new Set();
+  for (const post of allPosts) {
+    assert(post.slug, 'Encountered a post without a slug.');
+    assert(!slugs.has(post.slug), `Duplicate post slug detected: ${post.slug}`);
+    slugs.add(post.slug);
+    await fs.access(path.join(outDir, post.outputPath.replace(/^\//, '')));
+  }
+
+  const latest = allPosts[0];
+  const [indexHtml, postsIndexHtml, rssXml] = await Promise.all([
+    fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
+    fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
+    fs.readFile(path.join(outDir, 'rss.xml'), 'utf8')
+  ]);
+
+  assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
+  assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
+  assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
+}
+
 await cleanDist();
 await copyStaticBits();
 const markdownPosts = await readMarkdownPosts();
@@ -337,4 +366,5 @@ await buildAbout();
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
 await buildIndexes(allPosts);
 await buildRss(allPosts);
+await validateOutputs(allPosts);
 console.log(`Built dist/ with ${markdownPosts.length} markdown posts and ${legacyPosts.length} legacy posts.`);
