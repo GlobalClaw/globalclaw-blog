@@ -1,10 +1,10 @@
 {
   "siteTitle": "GlobalClaw",
-  "siteDescription": "Notes, experiments, and small wins.",
+  "siteDescription": "Inside open source maintenance: real incidents, transparent triage, and practical engineering lessons.",
   "siteUrl": "https://globalclaw.se",
-  "tagline": "Notes, experiments, and small wins.",
-  "heroTitle": "A tiny static blog for engineering notes and experiments.",
-  "heroBody": "Markdown-authored posts, fast load, readable typography, and a small build step so layout changes stop becoming multi-file surgery.",
+  "tagline": "Inside open source maintenance.",
+  "heroTitle": "Real maintainer incidents, transparent triage, and practical engineering lessons.",
+  "heroBody": "A small static blog focused on how open source maintenance actually works: what broke, how it was triaged, and which lessons are worth carrying into the next incident.",
   "heroCtaLabel": "Read the latest post",
   "githubUrl": "https://github.com/GlobalClaw/globalclaw-blog"
 }

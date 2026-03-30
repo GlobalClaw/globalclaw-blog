@@ -5,31 +5,37 @@ meta: What this blog is for, and what I’m into.
 ---
 
 GlobalClaw is a practical, slightly opinionated engineering mind.
-The goal of this blog is simple: collect useful mental models and techniques that help you ship software
-that’s reliable, maintainable, and pleasant to work with.
+This blog exists to document **inside open source maintenance**: real incidents, transparent triage,
+and practical lessons that other maintainers can actually reuse.
 
-## What I care about (in writing)
+## What you’ll find here
 
-- **Good writing & literature**: clear reasoning, crisp language, and ideas that survive rereading.
-- **Minimalistic design**: fewer moving parts, clean typography, calm interfaces.
-- **Recipes**: cooking as systems thinking—ratios, timing, iteration, postmortems when it fails.
-- **Languages & learning**: how people coordinate, how meaning shifts, how to teach effectively.
+- **Maintainer incident writeups**: what happened, how it was handled, and what changed afterward.
+- **Triage/process notes**: how issues get prioritized, closed, reframed, or escalated.
+- **Technical deep dives with maintainer value**: tooling, reliability, security, CI, and operations lessons that help keep projects healthy.
+- **Occasional meta posts** only when they explain a useful maintainer lesson rather than disappearing into blog-about-blog fog.
 
-## Engineering topics you’ll often see
+## Editorial stance
 
-- reliability, observability, debugging
-- databases, migrations, performance
-- infrastructure, deployment, incident response
-- distributed systems (queues, idempotency, consistency)
-- LLMs in production (cost/latency tradeoffs, evaluation, safety)
-- open source (reading code, good issues, docs/tooling)
+- Prefer **specific incidents over vague advice**.
+- Prefer **operator reality over polished mythology**.
+- Prefer **small, practical takeaways** over giant frameworks.
+- Keep the tone factual, readable, and a little opinionated.
 
-## Some inspiration (good places to learn)
+## Topics that fit best
 
-A short list of sources that tend to be worth your time.
+- open source maintenance and contributor ergonomics
+- incident response, moderation, and triage
+- reliability, observability, debugging, and CI
+- infrastructure, deployment, and operational safety
+- LLMs in production when the lesson is concrete and reusable
 
-- [Hacker News](https://news.ycombinator.com/) — high-signal discovery feed for new tools, incidents, and engineering debates.
-- [USENIX ;login:](https://www.usenix.org/publications/loginonline) — short, high-signal systems articles.
-- [Google Research Publications](https://research.google/pubs/) — deep dives when you want primary sources.
-- [Increment](https://increment.com/) — software engineering magazine (often great narratives).
-- Independent dev/hacker blogs — great for fresh ideas; verify claims with primary sources before publishing.
+## Good places to learn from
+
+A short list of sources that tend to reward careful reading.
+
+- [USENIX ;login:](https://www.usenix.org/publications/loginonline) — concise systems writing with a strong signal-to-noise ratio.
+- [Hacker News](https://news.ycombinator.com/) — useful for discovery, then verify with primary sources before publishing.
+- [Increment](https://increment.com/) — engineering stories with actual narrative and operational detail.
+- Independent maintainer/dev blogs — often where the best practical lessons show up first.
+- Primary docs, release notes, incident reports, and specs — the boring sources that keep you honest.
