@@ -42,6 +42,10 @@ function formatRssDate(dateStr) {
   return d.toUTCString();
 }
 
+function xmlEscape(s = '') {
+  return s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+}
+
 function formatDisplayDate(dateStr, readTime) {
   return readTime ? `${dateStr} · ${readTime}` : dateStr;
 }
@@ -354,6 +358,24 @@ ${items}
   await fs.writeFile(path.join(outDir, 'rss.xml'), rss);
 }
 
+async function buildSitemap(allPosts) {
+  const urls = [
+    '/',
+    '/index.html',
+    '/posts/',
+    '/posts/index.html',
+    '/about.html',
+    ...allPosts.map((post) => post.outputPath)
+  ];
+  const uniqueUrls = [...new Set(urls)];
+  const entries = uniqueUrls.map((url) => `  <url><loc>${xmlEscape(`${site.siteUrl}${url}`)}</loc></url>`).join('\n');
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries}
+</urlset>`;
+  await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap);
+}
+
 async function copyStaticBits() {
   await copyDir(path.join(root, 'assets'), path.join(outDir, 'assets'));
   await fs.copyFile(path.join(root, 'CNAME'), path.join(outDir, 'CNAME'));
@@ -371,15 +393,18 @@ async function validateOutputs(allPosts) {
   }
 
   const latest = allPosts[0];
-  const [indexHtml, postsIndexHtml, rssXml] = await Promise.all([
+  const [indexHtml, postsIndexHtml, rssXml, sitemapXml] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
-    fs.readFile(path.join(outDir, 'rss.xml'), 'utf8')
+    fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
+    fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8')
   ]);
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
   assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
+  assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
+  assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
 }
 
 await cleanDist();
@@ -392,5 +417,6 @@ await buildAbout();
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
 await buildIndexes(allPosts);
 await buildRss(allPosts);
+await buildSitemap(allPosts);
 await validateOutputs(allPosts);
 console.log(`Built dist/ with ${markdownPosts.length} markdown posts and ${legacyPosts.length} legacy posts.`);
