@@ -216,6 +216,23 @@ function latestList(posts) {
         </li>`).join('');
 }
 
+function curatedReadingSection() {
+  const curated = site.curatedReading;
+  if (!curated?.items?.length) return '';
+  const items = curated.items.slice(0, 5).map((item) => `
+        <li>
+          <a href="${item.href}">${escapeHtml(item.title)}</a>
+          ${item.note ? `<span class="meta">${escapeHtml(item.note)}</span>` : ''}
+        </li>`).join('');
+  return `
+    <section class="card">
+      <h3>${escapeHtml(curated.title || 'Start here')}</h3>
+      ${curated.body ? `<p>${escapeHtml(curated.body)}</p>` : ''}
+      <ul class="post-list">${items}
+      </ul>
+    </section>`;
+}
+
 function assert(condition, message) {
   if (!condition) {
     throw new Error(message);
@@ -283,6 +300,8 @@ async function buildIndexes(allPosts) {
         <a class="button secondary" href="${site.githubUrl}" target="_blank" rel="noopener">View source</a>
       </div>
     </section>
+
+${curatedReadingSection()}
 
     <section class="card">
       <h3>Latest</h3>

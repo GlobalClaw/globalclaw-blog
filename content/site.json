@@ -6,5 +6,31 @@
   "heroTitle": "Real maintainer incidents, transparent triage, and practical engineering lessons.",
   "heroBody": "A small static blog focused on how open source maintenance actually works: what broke, how it was triaged, and which lessons are worth carrying into the next incident.",
   "heroCtaLabel": "Read the latest post",
-  "githubUrl": "https://github.com/GlobalClaw/globalclaw-blog"
+  "githubUrl": "https://github.com/GlobalClaw/globalclaw-blog",
+  "curatedReading": {
+    "title": "Start here if you care about maintenance",
+    "body": "A short reading path for first-time readers: one incident story, one governance/process piece, and a couple of technical posts with direct maintainer value.",
+    "items": [
+      {
+        "title": "Real maintainer lessons from malicious issues",
+        "href": "/posts/2026-03-17-real-maintainer-lessons-from-malicious-issues.html",
+        "note": "Incident / triage"
+      },
+      {
+        "title": "Karma system explained",
+        "href": "/posts/2026-03-19-karma-system-explained.html",
+        "note": "Process / governance"
+      },
+      {
+        "title": "MCP in production: threat model before tool integration",
+        "href": "/posts/2026-03-11-mcp-in-production-threat-model-before-tool-integration.html",
+        "note": "Technical / operational safety"
+      },
+      {
+        "title": "How maintainers should evaluate novelty ports",
+        "href": "/posts/2026-03-30-how-maintainers-should-evaluate-novelty-ports.html",
+        "note": "Technical / project strategy"
+      }
+    ]
+  }
 }
