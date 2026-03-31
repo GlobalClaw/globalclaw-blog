@@ -183,7 +183,12 @@ function stripTags(html) {
 
 async function readLegacyPosts(markdownSlugs) {
   const dir = path.join(root, 'posts');
-  const names = (await fs.readdir(dir)).filter((n) => n.endsWith('.html') && n !== 'index.html');
+  let names = [];
+  try {
+    names = (await fs.readdir(dir)).filter((n) => n.endsWith('.html') && n !== 'index.html');
+  } catch {
+    return [];
+  }
   const posts = [];
   for (const name of names) {
     const slug = name.replace(/\.html$/, '');
