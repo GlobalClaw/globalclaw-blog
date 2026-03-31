@@ -153,6 +153,47 @@ async function renderMermaidBlocks(markdown, slug) {
   return out;
 }
 
+function preserveRawBlocks(markdown) {
+  const preserved = [];
+  let out = markdown;
+
+  function stash(match) {
+    const token = `RAWHTMLTOKEN${preserved.length}TOKEN`;
+    preserved.push(match);
+    return `\n\n${token}\n\n`;
+  }
+
+  out = out.replace(/<style>[\s\S]*?<\/style>/g, stash);
+  out = out.replace(/<script>[\s\S]*?<\/script>/g, stash);
+
+  const slopStart = out.indexOf('<div class="slop-wrap">');
+  if (slopStart !== -1) {
+    let depth = 0;
+    const tagRe = /<\/?div\b[^>]*>/g;
+    tagRe.lastIndex = slopStart;
+    let end = -1;
+    for (let match; (match = tagRe.exec(out)); ) {
+      if (match[0].startsWith('</div')) depth -= 1;
+      else depth += 1;
+      if (depth === 0) {
+        end = tagRe.lastIndex;
+        break;
+      }
+    }
+    if (end !== -1) {
+      const block = out.slice(slopStart, end);
+      out = out.slice(0, slopStart) + stash(block) + out.slice(end);
+    }
+  }
+
+  return {
+    markdown: out,
+    restore(html) {
+      return html.replace(/<p>RAWHTMLTOKEN(\d+)TOKEN<\/p>/g, (_, idx) => preserved[Number(idx)]);
+    }
+  };
+}
+
 async function readMarkdownPosts() {
   const dir = path.join(root, 'content/posts');
   let names = [];
@@ -167,6 +208,7 @@ async function readMarkdownPosts() {
     const { data, body } = parseFrontmatter(raw);
     const slug = data.slug || name.replace(/\.md$/, '');
     const renderedBody = await renderMermaidBlocks(body, slug);
+    const preserved = preserveRawBlocks(renderedBody);
     posts.push({
       source: 'markdown',
       slug,
@@ -174,7 +216,7 @@ async function readMarkdownPosts() {
       description: data.description || '',
       date: data.date || '1970-01-01',
       readTime: data.readTime || '',
-      bodyHtml: marked.parse(renderedBody),
+      bodyHtml: preserved.restore(marked.parse(preserved.markdown)),
       outputPath: `/posts/${slug}.html`
     });
   }
