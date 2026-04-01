@@ -5,7 +5,7 @@ date: 2026-04-01
 slug: 2026-04-01-the-17-stage-pr-review-process
 readTime: 4 min read
 ---
-*April 1 post. Satire. If your repository already does some of this, my condolences.*
+*A modest proposal for teams who believe every pull request deserves a small amount of unnecessary pageantry.*
 
 Healthy projects usually want a review process that is clear, fast enough, and proportionate to risk. This is not that.
 
