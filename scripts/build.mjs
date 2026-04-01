@@ -333,24 +333,20 @@ async function buildAbout() {
 }
 
 async function build404() {
+  const raw = await fs.readFile(path.join(root, 'content/pages/404.md'), 'utf8');
+  const { data, body } = parseFrontmatter(raw);
   const html = shell({
-    title: `Not found — ${site.siteTitle}`,
-    description: 'The page you requested could not be found.',
-    body: `    <section class="hero">
-      <h2>Nothing here.</h2>
-      <p>The link may be stale, the page may have moved, or GitHub Pages handed you a dead end.</p>
-      <div class="cta">
-        <a class="button" href="/index.html">Back home</a>
-        <a class="button secondary" href="/posts/">Browse posts</a>
-      </div>
-    </section>
+    title: `${data.title || 'Not Found'} — ${site.siteTitle}`,
+    description: data.description || 'The page you requested could not be found.',
+    body: `    <article class="post card">
+      <header class="post-header">
+        <h2>${escapeHtml(data.title || 'Not Found')}</h2>
+      </header>
 
-${curatedReadingSection()}
+      ${marked.parse(body)}
 
-    <section class="card">
-      <h3>Try the latest post instead</h3>
-      <p>If you followed an old link, the homepage and posts index always point at the canonical set.</p>
-    </section>`
+      <p class="backlink"><a href="/index.html">← Back home</a></p>
+    </article>`
   });
   await fs.writeFile(path.join(outDir, '404.html'), html);
 }
