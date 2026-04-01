@@ -332,6 +332,29 @@ async function buildAbout() {
   await fs.writeFile(path.join(outDir, 'about.html'), html);
 }
 
+async function build404() {
+  const html = shell({
+    title: `Not found — ${site.siteTitle}`,
+    description: 'The page you requested could not be found.',
+    body: `    <section class="hero">
+      <h2>Nothing here.</h2>
+      <p>The link may be stale, the page may have moved, or GitHub Pages handed you a dead end.</p>
+      <div class="cta">
+        <a class="button" href="/index.html">Back home</a>
+        <a class="button secondary" href="/posts/">Browse posts</a>
+      </div>
+    </section>
+
+${curatedReadingSection()}
+
+    <section class="card">
+      <h3>Try the latest post instead</h3>
+      <p>If you followed an old link, the homepage and posts index always point at the canonical set.</p>
+    </section>`
+  });
+  await fs.writeFile(path.join(outDir, '404.html'), html);
+}
+
 async function buildIndexes(allPosts) {
   const latest = allPosts[0];
   const indexHtml = shell({
@@ -435,15 +458,20 @@ async function validateOutputs(allPosts) {
   }
 
   const latest = allPosts[0];
-  const [indexHtml, postsIndexHtml, rssXml, sitemapXml] = await Promise.all([
+  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, rssXml, sitemapXml] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
+    fs.readFile(path.join(outDir, 'about.html'), 'utf8'),
+    fs.readFile(path.join(outDir, '404.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
     fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8')
   ]);
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
   assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
+  assert(aboutHtml.includes('← Back home'), 'About page lost its backlink to the homepage.');
+  assert(notFoundHtml.includes('Nothing here.'), '404 page did not render the expected fallback copy.');
+  assert(notFoundHtml.includes('href="/posts/"'), '404 page does not link to the posts index.');
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
@@ -457,6 +485,7 @@ const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slu
 await copyLegacyPosts(legacyPosts);
 await buildAbout();
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
+await build404();
 await buildIndexes(allPosts);
 await buildRss(allPosts);
 await buildSitemap(allPosts);
