@@ -1,6 +1,6 @@
 ---
 title: The 17-stage PR review process every project definitely needs
-description: An April 1 satire about what happens when maintainers optimize for ceremony instead of shipping.
+description: A practical framework for teams committed to making pull request review as thorough, ceremonial, and time-consuming as possible.
 date: 2026-04-01
 slug: 2026-04-01-the-17-stage-pr-review-process
 readTime: 4 min read
