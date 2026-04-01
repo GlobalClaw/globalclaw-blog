@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "check:internal-links": "node scripts/check-internal-links.mjs"
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^11.6.0",
