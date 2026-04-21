@@ -1,7 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = process.cwd();
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(scriptDir, '..');
 const distDir = path.join(root, 'dist');
 
 const hrefRegex = /<a\b[^>]*\bhref=(['"])(.*?)\1/gi;
