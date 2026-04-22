@@ -6,3 +6,5 @@ backlogs.md
 # Build/install artifacts
 node_modules/
 dist/
+gb/dist/
+gb/generated/

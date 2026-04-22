@@ -43,3 +43,19 @@ readTime: 4 min read
 
 ## Deploy
 Run `npm run build`, commit the generated files, then push to `main`. GitHub Pages should deploy from `main` / root.
+
+## Game Boy ROM build (GBDK)
+This repo includes a Game Boy target that turns a subset of markdown posts into a ROM-readable dataset.
+
+```bash
+npm run build:gb
+```
+
+Output ROM:
+- `gb/dist/globalclaw-blog.gb`
+
+Current MVP behavior:
+- Uses newest 12 markdown posts from `content/posts/`.
+- Converts markdown to simplified plaintext.
+- Truncates each post body to keep ROM size practical.
+- ROM UI supports post list + reading view (`A` open, `B` back, D-pad scroll).

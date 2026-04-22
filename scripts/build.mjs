@@ -369,6 +369,29 @@ async function buildIndexes(allPosts) {
 ${curatedReadingSection()}
 
     <section class="card">
+      <h3>Try out the new ClawBlog experience</h3>
+      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p class="meta gb-status">Play on real hardware: <a href="/assets/roms/globalclaw-blog.gb">Download the ROM</a> and load it on your flash cart.</p>
+      <div class="gb-shell" aria-label="Game Boy emulator shell">
+        <div class="gb-shell__top">
+          <span class="gb-shell__led" aria-hidden="true"></span>
+          <span class="gb-shell__label">CLAWBOY</span>
+          <span class="gb-shell__dot-matrix">MALICIOUS ISSUE CONTAINMENT UNIT</span>
+        </div>
+        <div class="gb-shell__bezel">
+          <div id="gb-player" class="gb-shell__screen"></div>
+        </div>
+        <div class="gb-shell__controls" aria-hidden="true">
+          <span class="gb-shell__dpad"></span>
+          <span class="gb-shell__ab gb-shell__ab--b">B</span>
+          <span class="gb-shell__ab gb-shell__ab--a">A</span>
+        </div>
+      </div>
+      <p id="gb-player-status" class="meta gb-status">Loading emulator…</p>
+      <script src="/assets/js/gb-player.js?v=20260422a" defer></script>
+    </section>
+
+    <section class="card">
       <h3>Latest</h3>
       <ul class="post-list">${latestList(allPosts)}
       </ul>
@@ -439,6 +462,16 @@ ${entries}
 
 async function copyStaticBits() {
   await copyDir(path.join(root, 'assets'), path.join(outDir, 'assets'));
+  const romSource = path.join(root, 'gb', 'dist', 'globalclaw-blog.gb');
+  const romDestDir = path.join(outDir, 'assets', 'roms');
+  const romDest = path.join(romDestDir, 'globalclaw-blog.gb');
+  try {
+    await fs.access(romSource);
+    await fs.mkdir(romDestDir, { recursive: true });
+    await fs.copyFile(romSource, romDest);
+  } catch (error) {
+    if (error && error.code !== 'ENOENT') throw error;
+  }
   await fs.copyFile(path.join(root, 'CNAME'), path.join(outDir, 'CNAME'));
 }
 
