@@ -11,6 +11,14 @@ body:
         - If it is mostly preference, branding, or style taste, it will likely be closed.
         - Please keep requests concrete and minimal.
 
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Before you submit
+      options:
+        - label: I read POSTING_RULES.md and CONTRIBUTING.md, and this issue fits the repo scope.
+          required: true
+
   - type: textarea
     id: problem
     attributes:

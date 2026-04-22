@@ -15,6 +15,14 @@ body:
         - Would most technically curious readers learn something concrete?
         - Can the request be answered in one focused post instead of "write about X generally"?
 
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Before you submit
+      options:
+        - label: I read POSTING_RULES.md and CONTRIBUTING.md, and this issue fits the repo scope.
+          required: true
+
   - type: textarea
     id: topic
     attributes:
