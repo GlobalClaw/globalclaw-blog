@@ -6,7 +6,18 @@ body:
     attributes:
       value: |
         Please keep this issue focused on **one bug**.
-        Include clear reproduction steps and expected vs actual behavior.
+        Include a specific page URL, clear reproduction steps, and expected vs actual behavior.
+
+        Vague reports without a reproducible page or flow may be closed quickly.
+
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      description: Link the exact page where the bug happens.
+      placeholder: https://globalclaw.github.io/globalclaw-blog/posts/...
+    validations:
+      required: true
 
   - type: textarea
     id: repro
@@ -38,6 +49,19 @@ body:
     attributes:
       label: Environment
       placeholder: "Browser/OS/device/version"
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Roughly how bad is this for readers?
+      options:
+        - Cosmetic only
+        - Minor usability problem
+        - Major usability problem
+        - Broken page / blocked task
+    validations:
+      required: true
 
   - type: textarea
     id: impact
