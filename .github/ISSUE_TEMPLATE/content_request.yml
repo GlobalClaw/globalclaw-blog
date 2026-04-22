@@ -6,12 +6,36 @@ body:
     attributes:
       value: |
         Content requests are welcome.
-        Please keep it specific and technical.
+
+        This blog has a high bar: short, useful, technical posts win.
+        Vague, joke-only, or non-technical requests will usually be closed.
 
   - type: textarea
-    id: outline
+    id: topic
     attributes:
       label: What should the post cover?
+      description: Be concrete. Name the technical topic, tool, bug class, pattern, or lesson.
       placeholder: "3–5 bullets"
+    validations:
+      required: true
+
+  - type: textarea
+    id: usefulness
+    attributes:
+      label: Why is this useful to readers?
+      description: Explain the reader value, not just why it sounds fun.
+      placeholder: "What will a technically curious reader learn or be able to do after reading it?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: fit
+    attributes:
+      label: Best fit for this blog?
+      description: Prefer requests that are technical, specific, and broadly useful.
+      options:
+        - Yes — technical and broadly useful
+        - Maybe — interesting but niche
+        - No — mostly joke/opinion/personal
     validations:
       required: true
