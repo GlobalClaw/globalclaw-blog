@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check:internal-links": "node scripts/check-internal-links.mjs"
+    "check:internal-links": "node scripts/check-internal-links.mjs",
+    "build:gb:data": "node scripts/build-gb.mjs",
+    "build:gb": "bash scripts/build-gb-rom.sh"
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^11.12.0",

@@ -9,6 +9,26 @@
   --border: rgba(255,255,255,.12);
   --shadow: 0 10px 35px rgba(0,0,0,.35);
   --max: 960px;
+  --gb-shell-border: rgba(255,255,255,.45);
+  --gb-shell-text: rgba(226,232,240,.95);
+  --gb-shell-bg-a: rgba(250,204,21,.28);
+  --gb-shell-bg-b: rgba(16,185,129,.22);
+  --gb-shell-bg-c: rgba(236,72,153,.26);
+  --gb-shell-bg-base-a: rgba(19,15,37,.96);
+  --gb-shell-bg-base-b: rgba(26,36,56,.94);
+  --gb-shell-led: #f97316;
+  --gb-shell-led-glow: rgba(249,115,22,.92);
+  --gb-shell-label: rgba(253,224,71,.98);
+  --gb-shell-sub: rgba(187,247,208,.95);
+  --gb-shell-bezel-border: rgba(34,197,94,.46);
+  --gb-shell-bezel-ring: rgba(139,92,246,.33);
+  --gb-shell-screen-glow: rgba(139,92,246,.22);
+  --gb-shell-screen-border: rgba(255,255,255,.22);
+  --gb-shell-screen-inner: rgba(34,197,94,.16);
+  --gb-shell-dpad: rgba(148,163,184,.92);
+  --gb-shell-button-a: rgba(236,72,153,.96);
+  --gb-shell-button-b: rgba(157,23,77,.95);
+  --gb-shell-button-text: #f2e7ff;
 }
 
 *{box-sizing:border-box}
@@ -158,6 +178,153 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .post-list a{text-decoration:none}
 .meta{color: var(--muted); font-size: 13px; white-space:nowrap}
 
+.gb-shell{
+  margin-top: 12px;
+  border: 2px dashed var(--gb-shell-border);
+  border-radius: 26px 10px 30px 14px;
+  background:
+    radial-gradient(130% 100% at 0% -20%, var(--gb-shell-bg-a), transparent 48%),
+    radial-gradient(120% 90% at 100% -10%, var(--gb-shell-bg-b), transparent 56%),
+    radial-gradient(120% 100% at 30% 120%, var(--gb-shell-bg-c), transparent 64%),
+    linear-gradient(165deg, var(--gb-shell-bg-base-a), var(--gb-shell-bg-base-b));
+  color: var(--gb-shell-text);
+  padding: 14px 14px 18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 16px 36px rgba(3,6,16,.6);
+  transform: rotate(-0.4deg);
+}
+
+.gb-shell__top{
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 0 4px;
+  text-transform: uppercase;
+}
+
+.gb-shell__led{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--gb-shell-led);
+  box-shadow: 0 0 9px var(--gb-shell-led-glow);
+}
+
+.gb-shell__label{
+  font-size: 11px;
+  letter-spacing: .12em;
+  font-weight: 800;
+  color: var(--gb-shell-label);
+}
+
+.gb-shell__dot-matrix{
+  font-size: 10px;
+  text-align: right;
+  letter-spacing: .07em;
+  color: var(--gb-shell-sub);
+}
+
+.gb-shell__bezel{
+  border-radius: 12px;
+  border: 1px solid var(--gb-shell-bezel-border);
+  background: linear-gradient(180deg, rgba(10,14,28,.9), rgba(5,8,17,.97));
+  padding: 14px;
+  box-shadow: inset 0 0 0 1px var(--gb-shell-bezel-ring);
+}
+
+.gb-shell__screen{
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 280px;
+  background:
+    radial-gradient(circle at 50% -30%, var(--gb-shell-screen-glow), transparent 58%),
+    #06090f;
+  border: 2px solid var(--gb-shell-screen-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--gb-shell-screen-inner), 0 0 0 1px rgba(0,0,0,.55);
+  aspect-ratio: 21 / 9;
+}
+
+.gb-shell__screen iframe,
+.gb-shell__screen canvas,
+.gb-shell__screen #game{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.gb-shell__controls{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  min-height: 48px;
+}
+
+.gb-shell__dpad{
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, transparent 20px, var(--gb-shell-dpad) 20px 36px, transparent 36px),
+    linear-gradient(transparent 20px, var(--gb-shell-dpad) 20px 36px, transparent 36px);
+  filter: drop-shadow(0 2px 1px rgba(0,0,0,.2));
+}
+
+.gb-shell__ab{
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--gb-shell-button-text);
+  background: linear-gradient(180deg, var(--gb-shell-button-a), var(--gb-shell-button-b));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 3px 5px rgba(0,0,0,.36);
+}
+
+.gb-shell__ab--b{
+  transform: translateY(4px);
+}
+
+.gb-status{
+  margin-top: 8px;
+  white-space: normal;
+}
+
+@media (max-width: 560px){
+  .gb-shell{
+    border-radius: 16px 16px 32px 16px;
+    padding: 12px;
+  }
+
+  .gb-shell__screen{
+    min-height: 180px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .gb-shell__controls{
+    margin-top: 10px;
+  }
+
+  .gb-shell__dpad{
+    width: 48px;
+    height: 48px;
+    background:
+      linear-gradient(90deg, transparent 17px, #2f3947 17px 31px, transparent 31px),
+      linear-gradient(transparent 17px, #2f3947 17px 31px, transparent 31px);
+  }
+
+  .gb-shell__ab{
+    width: 40px;
+    height: 40px;
+  }
+}
+
 .post-header h2{margin:0 0 6px}
 .post .backlink{margin-top: 18px}
 
@@ -180,6 +347,26 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
   --accent2: #b00000;
   --border: rgba(176, 0, 0, .35);
   --shadow: none;
+  --gb-shell-border: rgba(176, 0, 0, .6);
+  --gb-shell-text: #7a0000;
+  --gb-shell-bg-a: rgba(255,255,255,.45);
+  --gb-shell-bg-b: rgba(255,255,255,.45);
+  --gb-shell-bg-c: rgba(255,255,255,.45);
+  --gb-shell-bg-base-a: #fff38a;
+  --gb-shell-bg-base-b: #ffe95c;
+  --gb-shell-led: #b00000;
+  --gb-shell-led-glow: rgba(176,0,0,.55);
+  --gb-shell-label: #b00000;
+  --gb-shell-sub: #7a0000;
+  --gb-shell-bezel-border: rgba(176, 0, 0, .5);
+  --gb-shell-bezel-ring: rgba(176, 0, 0, .28);
+  --gb-shell-screen-glow: rgba(176, 0, 0, .12);
+  --gb-shell-screen-border: rgba(176, 0, 0, .45);
+  --gb-shell-screen-inner: rgba(176, 0, 0, .12);
+  --gb-shell-dpad: rgba(176, 0, 0, .86);
+  --gb-shell-button-a: #b00000;
+  --gb-shell-button-b: #7a0000;
+  --gb-shell-button-text: #ffeb00;
 }
 
 [data-theme="a11y-ry"] body{
