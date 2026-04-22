@@ -57,3 +57,14 @@ body:
         - Probably not
     validations:
       required: true
+
+  - type: dropdown
+    id: preference
+    attributes:
+      label: Is this mostly a personal preference, branding idea, or style taste request?
+      options:
+        - No
+        - Partly / not sure
+        - Yes
+    validations:
+      required: true

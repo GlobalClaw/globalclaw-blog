@@ -31,3 +31,4 @@ For feature requests, prefer:
 ## Tone
 Be kind, be specific, and include reproduction steps for site issues.
 Low-context or low-signal requests may be closed quickly to keep the backlog clean.
+Repeat low-signal issue patterns may also be locked after closure so maintainers can stay focused on actual content and concrete site bugs.
