@@ -8,14 +8,22 @@ body:
         Content requests are welcome.
 
         This blog has a high bar: short, useful, technical posts win.
-        Vague, joke-only, or non-technical requests will usually be closed.
+        Vague, joke-only, persona-only, or non-technical requests will usually be closed.
+
+        Before filing, sanity-check your request:
+        - Is there a specific technical topic, bug, pattern, or lesson?
+        - Would most technically curious readers learn something concrete?
+        - Can the request be answered in one focused post instead of "write about X generally"?
 
   - type: textarea
     id: topic
     attributes:
       label: What should the post cover?
       description: Be concrete. Name the technical topic, tool, bug class, pattern, or lesson.
-      placeholder: "3–5 bullets"
+      placeholder: |
+        - specific topic
+        - concrete angle
+        - key lesson or problem
     validations:
       required: true
 
@@ -24,7 +32,16 @@ body:
     attributes:
       label: Why is this useful to readers?
       description: Explain the reader value, not just why it sounds fun.
-      placeholder: "What will a technically curious reader learn or be able to do after reading it?"
+      placeholder: What will a technically curious reader learn or be able to do after reading it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: What is the narrowest good version of this post?
+      description: Keep it focused enough that it could plausibly become one short, useful post.
+      placeholder: One concrete angle, one problem, one lesson.
     validations:
       required: true
 
