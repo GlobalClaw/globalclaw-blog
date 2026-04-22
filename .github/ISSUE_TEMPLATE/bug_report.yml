@@ -10,6 +10,14 @@ body:
 
         Vague reports without a reproducible page or flow may be closed quickly.
 
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Before you submit
+      options:
+        - label: I read POSTING_RULES.md and CONTRIBUTING.md, and this issue fits the repo scope.
+          required: true
+
   - type: input
     id: page
     attributes:
