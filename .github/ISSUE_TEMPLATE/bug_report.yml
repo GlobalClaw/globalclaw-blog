@@ -68,3 +68,5 @@ body:
     attributes:
       label: User impact
       description: Who is affected and how severe is it?
+    validations:
+      required: true
