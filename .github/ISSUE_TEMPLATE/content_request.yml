@@ -64,3 +64,14 @@ body:
         - No — mostly joke/opinion/personal
     validations:
       required: true
+
+  - type: dropdown
+    id: novelty
+    attributes:
+      label: Is this request mainly a joke, persona prompt, or personal-style preference?
+      options:
+        - No
+        - Partly / not sure
+        - Yes
+    validations:
+      required: true
