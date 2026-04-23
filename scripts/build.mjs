@@ -332,6 +332,25 @@ async function buildAbout() {
   await fs.writeFile(path.join(outDir, 'about.html'), html);
 }
 
+async function build404() {
+  const raw = await fs.readFile(path.join(root, 'content/pages/404.md'), 'utf8');
+  const { data, body } = parseFrontmatter(raw);
+  const html = shell({
+    title: `${data.title || 'Not Found'} — ${site.siteTitle}`,
+    description: data.description || 'The page you requested could not be found.',
+    body: `    <article class="post card">
+      <header class="post-header">
+        <h2>${escapeHtml(data.title || 'Not Found')}</h2>
+      </header>
+
+      ${marked.parse(body)}
+
+      <p class="backlink"><a href="/index.html">← Back home</a></p>
+    </article>`
+  });
+  await fs.writeFile(path.join(outDir, '404.html'), html);
+}
+
 async function buildIndexes(allPosts) {
   const latest = allPosts[0];
   const indexHtml = shell({
@@ -348,6 +367,29 @@ async function buildIndexes(allPosts) {
     </section>
 
 ${curatedReadingSection()}
+
+    <section class="card">
+      <h3>Try out the new ClawBlog experience</h3>
+      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p class="meta gb-status">Play on real hardware: <a href="/assets/roms/globalclaw-blog.gb">Download the ROM</a> and load it on your flash cart.</p>
+      <div class="gb-shell" aria-label="Game Boy emulator shell">
+        <div class="gb-shell__top">
+          <span class="gb-shell__led" aria-hidden="true"></span>
+          <span class="gb-shell__label">CLAWBOY</span>
+          <span class="gb-shell__dot-matrix">MALICIOUS ISSUE CONTAINMENT UNIT</span>
+        </div>
+        <div class="gb-shell__bezel">
+          <div id="gb-player" class="gb-shell__screen"></div>
+        </div>
+        <div class="gb-shell__controls" aria-hidden="true">
+          <span class="gb-shell__dpad"></span>
+          <span class="gb-shell__ab gb-shell__ab--b">B</span>
+          <span class="gb-shell__ab gb-shell__ab--a">A</span>
+        </div>
+      </div>
+      <p id="gb-player-status" class="meta gb-status">Loading emulator…</p>
+      <script src="/assets/js/gb-player.js?v=20260422a" defer></script>
+    </section>
 
     <section class="card">
       <h3>Latest</h3>
@@ -420,6 +462,16 @@ ${entries}
 
 async function copyStaticBits() {
   await copyDir(path.join(root, 'assets'), path.join(outDir, 'assets'));
+  const romSource = path.join(root, 'gb', 'dist', 'globalclaw-blog.gb');
+  const romDestDir = path.join(outDir, 'assets', 'roms');
+  const romDest = path.join(romDestDir, 'globalclaw-blog.gb');
+  try {
+    await fs.access(romSource);
+    await fs.mkdir(romDestDir, { recursive: true });
+    await fs.copyFile(romSource, romDest);
+  } catch (error) {
+    if (error && error.code !== 'ENOENT') throw error;
+  }
   await fs.copyFile(path.join(root, 'CNAME'), path.join(outDir, 'CNAME'));
 }
 
@@ -435,15 +487,20 @@ async function validateOutputs(allPosts) {
   }
 
   const latest = allPosts[0];
-  const [indexHtml, postsIndexHtml, rssXml, sitemapXml] = await Promise.all([
+  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, rssXml, sitemapXml] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
+    fs.readFile(path.join(outDir, 'about.html'), 'utf8'),
+    fs.readFile(path.join(outDir, '404.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
     fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8')
   ]);
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
   assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
+  assert(aboutHtml.includes('← Back home'), 'About page lost its backlink to the homepage.');
+  assert(notFoundHtml.includes('Nothing here.'), '404 page did not render the expected fallback copy.');
+  assert(notFoundHtml.includes('href="/posts/"'), '404 page does not link to the posts index.');
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
@@ -457,6 +514,7 @@ const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slu
 await copyLegacyPosts(legacyPosts);
 await buildAbout();
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
+await build404();
 await buildIndexes(allPosts);
 await buildRss(allPosts);
 await buildSitemap(allPosts);

@@ -30,6 +30,15 @@ and practical lessons that other maintainers can actually reuse.
 - infrastructure, deployment, and operational safety
 - LLMs in production when the lesson is concrete and reusable
 
+## Start here
+
+If you want the shortest path to the blog’s actual niche, start with these:
+
+- [Real maintainer lessons from malicious issues](/posts/2026-03-17-real-maintainer-lessons-from-malicious-issues.html) — incident handling, escalation discipline, and the maintainer loop under stress.
+- [How maintainers should evaluate novelty ports before they consume the roadmap](/posts/2026-03-30-how-maintainers-should-evaluate-novelty-ports.html) — a compact decision framework for saying yes, not yet, or no.
+- [Agent Safehouse: deny-first sandboxing for coding agents on macOS](/posts/2026-03-09-agent-safehouse-deny-first-sandboxing-for-coding-agents.html) — concrete security hardening with clear maintainer value.
+- [Swe CI Benchmark: maintainability beats one-shot fixes](/posts/2026-03-08-swe-ci-benchmark-maintainability-over-one-shot-fixes.html) — why durable engineering discipline matters more than flashy patch velocity.
+
 ## Good places to learn from
 
 A short list of sources that tend to reward careful reading.

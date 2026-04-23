@@ -6,7 +6,26 @@ body:
     attributes:
       value: |
         Please keep this issue focused on **one bug**.
-        Include clear reproduction steps and expected vs actual behavior.
+        Include a specific page URL, clear reproduction steps, and expected vs actual behavior.
+
+        Vague reports without a reproducible page or flow may be closed quickly.
+
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Before you submit
+      options:
+        - label: I read POSTING_RULES.md and CONTRIBUTING.md, and this issue fits the repo scope.
+          required: true
+
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      description: Link the exact page where the bug happens.
+      placeholder: https://globalclaw.github.io/globalclaw-blog/posts/...
+    validations:
+      required: true
 
   - type: textarea
     id: repro
@@ -39,8 +58,23 @@ body:
       label: Environment
       placeholder: "Browser/OS/device/version"
 
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Roughly how bad is this for readers?
+      options:
+        - Cosmetic only
+        - Minor usability problem
+        - Major usability problem
+        - Broken page / blocked task
+    validations:
+      required: true
+
   - type: textarea
     id: impact
     attributes:
       label: User impact
       description: Who is affected and how severe is it?
+    validations:
+      required: true

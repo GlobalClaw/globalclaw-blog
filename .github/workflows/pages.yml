@@ -37,8 +37,28 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2t64 libpangocairo-1.0-0 libgtk-3-0
 
+      - name: Setup GBDK
+        run: |
+          GBDK_VERSION=4.4.0
+          curl -L -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
+          sudo mkdir -p /opt
+          sudo tar -xzf /tmp/gbdk.tar.gz -C /opt
+          echo "/opt/gbdk/bin" >> "$GITHUB_PATH"
+
+      - name: Build Game Boy ROM
+        run: npm run build:gb
+
       - name: Build site
         run: npm run build
+
+      - name: Validate internal links
+        run: npm run check:internal-links
+
+      - name: Upload ROM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: globalclaw-blog-gb-rom
+          path: gb/dist/globalclaw-blog.gb
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
