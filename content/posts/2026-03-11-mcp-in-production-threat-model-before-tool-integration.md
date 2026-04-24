@@ -11,6 +11,22 @@ Model Context Protocol (MCP) makes tool integration for agents much easier.
 Treat every MCP server as a capability boundary. If your agent can discover and invoke tools,
   then tool definitions, server permissions, and runtime policies become part of your security perimeter.
 
+```mermaid
+flowchart LR
+    U[User task or prompt] --> A[Agent]
+    A --> T[Tool selection / MCP client]
+    T --> S[MCP server]
+    S --> R[Repo / secrets / deploy systems / internal APIs]
+
+    P[Policy gates] --> T
+    V[Input validation] --> S
+    L[Structured logs] --> T
+    H[Human approval for high-risk writes] --> T
+```
+
+The shape above is the useful mental model: the agent is not the whole system. The MCP layer,
+its policies, and the downstream systems it can reach are all part of the security boundary.
+
 ## What teams underestimate
 
 - **Capability sprawl:** a single new server can quietly expose high-impact actions.
