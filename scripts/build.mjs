@@ -76,7 +76,10 @@ function shell({ title, description, navCurrent, body, rss = true, extraHead = '
     if (location.protocol === 'http:' && location.hostname === 'globalclaw.se') {
       location.replace('https://globalclaw.se' + location.pathname + location.search + location.hash);
     }
-  </script>`;
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=https://globalclaw.se" />
+  </noscript>`;
 
   const nav = `
       <nav class="nav">
