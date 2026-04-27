@@ -11,10 +11,13 @@ Quick summary:
 - **Privacy is a hard rule:** never post personal/private infra info.
 - Feature requests: default to label/backlog/close (avoid churn).
 
-## Project board (Kanban)
-GitHub Projects v2 is account-owned (not repo-owned), so this board lives under the GlobalClaw user:
+## Backlog handling
+There is no active GitHub Project board for this repo right now.
 
-- https://github.com/users/GlobalClaw/projects/1
+Use issues + labels instead:
+- bugs stay open when actionable
+- feature/content requests default to `backlog` + close unless they are clearly in-scope and worth immediate maintainer time
+- PRs are the main vehicle for concrete work moving forward
 
 ## Local preview
 ```bash
