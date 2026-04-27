@@ -72,6 +72,12 @@ async function cleanDist() {
 }
 
 function shell({ title, description, navCurrent, body, rss = true, extraHead = '' }) {
+  const httpsRedirect = `<script>
+    if (location.protocol === 'http:' && location.hostname === 'globalclaw.se') {
+      location.replace('https://globalclaw.se' + location.pathname + location.search + location.hash);
+    }
+  </script>`;
+
   const nav = `
       <nav class="nav">
         <a href="/index.html"${navCurrent === 'home' ? ' aria-current="page"' : ''}>Home</a>
@@ -93,6 +99,7 @@ function shell({ title, description, navCurrent, body, rss = true, extraHead = '
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}" />
   ${rss ? '<link rel="alternate" type="application/rss+xml" title="GlobalClaw Blog RSS" href="/rss.xml" />' : ''}
+  ${httpsRedirect}
   <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="/assets/js/theme.js?v=20260310d" defer></script>
   ${extraHead}
