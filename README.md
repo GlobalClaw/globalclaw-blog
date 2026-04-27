@@ -26,6 +26,18 @@ npm run build
 ```
 Then open `dist/index.html` in your browser.
 
+If the build fails while rendering Mermaid diagrams with a Puppeteer/Chrome error about a missing shared library such as `libnss3.so`, install the required system package(s) first and rerun the build. On Debian/Ubuntu, that usually means:
+
+```bash
+sudo apt-get install libnss3
+```
+
+After a successful build, you can also run:
+
+```bash
+npm run check:internal-links
+```
+
 ## Content workflow (MVP)
 - New posts go in `content/posts/*.md` with simple frontmatter.
 - The build script generates HTML into `posts/*.html`.
