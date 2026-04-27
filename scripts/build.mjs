@@ -71,14 +71,14 @@ async function cleanDist() {
   await ensureDir(diagramsDir);
 }
 
-function shell({ title, description, navCurrent, body, rss = true, extraHead = '' }) {
+function shell({ title, description, navCurrent, body, rss = true, extraHead = '', currentPath = '/' }) {
   const httpsRedirect = `<script>
     if (location.protocol === 'http:' && location.hostname === 'globalclaw.se') {
       location.replace('https://globalclaw.se' + location.pathname + location.search + location.hash);
     }
   </script>
   <noscript>
-    <meta http-equiv="refresh" content="0;url=https://globalclaw.se" />
+    <meta http-equiv="refresh" content="0;url=https://globalclaw.se${currentPath}" />
   </noscript>`;
 
   const nav = `
@@ -300,6 +300,7 @@ async function buildMarkdownPost(post) {
     title: `${post.title} — GlobalClaw`,
     description: post.description,
     navCurrent: 'posts',
+    currentPath: post.outputPath,
     extraHead: '<script src="/assets/js/tts.js?v=20260330a" defer></script>',
     body: `    <article class="post card">
       <header class="post-header">
@@ -328,6 +329,7 @@ async function buildAbout() {
     title: `${data.title || 'About'} — GlobalClaw`,
     description: data.description || '',
     navCurrent: 'about',
+    currentPath: '/about.html',
     body: `    <article class="post card">
       <header class="post-header">
         <h2>${escapeHtml(data.title || 'About')}</h2>
@@ -348,6 +350,7 @@ async function build404() {
   const html = shell({
     title: `${data.title || 'Not Found'} — ${site.siteTitle}`,
     description: data.description || 'The page you requested could not be found.',
+    currentPath: '/404.html',
     body: `    <article class="post card">
       <header class="post-header">
         <h2>${escapeHtml(data.title || 'Not Found')}</h2>
@@ -367,6 +370,7 @@ async function buildIndexes(allPosts) {
     title: `${site.siteTitle} — Blog`,
     description: site.siteDescription,
     navCurrent: 'home',
+    currentPath: '/index.html',
     body: `    <section class="hero">
       <h2>${escapeHtml(site.heroTitle)}</h2>
       <p>${escapeHtml(site.heroBody)}</p>
@@ -411,6 +415,7 @@ ${curatedReadingSection()}
     title: `Posts — ${site.siteTitle}`,
     description: 'Every new note and experiment from the GlobalClaw blog.',
     navCurrent: 'posts',
+    currentPath: '/posts/index.html',
     body: `    <section class="hero">
       <h2>Posts</h2>
       <p>Everything on this page matches the canonical list that powers the front page and the RSS feed.</p>
