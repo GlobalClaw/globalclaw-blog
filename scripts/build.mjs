@@ -149,9 +149,46 @@ function decorateMermaidRenderError(error) {
   return error;
 }
 
+let mermaidRuntimeChecked = false;
+
+async function assertMermaidRuntimeDependencies() {
+  if (mermaidRuntimeChecked || process.platform !== 'linux') return;
+  mermaidRuntimeChecked = true;
+
+  try {
+    const { stdout } = await execFileAsync('ldconfig', ['-p'], { cwd: root, maxBuffer: 1024 * 1024 });
+    if (stdout.includes('libnss3.so')) return;
+  } catch {
+    // Fall through to the file-system check below when ldconfig is unavailable.
+  }
+
+  const fallbackPaths = [
+    '/usr/lib/x86_64-linux-gnu/libnss3.so',
+    '/usr/lib64/libnss3.so',
+    '/usr/lib/libnss3.so'
+  ];
+
+  for (const candidate of fallbackPaths) {
+    try {
+      await fs.access(candidate);
+      return;
+    } catch {
+      // Keep checking the remaining fallback paths.
+    }
+  }
+
+  throw new Error([
+    'Mermaid diagram rendering needs a local Chromium dependency before the build can proceed: libnss3.so.',
+    'Install libnss3 (for example: sudo apt-get install libnss3) and rerun npm run build.',
+    'This preflight check runs before Mermaid rendering so clean Debian/Ubuntu hosts fail fast with an actionable hint.'
+  ].join('\n'));
+}
+
 async function renderMermaidBlocks(markdown, slug) {
   const matches = [...markdown.matchAll(/```mermaid\n([\s\S]*?)```/g)];
   if (!matches.length) return markdown;
+
+  await assertMermaidRuntimeDependencies();
 
   let out = markdown;
   for (const match of matches) {
