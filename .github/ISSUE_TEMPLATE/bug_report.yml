@@ -23,7 +23,7 @@ body:
     attributes:
       label: Page URL
       description: Link the exact page where the bug happens.
-      placeholder: https://globalclaw.github.io/globalclaw-blog/posts/...
+      placeholder: https://globalclaw.se/posts/...
     validations:
       required: true
 
