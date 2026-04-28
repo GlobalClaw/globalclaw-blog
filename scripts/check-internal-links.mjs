@@ -47,6 +47,13 @@ function decodeHref(href) {
 }
 
 async function main() {
+  try {
+    await fs.access(distDir);
+  } catch {
+    console.error('Missing dist/ output. Run `npm run build` before `npm run check:internal-links`.');
+    process.exit(1);
+  }
+
   const allFiles = await walk(distDir);
   const htmlFiles = allFiles.filter((file) => file.endsWith('.html'));
   const htmlCache = new Map();
