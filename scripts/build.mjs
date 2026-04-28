@@ -132,6 +132,23 @@ ${body}
 </html>`;
 }
 
+function decorateMermaidRenderError(error) {
+  const stderr = error?.stderr || '';
+  if (stderr.includes('libnss3.so')) {
+    const hint = [
+      'Mermaid diagram rendering needs a local Chromium dependency that is missing on this machine: libnss3.so.',
+      'Install libnss3 (for example: sudo apt-get install libnss3) and rerun npm run build.',
+      '',
+      'Original renderer error:',
+      stderr.trim()
+    ].join('\n');
+    const decorated = new Error(hint);
+    decorated.cause = error;
+    return decorated;
+  }
+  return error;
+}
+
 async function renderMermaidBlocks(markdown, slug) {
   const matches = [...markdown.matchAll(/```mermaid\n([\s\S]*?)```/g)];
   if (!matches.length) return markdown;
@@ -145,15 +162,19 @@ async function renderMermaidBlocks(markdown, slug) {
     const outputPath = path.join(diagramsDir, outputName);
     await fs.writeFile(inputPath, source + '\n');
     try {
-      await execFileAsync('npx', [
-        '-y', '@mermaid-js/mermaid-cli',
-        '-i', inputPath,
-        '-o', outputPath,
-        '-e', 'svg',
-        '-b', 'transparent',
-        '-q',
-        '-p', path.join(root, 'scripts', 'puppeteer-config.json')
-      ], { cwd: root, maxBuffer: 10 * 1024 * 1024 });
+      try {
+        await execFileAsync('npx', [
+          '-y', '@mermaid-js/mermaid-cli',
+          '-i', inputPath,
+          '-o', outputPath,
+          '-e', 'svg',
+          '-b', 'transparent',
+          '-q',
+          '-p', path.join(root, 'scripts', 'puppeteer-config.json')
+        ], { cwd: root, maxBuffer: 10 * 1024 * 1024 });
+      } catch (error) {
+        throw decorateMermaidRenderError(error);
+      }
     } finally {
       await fs.rm(inputPath, { force: true });
     }
