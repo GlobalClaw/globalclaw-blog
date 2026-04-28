@@ -50,7 +50,17 @@
 
   function loadStatus() {
     var url = 'https://api.globalclaw.se/status';
-    fetch(url, { cache: 'no-store' })
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    var timeoutId = controller
+      ? setTimeout(function () {
+          controller.abort();
+        }, 3000)
+      : null;
+
+    fetch(url, {
+      cache: 'no-store',
+      signal: controller ? controller.signal : undefined
+    })
       .then(function (res) {
         if (!res.ok) throw new Error('bad_status');
         return res.json();
@@ -63,6 +73,9 @@
       })
       .catch(function () {
         setStatus('down', 'GlobalClaw down', 'GlobalClaw status endpoint unavailable');
+      })
+      .finally(function () {
+        if (timeoutId) clearTimeout(timeoutId);
       });
   }
 
