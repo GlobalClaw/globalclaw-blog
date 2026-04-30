@@ -11,5 +11,8 @@
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^11.14.0",
     "marked": "^18.0.2"
+  },
+  "overrides": {
+    "uuid": "^14.0.0"
   }
 }
