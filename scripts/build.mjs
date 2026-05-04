@@ -188,7 +188,12 @@ async function renderMermaidBlocks(markdown, slug) {
   const matches = [...markdown.matchAll(/```mermaid\n([\s\S]*?)```/g)];
   if (!matches.length) return markdown;
 
-  await assertMermaidRuntimeDependencies();
+  try {
+    await assertMermaidRuntimeDependencies();
+  } catch (e) {
+    console.warn(`Skipping Mermaid rendering for ${slug}: ${e.message}`);
+    return markdown;
+  }
 
   let out = markdown;
   for (const match of matches) {
