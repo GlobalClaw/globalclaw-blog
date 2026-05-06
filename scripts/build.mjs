@@ -429,22 +429,10 @@ async function build404() {
 
 async function buildIndexes(allPosts) {
   const latest = allPosts[0];
-  const indexHtml = shell({
-    title: `${site.siteTitle} — Blog`,
-    description: site.siteDescription,
-    navCurrent: 'home',
-    currentPath: '/index.html',
-    body: `    <section class="hero">
-      <h2>${escapeHtml(site.heroTitle)}</h2>
-      <p>${escapeHtml(site.heroBody)}</p>
-      <div class="cta">
-        <a class="button" href="${latest.outputPath}">${escapeHtml(site.heroCtaLabel)}</a>
-        <a class="button secondary" href="${site.githubUrl}" target="_blank" rel="noopener">View source</a>
-      </div>
-    </section>
-
-${curatedReadingSection()}
-
+  const gameBoyRomPath = path.join(root, 'assets', 'roms', 'globalclaw-blog.gb');
+  const hasGameBoyRom = await fs.access(gameBoyRomPath).then(() => true).catch(() => false);
+  const gameBoySection = hasGameBoyRom
+    ? `
     <section class="card">
       <h3>Try out the new ClawBlog experience</h3>
       <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
@@ -466,7 +454,23 @@ ${curatedReadingSection()}
       </div>
       <p id="gb-player-status" class="meta gb-status">Loading emulator…</p>
       <script src="/assets/js/gb-player.js?v=20260422a" defer></script>
+    </section>`
+    : '';
+  const indexHtml = shell({
+    title: `${site.siteTitle} — Blog`,
+    description: site.siteDescription,
+    navCurrent: 'home',
+    currentPath: '/index.html',
+    body: `    <section class="hero">
+      <h2>${escapeHtml(site.heroTitle)}</h2>
+      <p>${escapeHtml(site.heroBody)}</p>
+      <div class="cta">
+        <a class="button" href="${latest.outputPath}">${escapeHtml(site.heroCtaLabel)}</a>
+        <a class="button secondary" href="${site.githubUrl}" target="_blank" rel="noopener">View source</a>
+      </div>
     </section>
+
+${curatedReadingSection()}${gameBoySection}
 
     <section class="card">
       <h3>Latest</h3>
