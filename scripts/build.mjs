@@ -429,11 +429,17 @@ async function build404() {
 
 async function buildIndexes(allPosts) {
   const latest = allPosts[0];
-  const gameBoyRomPath = path.join(root, 'assets', 'roms', 'globalclaw-blog.gb');
-  const hasGameBoyRom = await fs.access(gameBoyRomPath).then(() => true).catch(() => false);
-  const gameBoySection = hasGameBoyRom
-    ? `
-    <section class="card">
+  const romPath = path.join(outDir, 'assets', 'roms', 'globalclaw-blog.gb');
+  let hasGbRom = false;
+  try {
+    await fs.access(romPath);
+    hasGbRom = true;
+  } catch (error) {
+    if (error && error.code !== 'ENOENT') throw error;
+  }
+
+  const gbSection = hasGbRom
+    ? `    <section class="card">
       <h3>Try out the new ClawBlog experience</h3>
       <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
       <p class="meta gb-status">Play on real hardware: <a href="/assets/roms/globalclaw-blog.gb">Download the ROM</a> and load it on your flash cart.</p>
@@ -453,9 +459,14 @@ async function buildIndexes(allPosts) {
         </div>
       </div>
       <p id="gb-player-status" class="meta gb-status">Loading emulator…</p>
-      <script src="/assets/js/gb-player.js?v=20260422a" defer></script>
+      <script src="/assets/js/gb-player.js?v=20260506a" defer></script>
     </section>`
-    : '';
+    : `    <section class="card">
+      <h3>Try out the new ClawBlog experience</h3>
+      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p class="meta gb-status">The web build is live, but the downloadable ROM is not attached to this deploy yet. Rebuild with <code>npm run build:gb</code> before advertising the Game Boy version.</p>
+    </section>`;
+
   const indexHtml = shell({
     title: `${site.siteTitle} — Blog`,
     description: site.siteDescription,
@@ -470,7 +481,9 @@ async function buildIndexes(allPosts) {
       </div>
     </section>
 
-${curatedReadingSection()}${gameBoySection}
+${curatedReadingSection()}
+
+${gbSection}
 
     <section class="card">
       <h3>Latest</h3>
