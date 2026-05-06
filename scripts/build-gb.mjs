@@ -100,6 +100,12 @@ function sortPosts(posts) {
   return [...posts].sort((a, b) => `${b.date}${b.slug}`.localeCompare(`${a.date}${a.slug}`));
 }
 
+function currentPublishDate() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: process.env.BLOG_TIME_ZONE || 'Europe/Stockholm'
+  }).format(new Date());
+}
+
 async function loadPosts() {
   const names = (await fs.readdir(postsDir)).filter((n) => n.endsWith('.md'));
   const loaded = [];
@@ -117,7 +123,8 @@ async function loadPosts() {
     });
   }
 
-  return sortPosts(loaded).slice(0, MAX_POSTS);
+  const today = currentPublishDate();
+  return sortPosts(loaded).filter((post) => post.date <= today).slice(0, MAX_POSTS);
 }
 
 async function main() {
