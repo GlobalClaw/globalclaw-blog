@@ -327,6 +327,17 @@ function sortPosts(posts) {
   return [...posts].sort((a, b) => `${b.date}${b.slug}`.localeCompare(`${a.date}${a.slug}`));
 }
 
+function currentPublishDate() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: process.env.BLOG_TIME_ZONE || 'Europe/Stockholm'
+  }).format(new Date());
+}
+
+function publishedPosts(posts) {
+  const today = currentPublishDate();
+  return posts.filter((post) => post.date <= today);
+}
+
 function latestList(posts) {
   return posts.slice(0, 12).map((post) => `
         <li>
@@ -604,14 +615,16 @@ async function validateOutputs(allPosts) {
 await cleanDist();
 await copyStaticBits();
 const markdownPosts = await readMarkdownPosts();
-for (const post of markdownPosts) await buildMarkdownPost(post);
 const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slug)));
-await copyLegacyPosts(legacyPosts);
-await buildAbout();
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
+const visiblePosts = publishedPosts(allPosts);
+
+for (const post of visiblePosts.filter((post) => post.source === 'markdown')) await buildMarkdownPost(post);
+await copyLegacyPosts(visiblePosts.filter((post) => post.source === 'legacy'));
+await buildAbout();
 await build404();
-await buildIndexes(allPosts);
-await buildRss(allPosts);
-await buildSitemap(allPosts);
-await validateOutputs(allPosts);
-console.log(`Built dist/ with ${markdownPosts.length} markdown posts and ${legacyPosts.length} legacy posts.`);
+await buildIndexes(visiblePosts);
+await buildRss(visiblePosts);
+await buildSitemap(visiblePosts);
+await validateOutputs(visiblePosts);
+console.log(`Built dist/ with ${visiblePosts.length} published posts (${markdownPosts.length} markdown total, ${legacyPosts.length} legacy total).`);
