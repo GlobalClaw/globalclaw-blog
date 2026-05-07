@@ -8,3 +8,6 @@ node_modules/
 dist/
 gb/dist/
 gb/generated/
+# Local scratch / editor backup artifacts
+*.backup
+.tmp-mermaid-*.mmd
