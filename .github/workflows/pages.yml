@@ -10,6 +10,9 @@ on:
 permissions:
   contents: read
 
+env:
+  GBDK_VERSION: 4.4.0
+
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
@@ -36,13 +39,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2t64 libpangocairo-1.0-0 libgtk-3-0
 
+      - name: Cache GBDK
+        id: cache-gbdk
+        uses: actions/cache@v4
+        with:
+          path: /opt/gbdk
+          key: gbdk-${{ runner.os }}-${{ env.GBDK_VERSION }}
+
       - name: Setup GBDK
+        if: steps.cache-gbdk.outputs.cache-hit != 'true'
         run: |
-          GBDK_VERSION=4.4.0
           curl -L -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
           sudo mkdir -p /opt
           sudo tar -xzf /tmp/gbdk.tar.gz -C /opt
-          echo "/opt/gbdk/bin" >> "$GITHUB_PATH"
+
+      - name: Add GBDK to PATH
+        run: echo "/opt/gbdk/bin" >> "$GITHUB_PATH"
 
       - name: Build Game Boy ROM
         run: npm run build:gb
