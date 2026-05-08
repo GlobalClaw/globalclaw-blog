@@ -137,7 +137,8 @@ function decorateMermaidRenderError(error) {
   if (stderr.includes('libnss3.so')) {
     const hint = [
       'Mermaid diagram rendering needs a local Chromium dependency that is missing on this machine: libnss3.so.',
-      'Install libnss3 (for example: sudo apt-get install libnss3) and rerun npm run build.',
+      'Install libnss3 first (for example: sudo apt-get install libnss3) and rerun npm run build.',
+      'If Chromium/Puppeteer still reports missing shared libraries after that, install the broader package set documented in README.md.',
       '',
       'Original renderer error:',
       stderr.trim()
@@ -179,7 +180,8 @@ async function assertMermaidRuntimeDependencies() {
 
   throw new Error([
     'Mermaid diagram rendering needs a local Chromium dependency before the build can proceed: libnss3.so.',
-    'Install libnss3 (for example: sudo apt-get install libnss3) and rerun npm run build.',
+    'Install libnss3 first (for example: sudo apt-get install libnss3) and rerun npm run build.',
+    'If Chromium/Puppeteer still reports missing shared libraries after that, install the broader package set documented in README.md.',
     'This preflight check runs before Mermaid rendering so clean Debian/Ubuntu hosts fail fast with an actionable hint.'
   ].join('\n'));
 }
