@@ -53,7 +53,9 @@ jobs:
       - name: Setup GBDK
         if: steps.cache-gbdk.outputs.cache-hit != 'true'
         run: |
-          curl -L -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
+          curl --fail --show-error --silent --location \
+            --retry 3 --retry-delay 5 --retry-all-errors \
+            -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
           echo "${GBDK_LINUX64_SHA256}  /tmp/gbdk.tar.gz" | sha256sum -c -
           sudo mkdir -p /opt
           sudo tar -xzf /tmp/gbdk.tar.gz -C /opt
