@@ -66,7 +66,7 @@ jobs:
         run: npm run check:internal-links
 
       - name: Upload ROM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: globalclaw-blog-gb-rom
           path: gb/dist/globalclaw-blog.gb
