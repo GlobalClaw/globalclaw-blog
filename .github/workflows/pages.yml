@@ -15,6 +15,7 @@ permissions:
 
 env:
   GBDK_VERSION: 4.4.0
+  GBDK_LINUX64_SHA256: 8a292e767610ccfa73c2c14d73e7900075b425f68329f1a8eb7697015915edad
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -53,6 +54,7 @@ jobs:
         if: steps.cache-gbdk.outputs.cache-hit != 'true'
         run: |
           curl -L -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
+          echo "${GBDK_LINUX64_SHA256}  /tmp/gbdk.tar.gz" | sha256sum -c -
           sudo mkdir -p /opt
           sudo tar -xzf /tmp/gbdk.tar.gz -C /opt
 
