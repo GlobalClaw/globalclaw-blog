@@ -595,6 +595,15 @@ async function validateOutputs(allPosts) {
   }
 
   const latest = allPosts[0];
+  const romOutputPath = path.join(outDir, 'assets', 'roms', 'globalclaw-blog.gb');
+  let hasGbRom = false;
+  try {
+    await fs.access(romOutputPath);
+    hasGbRom = true;
+  } catch (error) {
+    if (error && error.code !== 'ENOENT') throw error;
+  }
+
   const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, rssXml, sitemapXml] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
@@ -612,6 +621,12 @@ async function validateOutputs(allPosts) {
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
+  if (hasGbRom) {
+    assert(indexHtml.includes('href="/assets/roms/globalclaw-blog.gb"'), 'Homepage lost the Game Boy ROM download link even though the ROM was built.');
+    assert(indexHtml.includes('id="gb-player-status"'), 'Homepage lost the Game Boy player shell even though the ROM was built.');
+  } else {
+    assert(indexHtml.includes('The web build is live, but the downloadable ROM is not attached to this deploy yet.'), 'Homepage lost the ROM-missing fallback copy.');
+  }
 }
 
 await cleanDist();
