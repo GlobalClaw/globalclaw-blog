@@ -26,11 +26,15 @@ npm run build
 ```
 Then open `dist/index.html` in your browser.
 
-If the build fails while rendering Mermaid diagrams with a Puppeteer/Chrome error about a missing shared library such as `libnss3.so`, install the required system package(s) first and rerun the build. On Debian/Ubuntu, that usually means:
+If the build fails while rendering Mermaid diagrams with a Puppeteer/Chrome error about a missing shared library such as `libnss3.so`, install the required system package(s) first and rerun the build. On Debian/Ubuntu, the same runtime package set we use in CI is a good baseline:
 
 ```bash
-sudo apt-get install libnss3
+sudo apt-get install libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+  libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 \
+  libasound2t64 libpangocairo-1.0-0 libgtk-3-0
 ```
+
+If you only want the minimum first-pass fix, start with `libnss3` and rerun the build.
 
 After a successful build, you can also run:
 
