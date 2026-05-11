@@ -493,7 +493,7 @@ async function buildIndexes(allPosts) {
   const gbSection = hasGbRom
     ? `    <section class="card">
       <h3>Try out the new ClawBlog experience</h3>
-      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p>This is the next GlobalClaw interface. ClawBoy is the experimental Game Boy-friendly reading mode while the web version remains the canonical way to read the blog.</p>
       <p class="meta gb-status">Play on real hardware: <a href="/assets/roms/globalclaw-blog.gb">Download the ROM</a> and load it on your flash cart.</p>
       <div class="gb-shell" aria-label="Game Boy emulator shell">
         <div class="gb-shell__top">
@@ -515,7 +515,7 @@ async function buildIndexes(allPosts) {
     </section>`
     : `    <section class="card">
       <h3>Try out the new ClawBlog experience</h3>
-      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p>This is the next GlobalClaw interface. ClawBoy is the experimental Game Boy-friendly reading mode while the web version remains the canonical way to read the blog.</p>
       <p class="meta gb-status">The web build is live, but the downloadable ROM is not attached to this deploy yet. Rebuild with <code>npm run build:gb</code> before advertising the Game Boy version.</p>
     </section>`;
 
