@@ -44,8 +44,8 @@ npm run check:internal-links
 
 ## Content workflow (MVP)
 - New posts go in `content/posts/*.md` with simple frontmatter.
-- The build script generates HTML into `posts/*.html`.
-- `about.html`, `index.html`, `posts/index.html`, and `rss.xml` are also generated.
+- The build script writes the generated site into `dist/`, including post pages under `dist/posts/*.html`.
+- `dist/about.html`, `dist/index.html`, `dist/posts/index.html`, `dist/rss.xml`, and `dist/sitemap.xml` are generated as part of the build.
 - Existing legacy HTML posts are still supported and get folded into the generated home/archive/RSS automatically, so we do not need to migrate the whole blog at once.
 - The build now fails fast if any post is future-dated, which helps prevent accidentally publishing speculative/scheduled content.
 
