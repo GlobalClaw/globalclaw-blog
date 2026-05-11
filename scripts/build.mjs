@@ -71,7 +71,37 @@ async function cleanDist() {
   await ensureDir(diagramsDir);
 }
 
-function shell({ title, description, navCurrent, body, rss = true, extraHead = '', currentPath = '/' }) {
+function canonicalPathFor(currentPath = '/') {
+  if (currentPath === '/' || currentPath === '/index.html') return '/';
+  if (currentPath === '/posts/' || currentPath === '/posts/index.html') return '/posts/';
+  return currentPath;
+}
+
+function absoluteUrl(currentPath = '/') {
+  return `${site.siteUrl}${canonicalPathFor(currentPath)}`;
+}
+
+function metadataHead({ title, description, currentPath = '/', ogType = 'website', robots = 'index,follow' }) {
+  const canonicalUrl = absoluteUrl(currentPath);
+  return `
+  <link rel="canonical" href="${escapeHtml(canonicalUrl)}" />
+  <meta name="robots" content="${escapeHtml(robots)}" />
+  <meta property="og:site_name" content="${escapeHtml(site.siteTitle)}" />
+  <meta property="og:type" content="${escapeHtml(ogType)}" />
+  <meta property="og:title" content="${escapeHtml(title)}" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:url" content="${escapeHtml(canonicalUrl)}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="${escapeHtml(title)}" />
+  <meta name="twitter:description" content="${escapeHtml(description)}" />`;
+}
+
+function injectHeadMetadata(html, { title, description, currentPath = '/', ogType = 'website', robots = 'index,follow' }) {
+  const injection = `${metadataHead({ title, description, currentPath, ogType, robots })}\n</head>`;
+  return html.replace(/<\/head>/i, injection);
+}
+
+function shell({ title, description, navCurrent, body, rss = true, extraHead = '', currentPath = '/', ogType = 'website', robots = 'index,follow' }) {
   const httpsRedirect = `<script>
     if (location.protocol === 'http:' && location.hostname === 'globalclaw.se') {
       location.replace('https://globalclaw.se' + location.pathname + location.search + location.hash);
@@ -101,6 +131,7 @@ function shell({ title, description, navCurrent, body, rss = true, extraHead = '
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}" />
+  ${metadataHead({ title, description, currentPath, ogType, robots })}
   ${rss ? '<link rel="alternate" type="application/rss+xml" title="GlobalClaw Blog RSS" href="/rss.xml" />' : ''}
   ${httpsRedirect}
   <link rel="stylesheet" href="/assets/css/style.css" />
@@ -335,6 +366,11 @@ function currentPublishDate() {
   }).format(new Date());
 }
 
+function futureDatedPosts(posts) {
+  const today = currentPublishDate();
+  return posts.filter((post) => post.date > today);
+}
+
 function publishedPosts(posts) {
   const today = currentPublishDate();
   return posts.filter((post) => post.date <= today);
@@ -371,12 +407,30 @@ function assert(condition, message) {
   }
 }
 
+function assertNoFutureDatedPosts(posts) {
+  const futurePosts = futureDatedPosts(posts);
+  if (!futurePosts.length) return;
+
+  const details = futurePosts
+    .map((post) => `- ${post.date} · ${post.slug} (${post.source})`)
+    .join('\n');
+
+  throw new Error([
+    'Refusing to build with future-dated posts.',
+    'This blog treats post dates as publish dates, so future values are usually accidental or speculative.',
+    'Fix the post date or remove the post before rebuilding.',
+    '',
+    details
+  ].join('\n'));
+}
+
 async function buildMarkdownPost(post) {
   const html = shell({
     title: `${post.title} — GlobalClaw`,
     description: post.description,
     navCurrent: 'posts',
     currentPath: post.outputPath,
+    ogType: 'article',
     extraHead: '<script src="/assets/js/tts.js?v=20260330a" defer></script>',
     body: `    <article class="post card">
       <header class="post-header">
@@ -394,7 +448,13 @@ async function buildMarkdownPost(post) {
 
 async function copyLegacyPosts(posts) {
   for (const post of posts) {
-    await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), post.raw);
+    const html = injectHeadMetadata(post.raw, {
+      title: `${post.title} — GlobalClaw`,
+      description: post.description,
+      currentPath: post.outputPath,
+      ogType: 'article'
+    });
+    await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), html);
   }
 }
 
@@ -427,6 +487,7 @@ async function build404() {
     title: `${data.title || 'Not Found'} — ${site.siteTitle}`,
     description: data.description || 'The page you requested could not be found.',
     currentPath: '/404.html',
+    robots: 'noindex,follow',
     body: `    <article class="post card">
       <header class="post-header">
         <h2>${escapeHtml(data.title || 'Not Found')}</h2>
@@ -454,7 +515,7 @@ async function buildIndexes(allPosts) {
   const gbSection = hasGbRom
     ? `    <section class="card">
       <h3>Try out the new ClawBlog experience</h3>
-      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p>This is the next GlobalClaw interface. ClawBoy is the experimental Game Boy-friendly reading mode while the web version remains the canonical way to read the blog.</p>
       <p class="meta gb-status">Play on real hardware: <a href="/assets/roms/globalclaw-blog.gb">Download the ROM</a> and load it on your flash cart.</p>
       <div class="gb-shell" aria-label="Game Boy emulator shell">
         <div class="gb-shell__top">
@@ -476,7 +537,7 @@ async function buildIndexes(allPosts) {
     </section>`
     : `    <section class="card">
       <h3>Try out the new ClawBlog experience</h3>
-      <p>This is the next GlobalClaw interface. ClawBoy will become the default way to read the blog as the web version is sunset in the upcoming weeks.</p>
+      <p>This is the next GlobalClaw interface. ClawBoy is the experimental Game Boy-friendly reading mode while the web version remains the canonical way to read the blog.</p>
       <p class="meta gb-status">The web build is live, but the downloadable ROM is not attached to this deploy yet. Rebuild with <code>npm run build:gb</code> before advertising the Game Boy version.</p>
     </section>`;
 
@@ -595,23 +656,47 @@ async function validateOutputs(allPosts) {
   }
 
   const latest = allPosts[0];
-  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, rssXml, sitemapXml] = await Promise.all([
+  const romOutputPath = path.join(outDir, 'assets', 'roms', 'globalclaw-blog.gb');
+  let hasGbRom = false;
+  try {
+    await fs.access(romOutputPath);
+    hasGbRom = true;
+  } catch (error) {
+    if (error && error.code !== 'ENOENT') throw error;
+  }
+
+  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, latestPostHtml, rssXml, sitemapXml] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'about.html'), 'utf8'),
     fs.readFile(path.join(outDir, '404.html'), 'utf8'),
+    fs.readFile(path.join(outDir, latest.outputPath.replace(/^\//, '')), 'utf8'),
     fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
     fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8')
   ]);
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
+  assert(indexHtml.includes(`<link rel="canonical" href="${site.siteUrl}/" />`), 'Homepage is missing its canonical URL tag.');
+  assert(indexHtml.includes(`<meta property="og:url" content="${site.siteUrl}/" />`), 'Homepage is missing its Open Graph URL tag.');
   assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
+  assert(postsIndexHtml.includes(`<link rel="canonical" href="${site.siteUrl}/posts/" />`), 'Posts index is missing its canonical URL tag.');
   assert(aboutHtml.includes('← Back home'), 'About page lost its backlink to the homepage.');
+  assert(aboutHtml.includes(`<link rel="canonical" href="${site.siteUrl}/about.html" />`), 'About page is missing its canonical URL tag.');
   assert(notFoundHtml.includes('Nothing here.'), '404 page did not render the expected fallback copy.');
   assert(notFoundHtml.includes('href="/posts/"'), '404 page does not link to the posts index.');
+  assert(notFoundHtml.includes('<meta name="robots" content="noindex,follow" />'), '404 page should stay noindex.');
+  assert(latestPostHtml.includes(`<link rel="canonical" href="${site.siteUrl}${latest.outputPath}" />`), `Latest post ${latest.slug} is missing its canonical URL tag.`);
+  assert(latestPostHtml.includes(`<meta property="og:url" content="${site.siteUrl}${latest.outputPath}" />`), `Latest post ${latest.slug} is missing its Open Graph URL tag.`);
+  assert(latestPostHtml.includes('<meta name="twitter:card" content="summary" />'), `Latest post ${latest.slug} is missing its Twitter card tag.`);
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
+  if (hasGbRom) {
+    assert(indexHtml.includes('href="/assets/roms/globalclaw-blog.gb"'), 'Homepage lost the Game Boy ROM download link even though the ROM was built.');
+    assert(indexHtml.includes('id="gb-player-status"'), 'Homepage lost the Game Boy player shell even though the ROM was built.');
+  } else {
+    assert(indexHtml.includes('The web build is live, but the downloadable ROM is not attached to this deploy yet.'), 'Homepage lost the ROM-missing fallback copy.');
+  }
 }
 
 await cleanDist();
@@ -619,6 +704,7 @@ await copyStaticBits();
 const markdownPosts = await readMarkdownPosts();
 const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slug)));
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
+assertNoFutureDatedPosts(allPosts);
 const visiblePosts = publishedPosts(allPosts);
 
 for (const post of visiblePosts.filter((post) => post.source === 'markdown')) await buildMarkdownPost(post);
