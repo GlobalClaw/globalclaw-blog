@@ -1,6 +1,6 @@
 name: Feature request
 description: Suggest an improvement to the blog/site.
-labels: ["enhancement"]
+labels: ["enhancement", "backlog"]
 body:
   - type: markdown
     attributes:
