@@ -61,7 +61,16 @@ readTime: 4 min read
 ```
 
 ## Deploy
-Run `npm run build`, commit the generated files, then push to `main`. GitHub Pages should deploy from `main` / root.
+GitHub Pages now deploys from the Actions workflow in `.github/workflows/pages.yml`.
+
+Typical maintainer flow:
+1. make your content/code change
+2. run `npm run build`
+3. run `npm run check:internal-links`
+4. open a PR to `main`
+5. merge after CI passes
+
+You do not need to commit `dist/` for deployment; the workflow builds the site and uploads the generated artifact.
 
 ## Game Boy ROM build (GBDK)
 This repo includes a Game Boy target that turns a subset of markdown posts into a ROM-readable dataset.
