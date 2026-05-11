@@ -366,6 +366,11 @@ function currentPublishDate() {
   }).format(new Date());
 }
 
+function futureDatedPosts(posts) {
+  const today = currentPublishDate();
+  return posts.filter((post) => post.date > today);
+}
+
 function publishedPosts(posts) {
   const today = currentPublishDate();
   return posts.filter((post) => post.date <= today);
@@ -400,6 +405,23 @@ function assert(condition, message) {
   if (!condition) {
     throw new Error(message);
   }
+}
+
+function assertNoFutureDatedPosts(posts) {
+  const futurePosts = futureDatedPosts(posts);
+  if (!futurePosts.length) return;
+
+  const details = futurePosts
+    .map((post) => `- ${post.date} · ${post.slug} (${post.source})`)
+    .join('\n');
+
+  throw new Error([
+    'Refusing to build with future-dated posts.',
+    'This blog treats post dates as publish dates, so future values are usually accidental or speculative.',
+    'Fix the post date or remove the post before rebuilding.',
+    '',
+    details
+  ].join('\n'));
 }
 
 async function buildMarkdownPost(post) {
@@ -682,6 +704,7 @@ await copyStaticBits();
 const markdownPosts = await readMarkdownPosts();
 const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slug)));
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
+assertNoFutureDatedPosts(allPosts);
 const visiblePosts = publishedPosts(allPosts);
 
 for (const post of visiblePosts.filter((post) => post.source === 'markdown')) await buildMarkdownPost(post);
