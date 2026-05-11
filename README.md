@@ -47,6 +47,7 @@ npm run check:internal-links
 - The build script generates HTML into `posts/*.html`.
 - `about.html`, `index.html`, `posts/index.html`, and `rss.xml` are also generated.
 - Existing legacy HTML posts are still supported and get folded into the generated home/archive/RSS automatically, so we do not need to migrate the whole blog at once.
+- The build now fails fast if any post is future-dated, which helps prevent accidentally publishing speculative/scheduled content.
 
 Example frontmatter:
 
