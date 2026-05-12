@@ -1,40 +1,38 @@
 ---
 title: Real maintainer lessons from malicious issues
-description: A step-by-step record of how the Triagér → Fixér → leadership loop handled malicious reopenings, why the policy changed, and what to do next.
+description: What maintainers should do when an issue thread becomes repetitive, adversarial, or clearly low-signal.
 date: 2026-03-17
 slug: 2026-03-17-real-maintainer-lessons-from-malicious-issues
-readTime: 8 min read
+readTime: 5 min read
 ---
-Early on the morning of March 16 a crawler kept reopening issue #31 and posting the same policy push.
-  Instead of replying to each ping, Triagér logged the burst in `projects/2026_02_github-webhooks/backlog.md`,
-  noted the KARMA tone, and handed the baton to Fixér. That single incident is the kind of data point we now
-  cite when we explain what “malicious issues” means in this repo.
+A noisy issue thread can trick maintainers into spending more energy on reaction than judgment.
 
-The key lesson is that the loop must stay calm and procedural. The automation doesn’t get to debate tone or
-  resolve a policy fight—its job is to log, contain, and pass the story to leadership so the narrative stays
-  accurate and the blog stays focused.
+The useful pattern is simple: log what happened, stop the back-and-forth, and make one clear decision about the thread. If the discussion is repetitive, adversarial, or obviously trying to exhaust reviewer attention, treat that as an operations problem rather than a debate to be won in public.
 
-## What we learned from the Triagér → Fixér → leadership loop
+## What good handling looks like
 
-- **Triagér** remains the front door: he inspects every webhook, adds KARMA context, writes the backlog entry, and marks whether Fixér needs a policy script.
-- **Fixér** takes over only when the path is clear: the worker reviews the backlog, composes a calm reply or label change, and writes a manager queue line that explains the policy question.
-- **Leadership** reads `manager-queue.md`, decides whether a public lesson should ship, and keeps the final story focused on accuracy rather than drama.
+- Record the observable behavior, not a dramatic story about intent.
+- Pause replies once the pattern is clear.
+- Apply labels that tell future maintainers what kind of thread they are looking at.
+- Decide whether the right outcome is a short final reply, a lock, or a close.
+- Keep any public explanation factual and brief.
 
-## Policy changes from the incidents
+## Policy lessons
 
-- Pause replies until the backlog entry names the pattern and the next action—that prevents reactive comment storms.
-- Every escalated thread now carries the `backlog` label plus any relevant policy tags so triage can see the context at a glance.
-- Keep KARMA tone consistent: confirm observable facts, cite references, and refuse to speculate.
-- Document the follow-up in `manager-queue.md` so any future audit can trace the exact decision and approval.
+A few habits consistently reduce damage:
 
-## Follow-up steps
+- **Contain repetition early.** If a thread is saying the same thing over and over, more replies rarely improve it.
+- **Optimize for maintainability.** Future readers need a clean decision record more than they need a blow-by-blow transcript.
+- **Separate facts from speculation.** Maintainers should describe what was posted and what action was taken, not guess at motives.
+- **Prefer calm closure.** A quiet, documented close is usually better than an escalating argument.
 
-- Leadership should review the new manager queue entry tied to issue #27 and confirm it can turn into a public lesson.
-- If leadership spells out further policy tweaks, make sure those changes land in KARMA/triager.md before the automation replies again.
-- Keep issue #29 updated with any broader observations; it is the place we stash backlog-level thinking about token budgets.
+## Practical checklist
 
-## Checklist before the loop runs again
+Before closing out a thread like this, confirm:
 
-- Verify the backlog entry includes timestamps, tone guidance, and the decision to escalate (the March 16 burst already has those details).
-- Confirm the manager queue entry makes the human decision visible so leadership can endorse or refuse the public lesson.
-- When the story goes live, link the post back to the incident so any future reader knows which reopening triggered the policy shift.
+- the issue has enough labels or context for later triage
+- the final maintainer note explains the decision in plain language
+- any broader policy lesson is written somewhere maintainers actually review
+- the team is aligned on whether similar threads should be closed faster next time
+
+The goal is not to sound tough. The goal is to keep the project governable under stress.
