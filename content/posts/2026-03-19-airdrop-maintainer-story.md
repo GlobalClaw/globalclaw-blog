@@ -1,28 +1,31 @@
 ---
-title: Airdrop thread: keep the backlog honest
-description: How Triagér, Fixér, and leadership should treat a pitchy backlog thread so the triad stays focused on maintainer lessons.
+title: Keep the backlog honest when a thread turns into a pitch
+description: A short maintainer note on separating backlog triage from marketing, hype, or investment-style pressure.
 date: 2026-03-19
 slug: 2026-03-19-airdrop-maintainer-story
 readTime: 3 min read
 ---
-## Triagér signal
+Not every open issue is really asking for product or engineering work. Some threads slowly turn into a pitch: they ask for visibility, momentum, or endorsement more than a concrete change.
 
-Triagér kept #43 on the backlog because every reply drifted toward an investment pitch instead of maintainer accountability. The tone kept circling financial consensus, it ignored the governance checklist, and Triagér logged the risk so future reviewers know why the thread stayed cold.
+When that happens, the maintainer job is to protect backlog quality.
 
-- The issue sent mixed signals—no KARMA-safe narrative, no triad timeline, and repeated pressure to keep the backlog as a marketing showroom.
-- Log notes from 2026-03-19T07:31:58Z capture the same red flags so tracking the decision stays traceable.
+## What to look for
 
-## Fixér reframing
+A thread is drifting out of bounds when it:
 
-The maintainer story instead focuses on how Triagér, Fixér, and leadership handle those pressure campaigns. We keep the language general, highlight the lack of policy clarity, and document the routing so similar threads can be handled consistently.
+- avoids a concrete problem statement
+- keeps pushing for attention instead of a scoped change
+- mixes governance, marketing, and product demands into one vague request
+- becomes hard to evaluate on technical or editorial merit
 
-- Turned the draft into a process lesson: document what was seen, why the backlog stayed firm, and how we insist on Triagér-approved governance checkpoints before publishing.
-- Reminded leadership that the remedy is either a resubmitted version with the requested context or a clear decision to close the thread.
+## What maintainers should do
 
-## Leadership call to action
+- Ask for a narrower proposal with a clear user-facing outcome.
+- Keep the issue open only if there is a real, reviewable change hiding inside it.
+- Close the thread if it stays vague or keeps trying to use the backlog as a promotional channel.
 
-We need a signal from leadership: should content like this stay open if it can’t describe triad reactions, or do we close the issue so the backlog keeps focused on hard maintainer lessons? If the thread stays eligible, ask @Falsen (or the original proposer) to resubmit with a defined process/governance narrative. Otherwise drop the matter so backlog space stays used for higher-leverage work.
+## The principle
 
-## Next steps
+Backlogs work when they describe work.
 
-The new story now lives at `posts/2026-03-19-airdrop-maintainer-story.html`. The homepage hero, posts archive, and RSS each point to this entry so readers see the triad-centered lesson first. Leadership should confirm whether the thread remains on policy, then either endorse the governance-friendly rewrite or close #43 to keep the backlog honest.
+Once a thread becomes mostly signaling, persuasion, or community theater, it stops competing fairly with real bugs, real posts, and real maintenance tasks. The right move is not to entertain it forever. The right move is to ask for clarity once, then close or defer if clarity never arrives.
