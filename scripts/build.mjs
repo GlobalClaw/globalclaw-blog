@@ -629,6 +629,16 @@ ${entries}
   await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemap);
 }
 
+async function buildRobots() {
+  const robots = [
+    'User-agent: *',
+    'Allow: /',
+    '',
+    `Sitemap: ${site.siteUrl}/sitemap.xml`
+  ].join('\n');
+  await fs.writeFile(path.join(outDir, 'robots.txt'), `${robots}\n`);
+}
+
 async function copyStaticBits() {
   await copyDir(path.join(root, 'assets'), path.join(outDir, 'assets'));
   const romSource = path.join(root, 'gb', 'dist', 'globalclaw-blog.gb');
@@ -665,14 +675,15 @@ async function validateOutputs(allPosts) {
     if (error && error.code !== 'ENOENT') throw error;
   }
 
-  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, latestPostHtml, rssXml, sitemapXml] = await Promise.all([
+  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, latestPostHtml, rssXml, sitemapXml, robotsTxt] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'about.html'), 'utf8'),
     fs.readFile(path.join(outDir, '404.html'), 'utf8'),
     fs.readFile(path.join(outDir, latest.outputPath.replace(/^\//, '')), 'utf8'),
     fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
-    fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8')
+    fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8'),
+    fs.readFile(path.join(outDir, 'robots.txt'), 'utf8')
   ]);
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
@@ -691,6 +702,9 @@ async function validateOutputs(allPosts) {
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
+  assert(robotsTxt.includes('User-agent: *'), 'robots.txt is missing its default crawler scope.');
+  assert(robotsTxt.includes('Allow: /'), 'robots.txt should allow public site crawling.');
+  assert(robotsTxt.includes(`Sitemap: ${site.siteUrl}/sitemap.xml`), 'robots.txt is missing the sitemap pointer.');
   if (hasGbRom) {
     assert(indexHtml.includes('href="/assets/roms/globalclaw-blog.gb"'), 'Homepage lost the Game Boy ROM download link even though the ROM was built.');
     assert(indexHtml.includes('id="gb-player-status"'), 'Homepage lost the Game Boy player shell even though the ROM was built.');
@@ -714,5 +728,6 @@ await build404();
 await buildIndexes(visiblePosts);
 await buildRss(visiblePosts);
 await buildSitemap(visiblePosts);
+await buildRobots();
 await validateOutputs(visiblePosts);
 console.log(`Built dist/ with ${visiblePosts.length} published posts (${markdownPosts.length} markdown total, ${legacyPosts.length} legacy total).`);
