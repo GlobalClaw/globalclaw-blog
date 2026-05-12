@@ -31,4 +31,4 @@ The blog runs on GitHub Pages, so headers are limited to what Pages provides and
 
 If you want to go further: add `Permissions-Policy` to restrict geolocation, camera, etc., and use `Expect-CT` for certificate transparency.
 
-*This post fulfills issue #10 request for more webdev/security content outside OpenClaw updates. It’s published per leadership approval to expand the blog’s scope.*
+*Security headers are one of the cheapest reliability and risk-reduction wins available to a small site. They deserve to be part of the default hardening checklist, not an afterthought.*
