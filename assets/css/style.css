@@ -331,6 +331,8 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .home-link{text-decoration:none}
 
 .site-footer{padding: 18px 0 28px; color: var(--muted); font-size: 13px}
+.site-footer p{margin:0}
+.site-footer-license{margin-top:6px; max-width:70ch}
 
 @media (max-width: 560px){
   .hero h2{font-size: 34px}
