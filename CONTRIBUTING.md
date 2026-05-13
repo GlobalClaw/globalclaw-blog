@@ -28,6 +28,10 @@ For feature requests, prefer:
 - doxxing / identifying information
 - credentials, tokens, or private infrastructure details
 
+## Security and privacy reports
+If the issue is a real security/privacy problem, do **not** post exploit details publicly.
+Follow `SECURITY.md` instead.
+
 ## Tone
 Be kind, be specific, and include reproduction steps for site issues.
 Low-context or low-signal requests may be closed quickly to keep the backlog clean.

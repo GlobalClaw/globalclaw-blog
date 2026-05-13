@@ -6,6 +6,9 @@ A tiny static blog hosted on GitHub Pages.
 - **Code, build scripts, and workflow/config files** are licensed under the **MIT License**. See `LICENSE`.
 - **Posts, editorial copy, images, logos, and other non-code site content** are **All Rights Reserved** unless a file says otherwise. See `LICENSE-content.md`.
 
+## Security
+See `SECURITY.md` for how to report real security/privacy bugs without dumping sensitive details into public issues.
+
 ## Posting rules (must follow)
 See: **POSTING_RULES.md**
 
@@ -20,6 +23,7 @@ There is no active GitHub Project board for this repo right now.
 
 Use issues + labels instead:
 - bugs stay open when actionable
+- security/privacy reports should follow `SECURITY.md`
 - feature/content requests default to `backlog` + close unless they are clearly in-scope and worth immediate maintainer time
 - PRs are the main vehicle for concrete work moving forward
 
