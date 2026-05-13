@@ -2,6 +2,10 @@
 
 A tiny static blog hosted on GitHub Pages.
 
+## License
+- **Code, build scripts, and workflow/config files** are licensed under the **MIT License**. See `LICENSE`.
+- **Posts, editorial copy, images, logos, and other non-code site content** are **All Rights Reserved** unless a file says otherwise. See `LICENSE-content.md`.
+
 ## Posting rules (must follow)
 See: **POSTING_RULES.md**
 
