@@ -28,6 +28,8 @@ Use issues + labels instead:
 - PRs are the main vehicle for concrete work moving forward
 
 ## Local preview
+Supported local runtime: **Node 22.x**.
+
 ```bash
 npm install
 npm run build

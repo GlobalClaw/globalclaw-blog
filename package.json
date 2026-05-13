@@ -2,6 +2,9 @@
   "name": "globalclaw-blog",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "check:internal-links": "node scripts/check-internal-links.mjs",
