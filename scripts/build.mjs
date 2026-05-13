@@ -101,6 +101,11 @@ function injectHeadMetadata(html, { title, description, currentPath = '/', ogTyp
   return html.replace(/<\/head>/i, injection);
 }
 
+function footerMarkup() {
+  return `      <p>© ${escapeHtml(site.siteTitle)}</p>
+      <p class="site-footer-license"><a href="/license.html">Licensing</a>: site code/build is MIT; posts, editorial copy, and branding are all rights reserved unless stated otherwise.</p>`;
+}
+
 function shell({ title, description, navCurrent, body, rss = true, extraHead = '', currentPath = '/', ogType = 'website', robots = 'index,follow' }) {
   const httpsRedirect = `<script>
     if (location.protocol === 'http:' && location.hostname === 'globalclaw.se') {
@@ -156,7 +161,7 @@ ${nav}
 ${body}
 
     <footer class="site-footer">
-      <p>© ${escapeHtml(site.siteTitle)}</p>
+${footerMarkup()}
     </footer>
   </main>
 </body>
@@ -501,6 +506,34 @@ async function build404() {
   await fs.writeFile(path.join(outDir, '404.html'), html);
 }
 
+async function buildLegal() {
+  const html = shell({
+    title: `Licensing — ${site.siteTitle}`,
+    description: 'Plain-language licensing for GlobalClaw site code, editorial content, and branding.',
+    currentPath: '/license.html',
+    body: `    <article class="post card">
+      <header class="post-header">
+        <h2>Licensing</h2>
+        <p class="meta">Short version: code is MIT; the writing and branding are not.</p>
+      </header>
+
+      <p>This site uses a split license so readers can tell what they may reuse.</p>
+
+      <h3>Code, build scripts, and workflow/config files</h3>
+      <p>The software side of the site is available under the <strong>MIT License</strong>. That covers the code and supporting build/config material used to publish the site.</p>
+      <p>See <a href="${site.githubUrl}/blob/main/LICENSE" target="_blank" rel="noopener">LICENSE</a> for the full text.</p>
+
+      <h3>Posts, editorial copy, images, and branding</h3>
+      <p>Unless a file says otherwise, the non-code material on this site is <strong>All Rights Reserved</strong>. That includes the blog posts, page copy, images, logos, and other branding/editorial material.</p>
+      <p>You may link to the site and quote short excerpts for commentary where applicable law allows, but you may not republish or reuse the content or branding as your own without permission.</p>
+      <p>See <a href="${site.githubUrl}/blob/main/LICENSE-content.md" target="_blank" rel="noopener">LICENSE-content.md</a> for the repo-side notice.</p>
+
+      <p class="backlink"><a href="/index.html">← Back home</a></p>
+    </article>`
+  });
+  await fs.writeFile(path.join(outDir, 'license.html'), html);
+}
+
 async function buildIndexes(allPosts) {
   const latest = allPosts[0];
   const romPath = path.join(outDir, 'assets', 'roms', 'globalclaw-blog.gb');
@@ -618,6 +651,7 @@ async function buildSitemap(allPosts) {
     '/posts/',
     '/posts/index.html',
     '/about.html',
+    '/license.html',
     ...allPosts.map((post) => post.outputPath)
   ];
   const uniqueUrls = [...new Set(urls)];
@@ -675,10 +709,11 @@ async function validateOutputs(allPosts) {
     if (error && error.code !== 'ENOENT') throw error;
   }
 
-  const [indexHtml, postsIndexHtml, aboutHtml, notFoundHtml, latestPostHtml, rssXml, sitemapXml, robotsTxt] = await Promise.all([
+  const [indexHtml, postsIndexHtml, aboutHtml, legalHtml, notFoundHtml, latestPostHtml, rssXml, sitemapXml, robotsTxt] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'about.html'), 'utf8'),
+    fs.readFile(path.join(outDir, 'license.html'), 'utf8'),
     fs.readFile(path.join(outDir, '404.html'), 'utf8'),
     fs.readFile(path.join(outDir, latest.outputPath.replace(/^\//, '')), 'utf8'),
     fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
@@ -687,12 +722,15 @@ async function validateOutputs(allPosts) {
   ]);
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
+  assert(indexHtml.includes('href="/license.html"'), 'Homepage footer is missing the licensing link.');
   assert(indexHtml.includes(`<link rel="canonical" href="${site.siteUrl}/" />`), 'Homepage is missing its canonical URL tag.');
   assert(indexHtml.includes(`<meta property="og:url" content="${site.siteUrl}/" />`), 'Homepage is missing its Open Graph URL tag.');
   assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
   assert(postsIndexHtml.includes(`<link rel="canonical" href="${site.siteUrl}/posts/" />`), 'Posts index is missing its canonical URL tag.');
   assert(aboutHtml.includes('← Back home'), 'About page lost its backlink to the homepage.');
   assert(aboutHtml.includes(`<link rel="canonical" href="${site.siteUrl}/about.html" />`), 'About page is missing its canonical URL tag.');
+  assert(legalHtml.includes('code is MIT; the writing and branding are not'), 'License page lost its plain-language summary.');
+  assert(legalHtml.includes(`<link rel="canonical" href="${site.siteUrl}/license.html" />`), 'License page is missing its canonical URL tag.');
   assert(notFoundHtml.includes('Nothing here.'), '404 page did not render the expected fallback copy.');
   assert(notFoundHtml.includes('href="/posts/"'), '404 page does not link to the posts index.');
   assert(notFoundHtml.includes('<meta name="robots" content="noindex,follow" />'), '404 page should stay noindex.');
@@ -702,6 +740,7 @@ async function validateOutputs(allPosts) {
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
+  assert(sitemapXml.includes(`<loc>${site.siteUrl}/license.html</loc>`), 'Sitemap does not include license page.');
   assert(robotsTxt.includes('User-agent: *'), 'robots.txt is missing its default crawler scope.');
   assert(robotsTxt.includes('Allow: /'), 'robots.txt should allow public site crawling.');
   assert(robotsTxt.includes(`Sitemap: ${site.siteUrl}/sitemap.xml`), 'robots.txt is missing the sitemap pointer.');
@@ -725,6 +764,7 @@ for (const post of visiblePosts.filter((post) => post.source === 'markdown')) aw
 await copyLegacyPosts(visiblePosts.filter((post) => post.source === 'legacy'));
 await buildAbout();
 await build404();
+await buildLegal();
 await buildIndexes(visiblePosts);
 await buildRss(visiblePosts);
 await buildSitemap(visiblePosts);
