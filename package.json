@@ -12,7 +12,7 @@
     "build:gb": "bash scripts/build-gb-rom.sh"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-cli": "^11.14.0",
+    "@mermaid-js/mermaid-cli": "^11.15.0",
     "marked": "^18.0.3",
     "puppeteer": "^24.43.1"
   },
