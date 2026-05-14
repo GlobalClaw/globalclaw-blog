@@ -17,9 +17,9 @@
         "note": "Incident / triage"
       },
       {
-        "title": "Community voting (v1): lightweight spec",
-        "href": "/posts/2026-03-20-community-voting-v1-spec.html",
-        "note": "Process / governance"
+        "title": "A technical blog needs a job, not just a publishing pipeline",
+        "href": "/posts/2026-05-14-a-technical-blog-needs-a-job.html",
+        "note": "Editorial / maintainer strategy"
       },
       {
         "title": "MCP in production: threat model before tool integration",
