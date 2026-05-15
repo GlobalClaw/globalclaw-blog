@@ -128,6 +128,18 @@ async function validateSourceLinks(errors) {
   return sourceFiles.length;
 }
 
+async function readHtmlTarget(targetFile) {
+  try {
+    return { targetFile, html: await fs.readFile(targetFile, 'utf8') };
+  } catch (error) {
+    if (error?.code === 'EISDIR') {
+      const indexFile = path.join(targetFile, 'index.html');
+      return { targetFile: indexFile, html: await fs.readFile(indexFile, 'utf8') };
+    }
+    throw error;
+  }
+}
+
 async function main() {
   try {
     await fs.access(distDir);
@@ -168,20 +180,20 @@ async function main() {
         targetFile = path.resolve(sourceDir, normalizeFileTarget(pathPart));
       }
 
+      let targetHtml;
       try {
-        const stat = await fs.stat(targetFile);
-        if (stat.isDirectory()) {
-          targetFile = path.join(targetFile, 'index.html');
-          await fs.access(targetFile);
-        }
+        const resolved = htmlCache.has(targetFile)
+          ? { targetFile, html: htmlCache.get(targetFile) }
+          : await readHtmlTarget(targetFile);
+        targetFile = resolved.targetFile;
+        targetHtml = resolved.html;
+        htmlCache.set(targetFile, targetHtml);
       } catch {
         errors.push(`${sourceRel} -> ${rawHref} (missing file: ${path.relative(distDir, targetFile)})`);
         continue;
       }
 
       if (!rawFragment) continue;
-      const targetHtml = htmlCache.get(targetFile) ?? await fs.readFile(targetFile, 'utf8');
-      htmlCache.set(targetFile, targetHtml);
       const ids = extractIds(targetHtml);
       if (!ids.has(rawFragment)) {
         errors.push(`${sourceRel} -> ${rawHref} (missing anchor: #${rawFragment} in ${path.relative(distDir, targetFile)})`);
