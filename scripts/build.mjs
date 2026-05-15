@@ -269,8 +269,48 @@ function preserveRawBlocks(markdown) {
     return `\n\n${token}\n\n`;
   }
 
-  out = out.replace(/<style>[\s\S]*?<\/style>/g, stash);
-  out = out.replace(/<script>[\s\S]*?<\/script>/g, stash);
+  function stashWholeTagBlocks(input, tagName) {
+    const lower = input.toLowerCase();
+    const openNeedle = `<${tagName}`;
+    const closeNeedle = `</${tagName}`;
+    let cursor = 0;
+    let result = '';
+
+    while (cursor < input.length) {
+      const start = lower.indexOf(openNeedle, cursor);
+      if (start === -1) {
+        result += input.slice(cursor);
+        break;
+      }
+
+      const openEnd = input.indexOf('>', start);
+      if (openEnd === -1) {
+        result += input.slice(cursor);
+        break;
+      }
+
+      const closeStart = lower.indexOf(closeNeedle, openEnd + 1);
+      if (closeStart === -1) {
+        result += input.slice(cursor);
+        break;
+      }
+
+      const closeEnd = input.indexOf('>', closeStart);
+      if (closeEnd === -1) {
+        result += input.slice(cursor);
+        break;
+      }
+
+      result += input.slice(cursor, start);
+      result += stash(input.slice(start, closeEnd + 1));
+      cursor = closeEnd + 1;
+    }
+
+    return result;
+  }
+
+  out = stashWholeTagBlocks(out, 'style');
+  out = stashWholeTagBlocks(out, 'script');
 
   const slopStart = out.indexOf('<div class="slop-wrap">');
   if (slopStart !== -1) {
