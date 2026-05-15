@@ -7,6 +7,7 @@ const root = path.resolve(scriptDir, '..');
 const distDir = path.join(root, 'dist');
 
 const hrefRegex = /<a\b[^>]*\bhref=(['"])(.*?)\1/gi;
+const markdownLinkRegex = /(?<!!)\[[^\]]+\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
 const idRegex = /\bid=(['"])(.*?)\1/gi;
 const ignoredSchemes = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 
@@ -14,6 +15,43 @@ function normalizeFileTarget(targetPath) {
   if (targetPath.endsWith('/')) return path.join(targetPath, 'index.html');
   if (!path.extname(targetPath)) return `${targetPath}.html`;
   return targetPath;
+}
+
+function sourceOutputPath(file) {
+  const rel = path.relative(root, file);
+  if (rel.startsWith(`content${path.sep}posts${path.sep}`)) {
+    const slug = path.basename(rel, path.extname(rel));
+    return `/posts/${slug}.html`;
+  }
+  if (rel === path.join('content', 'pages', 'about.md')) return '/about.html';
+  if (rel === path.join('content', 'pages', '404.md')) return '/404.html';
+  if (rel.startsWith(`posts${path.sep}`)) return `/posts/${path.basename(rel)}`;
+  return '/index.html';
+}
+
+function normalizeRoutePath(targetPath) {
+  if (!targetPath || targetPath === '/') return '/';
+  if (targetPath.endsWith('/')) return targetPath === '/' ? '/' : `${targetPath}index.html`;
+  if (!path.extname(targetPath)) return `${targetPath}.html`;
+  return targetPath;
+}
+
+function resolveRouteHref(sourceRoute, rawHref) {
+  const [rawPathPart] = rawHref.split('#');
+  const pathPart = rawPathPart || '';
+  if (!pathPart) return normalizeRoutePath(sourceRoute);
+  if (pathPart.startsWith('/')) return normalizeRoutePath(pathPart);
+  const sourceDir = path.posix.dirname(sourceRoute);
+  return normalizeRoutePath(path.posix.resolve(sourceDir, pathPart));
+}
+
+function shouldValidateSourceHref(rawHref) {
+  const [rawPathPart] = rawHref.split('#');
+  const pathPart = rawPathPart || '';
+  if (!pathPart) return false;
+  if (pathPart.startsWith('/assets/')) return false;
+  const ext = path.posix.extname(pathPart);
+  return !ext || ext === '.html' || pathPart.endsWith('/');
 }
 
 function extractIds(html) {
@@ -46,6 +84,50 @@ function decodeHref(href) {
   }
 }
 
+async function listFilesIfPresent(dir, predicate) {
+  try {
+    return (await fs.readdir(dir)).filter(predicate).map((name) => path.join(dir, name));
+  } catch (error) {
+    if (error?.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+async function validateSourceLinks(errors) {
+  const sourceFiles = [
+    ...(await listFilesIfPresent(path.join(root, 'content', 'posts'), (name) => name.endsWith('.md'))),
+    ...(await listFilesIfPresent(path.join(root, 'content', 'pages'), (name) => name.endsWith('.md'))),
+    ...(await listFilesIfPresent(path.join(root, 'posts'), (name) => name.endsWith('.html') && name !== 'index.html'))
+  ];
+
+  const knownRoutes = new Set(['/','/index.html','/posts/','/posts/index.html','/about.html','/404.html','/license.html']);
+
+  for (const file of sourceFiles) {
+    knownRoutes.add(sourceOutputPath(file));
+  }
+
+  for (const sourceFile of sourceFiles) {
+    const raw = await fs.readFile(sourceFile, 'utf8');
+    const sourceRel = path.relative(root, sourceFile);
+    const sourceRoute = sourceOutputPath(sourceFile);
+    const links = sourceFile.endsWith('.md') ? raw.matchAll(markdownLinkRegex) : raw.matchAll(hrefRegex);
+
+    for (const match of links) {
+      const rawHref = decodeHref(match[1] ?? match[2]);
+      if (!rawHref || rawHref === '#' || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:')) continue;
+      if (ignoredSchemes.test(rawHref)) continue;
+      if (!shouldValidateSourceHref(rawHref)) continue;
+
+      const resolvedRoute = resolveRouteHref(sourceRoute, rawHref);
+      if (!knownRoutes.has(resolvedRoute)) {
+        errors.push(`${sourceRel} -> ${rawHref} (missing source route: ${resolvedRoute})`);
+      }
+    }
+  }
+
+  return sourceFiles.length;
+}
+
 async function main() {
   try {
     await fs.access(distDir);
@@ -63,6 +145,7 @@ async function main() {
   }
 
   const errors = [];
+  const sourceFileCount = await validateSourceLinks(errors);
 
   for (const [sourceFile, html] of htmlCache) {
     const sourceRel = path.relative(distDir, sourceFile);
@@ -112,7 +195,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`Validated internal links across ${htmlFiles.length} HTML files.`);
+  console.log(`Validated internal links across ${sourceFileCount} source files and ${htmlFiles.length} built HTML files.`);
 }
 
 await main();
