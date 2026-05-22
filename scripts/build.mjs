@@ -238,8 +238,13 @@ async function renderMermaidBlocks(markdown, slug) {
     await fs.writeFile(inputPath, source + '\n');
     try {
       try {
-        await execFileAsync('npx', [
-          '-y', '@mermaid-js/mermaid-cli',
+        const mermaidCliBin = path.join(
+          root,
+          'node_modules',
+          '.bin',
+          process.platform === 'win32' ? 'mmdc.cmd' : 'mmdc'
+        );
+        await execFileAsync(mermaidCliBin, [
           '-i', inputPath,
           '-o', outputPath,
           '-e', 'svg',
