@@ -1,14 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import crypto from 'node:crypto';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
 import { marked } from 'marked';
 
-const execFileAsync = promisify(execFile);
 const root = process.cwd();
 const outDir = path.join(root, 'dist');
-const diagramsDir = path.join(outDir, 'assets', 'diagrams');
 const site = JSON.parse(await fs.readFile(path.join(root, 'content/site.json'), 'utf8'));
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -68,7 +63,6 @@ async function cleanDist() {
   await fs.rm(outDir, { recursive: true, force: true });
   await ensureDir(outDir);
   await ensureDir(path.join(outDir, 'posts'));
-  await ensureDir(diagramsDir);
 }
 
 function canonicalPathFor(currentPath = '/') {
@@ -168,102 +162,6 @@ ${footerMarkup()}
 </html>`;
 }
 
-function decorateMermaidRenderError(error) {
-  const stderr = error?.stderr || '';
-  if (stderr.includes('libnss3.so')) {
-    const hint = [
-      'Mermaid diagram rendering needs a local Chromium dependency that is missing on this machine: libnss3.so.',
-      'Install libnss3 first (for example: sudo apt-get install libnss3) and rerun npm run build.',
-      'If Chromium/Puppeteer still reports missing shared libraries after that, install the broader package set documented in README.md.',
-      '',
-      'Original renderer error:',
-      stderr.trim()
-    ].join('\n');
-    const decorated = new Error(hint);
-    decorated.cause = error;
-    return decorated;
-  }
-  return error;
-}
-
-let mermaidRuntimeChecked = false;
-
-async function assertMermaidRuntimeDependencies() {
-  if (mermaidRuntimeChecked || process.platform !== 'linux') return;
-  mermaidRuntimeChecked = true;
-
-  try {
-    const { stdout } = await execFileAsync('ldconfig', ['-p'], { cwd: root, maxBuffer: 1024 * 1024 });
-    if (stdout.includes('libnss3.so')) return;
-  } catch {
-    // Fall through to the file-system check below when ldconfig is unavailable.
-  }
-
-  const fallbackPaths = [
-    '/usr/lib/x86_64-linux-gnu/libnss3.so',
-    '/usr/lib64/libnss3.so',
-    '/usr/lib/libnss3.so'
-  ];
-
-  for (const candidate of fallbackPaths) {
-    try {
-      await fs.access(candidate);
-      return;
-    } catch {
-      // Keep checking the remaining fallback paths.
-    }
-  }
-
-  throw new Error([
-    'Mermaid diagram rendering needs a local Chromium dependency before the build can proceed: libnss3.so.',
-    'Install libnss3 first (for example: sudo apt-get install libnss3) and rerun npm run build.',
-    'If Chromium/Puppeteer still reports missing shared libraries after that, install the broader package set documented in README.md.',
-    'This preflight check runs before Mermaid rendering so clean Debian/Ubuntu hosts fail fast with an actionable hint.'
-  ].join('\n'));
-}
-
-async function renderMermaidBlocks(markdown, slug) {
-  const matches = [...markdown.matchAll(/```mermaid\n([\s\S]*?)```/g)];
-  if (!matches.length) return markdown;
-
-  await assertMermaidRuntimeDependencies();
-
-  let out = markdown;
-  for (const match of matches) {
-    const source = match[1].trim();
-    const hash = crypto.createHash('sha1').update(`${slug}\n${source}`).digest('hex').slice(0, 12);
-    const inputPath = path.join(root, '.tmp-mermaid-' + hash + '.mmd');
-    const outputName = `${slug}-${hash}.svg`;
-    const outputPath = path.join(diagramsDir, outputName);
-    await fs.writeFile(inputPath, source + '\n');
-    try {
-      try {
-        const mermaidCliBin = path.join(
-          root,
-          'node_modules',
-          '.bin',
-          process.platform === 'win32' ? 'mmdc.cmd' : 'mmdc'
-        );
-        await execFileAsync(mermaidCliBin, [
-          '-i', inputPath,
-          '-o', outputPath,
-          '-e', 'svg',
-          '-b', 'transparent',
-          '-q',
-          '-p', path.join(root, 'scripts', 'puppeteer-config.json')
-        ], { cwd: root, maxBuffer: 10 * 1024 * 1024 });
-      } catch (error) {
-        throw decorateMermaidRenderError(error);
-      }
-    } finally {
-      await fs.rm(inputPath, { force: true });
-    }
-    const replacement = `\n<div class="diagram">\n  <img src="/assets/diagrams/${outputName}" alt="Mermaid diagram" loading="lazy" />\n</div>\n`;
-    out = out.replace(match[0], replacement);
-  }
-  return out;
-}
-
 function preserveRawBlocks(markdown) {
   const preserved = [];
   let out = markdown;
@@ -358,8 +256,7 @@ async function readMarkdownPosts() {
     const raw = await fs.readFile(path.join(dir, name), 'utf8');
     const { data, body } = parseFrontmatter(raw);
     const slug = data.slug || name.replace(/\.md$/, '');
-    const renderedBody = await renderMermaidBlocks(body, slug);
-    const preserved = preserveRawBlocks(renderedBody);
+    const preserved = preserveRawBlocks(body);
     posts.push({
       source: 'markdown',
       slug,
