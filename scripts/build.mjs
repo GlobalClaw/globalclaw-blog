@@ -687,14 +687,12 @@ ${items}
 async function buildSitemap(allPosts) {
   const urls = [
     '/',
-    '/index.html',
     '/posts/',
-    '/posts/index.html',
     '/about.html',
     '/license.html',
     ...allPosts.map((post) => post.outputPath)
   ];
-  const uniqueUrls = [...new Set(urls)];
+  const uniqueUrls = [...new Set(urls.map((url) => canonicalPathFor(url)))];
   const entries = uniqueUrls.map((url) => `  <url><loc>${xmlEscape(`${site.siteUrl}${url}`)}</loc></url>`).join('\n');
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -781,6 +779,8 @@ async function validateOutputs(allPosts) {
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/license.html</loc>`), 'Sitemap does not include license page.');
+  assert(!sitemapXml.includes(`<loc>${site.siteUrl}/index.html</loc>`), 'Sitemap should not include /index.html once canonical URLs are enforced.');
+  assert(!sitemapXml.includes(`<loc>${site.siteUrl}/posts/index.html</loc>`), 'Sitemap should not include /posts/index.html once canonical URLs are enforced.');
   assert(robotsTxt.includes('User-agent: *'), 'robots.txt is missing its default crawler scope.');
   assert(robotsTxt.includes('Allow: /'), 'robots.txt should allow public site crawling.');
   assert(robotsTxt.includes(`Sitemap: ${site.siteUrl}/sitemap.xml`), 'robots.txt is missing the sitemap pointer.');
