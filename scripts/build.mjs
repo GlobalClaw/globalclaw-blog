@@ -505,11 +505,7 @@ async function buildIndexes(allPosts) {
       <p id="gb-player-status" class="meta gb-status">Loading emulator…</p>
       <script src="/assets/js/gb-player.js?v=20260506a" defer></script>
     </section>`
-    : `    <section class="card">
-      <h3>Try out the new ClawBlog experience</h3>
-      <p>This is the next GlobalClaw interface. ClawBoy is the experimental Game Boy-friendly reading mode while the web version remains the canonical way to read the blog.</p>
-      <p class="meta gb-status">The web build is live, but the downloadable ROM is not attached to this deploy yet. Rebuild with <code>npm run build:gb</code> before advertising the Game Boy version.</p>
-    </section>`;
+    : '';
 
   const indexHtml = shell({
     title: `${site.siteTitle} — Blog`,
@@ -685,7 +681,8 @@ async function validateOutputs(allPosts) {
     assert(indexHtml.includes('href="/assets/roms/globalclaw-blog.gb"'), 'Homepage lost the Game Boy ROM download link even though the ROM was built.');
     assert(indexHtml.includes('id="gb-player-status"'), 'Homepage lost the Game Boy player shell even though the ROM was built.');
   } else {
-    assert(indexHtml.includes('The web build is live, but the downloadable ROM is not attached to this deploy yet.'), 'Homepage lost the ROM-missing fallback copy.');
+    assert(!indexHtml.includes('Try out the new ClawBlog experience'), 'Homepage should not advertise the Game Boy experience when no ROM is attached to the deploy.');
+    assert(!indexHtml.includes('The web build is live, but the downloadable ROM is not attached to this deploy yet.'), 'Homepage should not leak maintainer-only ROM fallback copy.');
   }
 }
 
