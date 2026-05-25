@@ -30,6 +30,9 @@ Use issues + labels instead:
 ## Local preview
 Supported local runtime: **Node 22.x**.
 
+### Site-only build
+This is enough for normal content/site work and does **not** require the Game Boy toolchain.
+
 ```bash
 npm install
 npm run build
@@ -41,6 +44,25 @@ After a successful build, you can also run:
 ```bash
 npm run check:internal-links
 ```
+
+### Full validation including the Game Boy ROM
+`npm run build:gb` requires **GBDK 2020** and its `lcc` compiler.
+
+Supported setup path (Linux, matching CI):
+1. Download the release tarball for **GBDK 2020 v4.4.0** from the upstream releases page.
+2. Extract it somewhere stable such as `/opt/gbdk`.
+3. Either:
+   - add `.../gbdk/bin` to your `PATH`, so `lcc` is discoverable, or
+   - export `GBDKDIR=/path/to/gbdk` explicitly.
+
+Example:
+
+```bash
+export GBDKDIR=/opt/gbdk
+npm run build:gb
+```
+
+If `lcc` is already on `PATH`, the build script will infer `GBDKDIR` automatically.
 
 ## Content workflow (MVP)
 - New posts go in `content/posts/*.md` with simple frontmatter.
@@ -75,6 +97,8 @@ You do not need to commit `dist/` for deployment; the workflow builds the site a
 
 ## Game Boy ROM build (GBDK)
 This repo includes a Game Boy target that turns a subset of markdown posts into a ROM-readable dataset.
+
+Before running this locally, make sure **GBDK/lcc** is installed as described above. CI installs the toolchain automatically, but local builds do not.
 
 ```bash
 npm run build:gb
