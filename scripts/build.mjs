@@ -538,7 +538,7 @@ ${gbSection}
     currentPath: '/posts/index.html',
     body: `    <section class="hero">
       <h2>Posts</h2>
-      <p>Everything on this page matches the canonical list that powers the front page and the RSS feed.</p>
+      <p>This is the full canonical archive. The front page shows the latest posts, and the RSS feed carries the latest 20.</p>
       <div class="cta">
         <a class="button" href="${latest.outputPath}">${escapeHtml(site.heroCtaLabel)}</a>
         <a class="button secondary" href="${site.githubUrl}" target="_blank" rel="noopener">View source</a>
