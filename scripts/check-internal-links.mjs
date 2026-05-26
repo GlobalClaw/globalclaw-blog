@@ -12,6 +12,7 @@ const idRegex = /\bid=(['"])(.*?)\1/gi;
 const ignoredSchemes = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 
 function normalizeFileTarget(targetPath) {
+  if (!targetPath || targetPath === '/') return 'index.html';
   if (targetPath.endsWith('/')) return path.join(targetPath, 'index.html');
   if (!path.extname(targetPath)) return `${targetPath}.html`;
   return targetPath;

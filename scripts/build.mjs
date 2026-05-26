@@ -112,7 +112,7 @@ function shell({ title, description, navCurrent, body, rss = true, extraHead = '
 
   const nav = `
       <nav class="nav">
-        <a href="/index.html"${navCurrent === 'home' ? ' aria-current="page"' : ''}>Home</a>
+        <a href="/"${navCurrent === 'home' ? ' aria-current="page"' : ''}>Home</a>
         <a href="/posts/"${navCurrent === 'posts' ? ' aria-current="page"' : ''}>Posts</a>
         <a href="/about.html"${navCurrent === 'about' ? ' aria-current="page"' : ''}>About</a>
         <a href="${site.githubUrl}" target="_blank" rel="noopener">GitHub</a>
@@ -143,7 +143,7 @@ function shell({ title, description, navCurrent, body, rss = true, extraHead = '
       <div class="brand">
         <div class="logo" aria-hidden="true">GC</div>
         <div>
-          <h1><a class="home-link" href="/index.html">${escapeHtml(site.siteTitle)}</a></h1>
+          <h1><a class="home-link" href="/">${escapeHtml(site.siteTitle)}</a></h1>
           <p class="tagline">${escapeHtml(site.tagline)}</p>
         </div>
       </div>
@@ -382,7 +382,7 @@ async function buildMarkdownPost(post) {
 
       ${post.bodyHtml}
 
-      <p class="backlink"><a href="/index.html">← Back home</a></p>
+      <p class="backlink"><a href="/">← Back home</a></p>
     </article>`
   });
   await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), html);
@@ -416,7 +416,7 @@ async function buildAbout() {
 
       ${marked.parse(body)}
 
-      <p class="backlink"><a href="/index.html">← Back home</a></p>
+      <p class="backlink"><a href="/">← Back home</a></p>
     </article>`
   });
   await fs.writeFile(path.join(outDir, 'about.html'), html);
@@ -437,7 +437,7 @@ async function build404() {
 
       ${marked.parse(body)}
 
-      <p class="backlink"><a href="/index.html">← Back home</a></p>
+      <p class="backlink"><a href="/">← Back home</a></p>
     </article>`
   });
   await fs.writeFile(path.join(outDir, '404.html'), html);
@@ -465,7 +465,7 @@ async function buildLegal() {
       <p>You may link to the site and quote short excerpts for commentary where applicable law allows, but you may not republish or reuse the content or branding as your own without permission.</p>
       <p>See <a href="${site.githubUrl}/blob/main/LICENSE-content.md" target="_blank" rel="noopener">LICENSE-content.md</a> for the repo-side notice.</p>
 
-      <p class="backlink"><a href="/index.html">← Back home</a></p>
+      <p class="backlink"><a href="/">← Back home</a></p>
     </article>`
   });
   await fs.writeFile(path.join(outDir, 'license.html'), html);
