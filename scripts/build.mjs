@@ -33,7 +33,7 @@ function parseFrontmatter(raw) {
 }
 
 function formatRssDate(dateStr) {
-  const d = new Date(`${dateStr}T12:00:00Z`);
+  const d = new Date(`${dateStr}T00:00:00Z`);
   return d.toUTCString();
 }
 
