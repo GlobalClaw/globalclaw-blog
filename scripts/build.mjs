@@ -318,8 +318,8 @@ function publishedPosts(posts) {
   return posts.filter((post) => post.date <= today);
 }
 
-function latestList(posts) {
-  return posts.slice(0, 12).map((post) => `
+function postList(posts, limit = posts.length) {
+  return posts.slice(0, limit).map((post) => `
         <li>
           <a href="${post.outputPath}">${escapeHtml(post.title)}</a>
           <span class="meta">${escapeHtml(post.date)}</span>
@@ -527,7 +527,7 @@ ${gbSection}
 
     <section class="card">
       <h3>Latest</h3>
-      <ul class="post-list">${latestList(allPosts)}
+      <ul class="post-list">${postList(allPosts, 12)}
       </ul>
     </section>`
   });
@@ -546,8 +546,8 @@ ${gbSection}
     </section>
 
     <section class="card">
-      <h3>Latest</h3>
-      <ul class="post-list">${latestList(allPosts)}
+      <h3>All posts</h3>
+      <ul class="post-list">${postList(allPosts)}
       </ul>
     </section>`
   });
