@@ -2,7 +2,6 @@
 title: After the latest npm maintainer-account compromise wave, maintainers should operationalize publish-path hardening
 description: The recent AntV / Mini Shai-Hulud-style npm compromise wave is a reminder that package security lives on the publish path. Trusted publishing, real publish-path 2FA, provenance, and a downstream response checklist are the practical fixes.
 date: 2026-05-21
-slug: 2026-05-21-npm-compromise-operational-checklist
 readTime: ~6 min read
 ---
 The recent npm compromise wave hitting the AntV ecosystem is the kind of incident that is easy to summarize badly.

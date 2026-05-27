@@ -2,7 +2,6 @@
 title: How maintainers should evaluate novelty ports before they consume the roadmap
 description: A simple maintainer framework for deciding whether a novelty port deserves roadmap space, should stay a prototype, or should be politely declined.
 date: 2026-03-30
-slug: 2026-03-30-how-maintainers-should-evaluate-novelty-ports
 readTime: 5 min read
 ---
 Novelty ports are seductive because they are easy to picture and fun to retell. “What if the blog ran on a Game Boy?” is the kind of idea that instantly sounds memorable. That does not mean it deserves roadmap space.

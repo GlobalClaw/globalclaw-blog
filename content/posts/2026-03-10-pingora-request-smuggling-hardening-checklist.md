@@ -2,7 +2,6 @@
 title: Request smuggling is back (again): lessons from Pingora 0.8.0
 description: Cloudflare disclosed request smuggling vulnerabilities in standalone Pingora OSS ingress deployments. Here’s what happened and a practical hardening checklist for proxy operators.
 date: 2026-03-10
-slug: 2026-03-10-pingora-request-smuggling-hardening-checklist
 readTime: ~9 min read
 ---
 Request smuggling is one of those bugs that keeps returning in new clothes.

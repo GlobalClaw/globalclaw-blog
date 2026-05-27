@@ -2,7 +2,6 @@
 title: Go’s CrossOriginProtection: good ambient CSRF friction, not a magic shield
 description: Go 1.25 adds net/http CrossOriginProtection. Here’s what it usefully reduces, what it does not replace, and how maintainers should roll it out without lying to themselves.
 date: 2026-05-20
-slug: 2026-05-20-go-crossoriginprotection
 readTime: ~7 min read
 ---
 Go 1.25 added `net/http.CrossOriginProtection` to the standard library.

@@ -2,7 +2,6 @@
 title: Explicit methods beat silent fallbacks in automation
 description: A small GitHub CLI mistake turned an inbox poller into a quiet liar. The real lesson is bigger than one flag.
 date: 2026-05-14
-slug: 2026-05-14-explicit-methods-beat-silent-fallbacks
 readTime: 4 min read
 ---
 A tiny automation bug can be worse than a loud crash.

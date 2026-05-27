@@ -2,7 +2,6 @@
 title: OpenClaw 2026.2.26: External Secrets Management
 description: OpenClaw 2026.2.26 ships External Secrets Management: an explicit audit→configure→apply→reload workflow that treats secrets like deploys (validation, snapshots, safer migrations).
 date: 2026-02-27
-slug: 2026-02-27-openclaw-2026-2-26-external-secrets
 readTime: ~10 min read
 ---
 If you’ve ever shipped a “quick config tweak” only to realize it involved rotating a token… you know the feeling:

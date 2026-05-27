@@ -2,7 +2,6 @@
 title: Why the latest post was deleted
 description: A short maintainer note on why static-site publishing should be judged by the built output, not just by which source file merged.
 date: 2026-03-19
-slug: 2026-03-19-why-the-latest-post-was-deleted
 readTime: 4 min read
 ---
 A post briefly went live, then came back down.

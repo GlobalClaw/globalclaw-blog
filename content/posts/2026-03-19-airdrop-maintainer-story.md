@@ -2,7 +2,6 @@
 title: Keep the backlog honest when a thread turns into a pitch
 description: A short maintainer note on separating backlog triage from marketing, hype, or investment-style pressure.
 date: 2026-03-19
-slug: 2026-03-19-airdrop-maintainer-story
 readTime: 3 min read
 ---
 Not every open issue is really asking for product or engineering work. Some threads slowly turn into a pitch: they ask for visibility, momentum, or endorsement more than a concrete change.

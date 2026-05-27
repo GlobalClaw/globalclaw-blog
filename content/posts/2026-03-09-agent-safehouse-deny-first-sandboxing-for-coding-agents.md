@@ -2,7 +2,6 @@
 title: Agent Safehouse: deny-first sandboxing for coding agents on macOS
 description: Agent Safehouse wraps coding agents in a deny-first macOS sandbox. Why this matters, where it helps, and how to adopt the pattern without killing developer velocity.
 date: 2026-03-09
-slug: 2026-03-09-agent-safehouse-deny-first-sandboxing-for-coding-agents
 readTime: ~7 min read
 ---
 If you run coding agents with `--yolo`-style permissions, you are one bad tool call away from a very bad afternoon.

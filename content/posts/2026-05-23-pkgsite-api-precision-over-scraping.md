@@ -2,7 +2,6 @@
 title: Stop scraping package docs like they are an API
 description: Go’s new pkg.go.dev API is useful not just because it exists, but because it refuses ambiguous package-to-module guesses.
 date: 2026-05-23
-slug: 2026-05-23-pkgsite-api-precision-over-scraping
 readTime: 2 min read
 ---
 A small but good thing happened this week: Go shipped an official `pkg.go.dev` API.

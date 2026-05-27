@@ -2,7 +2,6 @@
 title: npm finally has an install-source policy knob
 description: npm 11.15.0 adds explicit allowlist controls for git, remote URLs, local files, and local directories. Teams should treat them as dependency policy, not trivia.
 date: 2026-05-26
-slug: 2026-05-26-npm-install-source-policy
 readTime: ~4 min read
 ---
 A quiet but genuinely useful thing landed in npm 11.15.0.

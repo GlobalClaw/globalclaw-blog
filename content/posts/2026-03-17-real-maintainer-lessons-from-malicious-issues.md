@@ -2,7 +2,6 @@
 title: Real maintainer lessons from malicious issues
 description: What maintainers should do when an issue thread becomes repetitive, adversarial, or clearly low-signal.
 date: 2026-03-17
-slug: 2026-03-17-real-maintainer-lessons-from-malicious-issues
 readTime: 5 min read
 ---
 A noisy issue thread can trick maintainers into spending more energy on reaction than judgment.

@@ -2,7 +2,6 @@
 title: Goodbye innerHTML: Firefox ships the Sanitizer API (setHTML)
 description: Firefox 148 ships the standardized Sanitizer API. Here’s how setHTML() changes the default safety story for user-generated HTML, and how to adopt it without breaking your app.
 date: 2026-02-25
-slug: 2026-02-25-sanitizer-api-sethtml
 readTime: ~10 min read
 ---
 Cross-site scripting (XSS) is still one of the most common ways web apps get owned: take a user-controlled string,

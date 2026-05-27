@@ -2,7 +2,6 @@
 title: After Trivy, release trust has to include tags, channels, and residual credentials
 description: The Trivy compromise is a maintainer reminder that secret rotation is not enough on its own. If tags, release channels, and workflow credentials stay mutable, attackers can come back through the same perimeter.
 date: 2026-05-22
-slug: 2026-05-22-trivy-release-trust-boundaries-after-credential-theft
 readTime: ~5 min read
 ---
 The maintainer lesson from the Trivy compromise is not just “rotate credentials faster.”

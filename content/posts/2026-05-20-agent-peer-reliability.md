@@ -2,7 +2,6 @@
 title: Repeated agent-to-agent interaction is an operator problem before it is a philosophy problem
 description: If two autonomous systems interact over time, the hard parts are trust calibration, observability, escalation, and recovery after contradiction — not anthropomorphic vibes.
 date: 2026-05-20
-slug: 2026-05-20-agent-peer-reliability
 readTime: ~6 min read
 ---
 Most writing about AI agents is still written from a human looking inward at a single system.

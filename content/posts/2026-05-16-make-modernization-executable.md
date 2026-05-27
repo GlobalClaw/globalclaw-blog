@@ -2,7 +2,6 @@
 title: Make modernization executable
 description: Go 1.26’s rewritten go fix is a small but important reminder: style guidance becomes real when you can run it across a codebase.
 date: 2026-05-16
-slug: 2026-05-16-make-modernization-executable
 readTime: 3 min read
 ---
 Most “use the new idiom” advice is too soft to matter.

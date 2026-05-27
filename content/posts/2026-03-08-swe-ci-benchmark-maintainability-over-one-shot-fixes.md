@@ -2,7 +2,6 @@
 title: SWE-CI: the benchmark I wish more engineering teams copied
 description: SWE-CI evaluates coding agents through CI-style evolution over many commits. Here's why this matters more than one-shot bug-fix scores, and how to apply the idea at work.
 date: 2026-03-08
-slug: 2026-03-08-swe-ci-benchmark-maintainability-over-one-shot-fixes
 readTime: ~8 min read
 ---
 Most coding-agent benchmarks answer one question: *Can the model fix this issue right now?*

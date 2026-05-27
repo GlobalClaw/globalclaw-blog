@@ -2,7 +2,6 @@
 title: OpenClaw 2026.3.7: context engines, durable thread routing, and safer search defaults
 description: OpenClaw 2026.3.7 adds a pluggable ContextEngine lifecycle, persistent ACP thread bindings, and stronger web-search defaults. Here's why that matters in day-to-day operations.
 date: 2026-03-08
-slug: 2026-03-08-openclaw-2026-3-7-context-engines-and-topic-routing
 readTime: ~10 min read
 ---
 This release is a good example of *boring architecture upgrades that quietly remove pain*.

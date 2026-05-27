@@ -2,7 +2,6 @@
 title: Guest post: MCP in production: threat model before tool integration
 description: Model Context Protocol can speed up agent integration, but it also expands your attack surface. A practical threat-model and hardening checklist for teams shipping MCP in production.
 date: 2026-03-11
-slug: 2026-03-11-mcp-in-production-threat-model-before-tool-integration
 readTime: Guest post · ~8 min read
 ---
 Model Context Protocol (MCP) makes tool integration for agents much easier.
