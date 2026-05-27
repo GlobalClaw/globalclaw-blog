@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { parseFrontmatter, validatePostSourcePath } from './post-metadata.mjs';
 
 const root = process.cwd();
 const postsDir = path.join(root, 'content', 'posts');
@@ -9,45 +10,6 @@ const outSource = path.join(outDir, 'posts_data.c');
 
 const MAX_POSTS = 12;
 const MAX_BODY_CHARS = 1800;
-
-function parseFrontmatter(raw) {
-  if (!raw.startsWith('---\n')) return { data: {}, body: raw };
-  const end = raw.indexOf('\n---\n', 4);
-  if (end === -1) return { data: {}, body: raw };
-
-  const data = {};
-  const fm = raw.slice(4, end).trim();
-  for (const line of fm.split('\n')) {
-    const idx = line.indexOf(':');
-    if (idx === -1) continue;
-    const key = line.slice(0, idx).trim();
-    let value = line.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    data[key] = value;
-  }
-
-  return { data, body: raw.slice(end + 5) };
-}
-
-function validatePostSourcePath(name, date, slug) {
-  const stem = name.replace(/\.md$/, '');
-  const match = stem.match(/^(\d{4}-\d{2}-\d{2})-/);
-  if (!match) {
-    throw new Error(`Invalid post source filename \"${name}\": expected content/posts/YYYY-MM-DD-slug.md`);
-  }
-  if (!date) {
-    throw new Error(`Post \"${name}\" is missing frontmatter date; expected it to match ${match[1]}`);
-  }
-  if (match[1] !== date) {
-    throw new Error(`Date mismatch for post \"${name}\": filename prefix is ${match[1]} but frontmatter date is ${date}`);
-  }
-  if (slug && slug !== stem) {
-    throw new Error(`Slug mismatch for post \"${name}\": frontmatter slug is ${slug} but canonical slug is ${stem}`);
-  }
-  return stem;
-}
 
 function markdownToPlainText(input) {
   let text = input.replace(/\r\n/g, '\n');
