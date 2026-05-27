@@ -61,7 +61,7 @@ function validatePost(file, raw, errors) {
     return;
   }
 
-  for (const field of ['title', 'description', 'date', 'slug']) {
+  for (const field of ['title', 'description', 'date']) {
     if (!String(data[field] || '').trim()) errors.push(`${rel}: missing required field \`${field}\``);
   }
 
