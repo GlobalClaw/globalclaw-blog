@@ -32,6 +32,19 @@ function parseFrontmatter(raw) {
   return { data, body };
 }
 
+function validatePostSourcePath(name, date) {
+  const match = name.match(/^(\d{4}-\d{2}-\d{2})-/);
+  if (!match) {
+    throw new Error(`Invalid post source filename \"${name}\": expected content/posts/YYYY-MM-DD-slug.md`);
+  }
+  if (!date) {
+    throw new Error(`Post \"${name}\" is missing frontmatter date; expected it to match ${match[1]}`);
+  }
+  if (match[1] !== date) {
+    throw new Error(`Date mismatch for post \"${name}\": filename prefix is ${match[1]} but frontmatter date is ${date}`);
+  }
+}
+
 function formatRssDate(dateStr) {
   const d = new Date(`${dateStr}T00:00:00Z`);
   return d.toUTCString();
@@ -255,6 +268,7 @@ async function readMarkdownPosts() {
   for (const name of names) {
     const raw = await fs.readFile(path.join(dir, name), 'utf8');
     const { data, body } = parseFrontmatter(raw);
+    validatePostSourcePath(name, data.date);
     const slug = data.slug || name.replace(/\.md$/, '');
     const preserved = preserveRawBlocks(body);
     posts.push({
