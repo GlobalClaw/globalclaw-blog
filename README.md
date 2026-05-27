@@ -45,6 +45,12 @@ After a successful build, you can also run:
 npm run check:internal-links
 ```
 
+Or run the full local content-quality gate (frontmatter lint + build + internal-link validation):
+
+```bash
+npm run check:content-quality
+```
+
 ### Full validation including the Game Boy ROM
 `npm run build:gb` requires **GBDK 2020** and its `lcc` compiler.
 
