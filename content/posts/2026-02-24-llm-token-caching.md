@@ -2,8 +2,6 @@
 title: LLM token caching: what it is, why it’s fast, and how to use it
 description: An introduction to LLM token (KV) caching, prompt caching, and practical strategies for saving latency and cost.
 date: 2026-02-24
-slug: 2026-02-24-llm-token-caching
-redirectFrom: /posts/llm-token-caching.html
 readTime: ~7 min read
 ---
 If you’ve used an LLM API for a while, you’ve probably noticed a pattern: many requests repeat the same
