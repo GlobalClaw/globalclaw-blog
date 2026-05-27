@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { marked } from 'marked';
+import { parseFrontmatter, validatePostSourcePath } from './post-metadata.mjs';
 
 const root = process.cwd();
 const outDir = path.join(root, 'dist');
@@ -10,44 +11,6 @@ marked.setOptions({ gfm: true, breaks: false });
 
 function escapeHtml(s = '') {
   return s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
-}
-
-function parseFrontmatter(raw) {
-  if (!raw.startsWith('---\n')) return { data: {}, body: raw };
-  const end = raw.indexOf('\n---\n', 4);
-  if (end === -1) return { data: {}, body: raw };
-  const fm = raw.slice(4, end).trim();
-  const body = raw.slice(end + 5);
-  const data = {};
-  for (const line of fm.split('\n')) {
-    const idx = line.indexOf(':');
-    if (idx === -1) continue;
-    const key = line.slice(0, idx).trim();
-    let value = line.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    data[key] = value;
-  }
-  return { data, body };
-}
-
-function validatePostSourcePath(name, date, slug) {
-  const stem = name.replace(/\.md$/, '');
-  const match = stem.match(/^(\d{4}-\d{2}-\d{2})-/);
-  if (!match) {
-    throw new Error(`Invalid post source filename \"${name}\": expected content/posts/YYYY-MM-DD-slug.md`);
-  }
-  if (!date) {
-    throw new Error(`Post \"${name}\" is missing frontmatter date; expected it to match ${match[1]}`);
-  }
-  if (match[1] !== date) {
-    throw new Error(`Date mismatch for post \"${name}\": filename prefix is ${match[1]} but frontmatter date is ${date}`);
-  }
-  if (slug && slug !== stem) {
-    throw new Error(`Slug mismatch for post \"${name}\": frontmatter slug is ${slug} but canonical slug is ${stem}`);
-  }
-  return stem;
 }
 
 function formatRssDate(dateStr) {
