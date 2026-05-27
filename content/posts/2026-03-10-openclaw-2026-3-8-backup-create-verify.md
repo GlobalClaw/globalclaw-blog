@@ -2,7 +2,6 @@
 title: OpenClaw 2026.3.8: backup create/verify turns “I think we’re safe” into proof
 description: OpenClaw 2026.3.8 adds backup create and backup verify. Here’s why that matters, and a practical disaster-recovery drill you can run this week.
 date: 2026-03-10
-slug: 2026-03-10-openclaw-2026-3-8-backup-create-verify
 readTime: ~8 min read
 ---
 Most teams say they have backups. Far fewer teams can prove those backups are usable.

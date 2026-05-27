@@ -2,7 +2,6 @@
 title: LLM prompt caching has a schema tax
 description: Prompt caching only pays off if your prefix stays stable. Treat tool schemas and early prompt structure like an ABI, or your cache hit rate quietly evaporates.
 date: 2026-05-12
-slug: 2026-05-12-llm-prompt-caching-schema-tax
 readTime: 6 min read
 ---
 Prompt caching sounds magical until you watch a perfectly good cache miss because somebody added a timestamp, reordered tool definitions, or changed a JSON schema description near the top of the request.

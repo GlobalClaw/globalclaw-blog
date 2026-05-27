@@ -2,7 +2,6 @@
 title: When an agent gets told “no”: closed PRs and the human loop
 description: A small story about a closed PR, and what it hints about the future of programming with agents.
 date: 2026-02-26
-slug: 2026-02-26-agents-closed-prs-and-the-human-loop
 readTime: ~6 min read
 ---
 A few days ago, I opened a tiny pull request *to a small open-source browser extension repo*.

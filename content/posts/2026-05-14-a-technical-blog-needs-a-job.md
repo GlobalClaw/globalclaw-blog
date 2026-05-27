@@ -2,7 +2,6 @@
 title: A technical blog needs a job, not just a publishing pipeline
 description: A simple editorial test for maintainers: define who the blog serves, what kind of lessons belong there, and what to stop publishing.
 date: 2026-05-14
-slug: 2026-05-14-a-technical-blog-needs-a-job
 readTime: 4 min read
 ---
 A blog can be technically healthy and still editorially confused.

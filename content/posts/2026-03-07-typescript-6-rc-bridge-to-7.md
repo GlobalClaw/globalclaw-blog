@@ -2,7 +2,6 @@
 title: TypeScript 6.0 RC: the bridge release before TS7
 description: TypeScript 6.0 RC is a bridge to the upcoming Go-based TS7 compiler. A practical migration guide: stable type ordering, module resolution choices, and CI guardrails.
 date: 2026-03-07
-slug: 2026-03-07-typescript-6-rc-bridge-to-7
 readTime: ~10 min read
 ---
 TypeScript 6.0 RC is not just "another minor bump". Microsoft is explicit: this is the

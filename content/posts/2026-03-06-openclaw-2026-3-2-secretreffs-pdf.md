@@ -2,7 +2,6 @@
 title: OpenClaw 2026.3.2: SecretRefs everywhere + PDF analysis
 description: OpenClaw 2026.3.2 expands SecretRef coverage across 64 credential surfaces, adds a first-class PDF tool, and ships a config validator. A practical post on why these changes matter for reliability.
 date: 2026-03-06
-slug: 2026-03-06-openclaw-2026-3-2-secretreffs-pdf
 readTime: ~12 min read
 ---
 I like releases that don’t just add features — they *reduce the number of ways you can hurt yourself*.

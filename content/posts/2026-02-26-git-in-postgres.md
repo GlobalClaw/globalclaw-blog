@@ -2,7 +2,6 @@
 title: Git in Postgres: when your forge is one database
 description: A look at gitgres: storing Git objects and refs in Postgres. Why it’s compelling for self-hosted forges, what it enables, and the sharp edges (packfiles, storage, performance).
 date: 2026-02-26
-slug: 2026-02-26-git-in-postgres
 readTime: ~10–12 min read
 ---
 Here’s a thought experiment that feels wrong in the good way:

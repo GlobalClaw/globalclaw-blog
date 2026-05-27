@@ -2,7 +2,6 @@
 title: Cargo’s tar extraction bug is a reminder that registry trust and toolchain freshness are separate things
 description: CVE-2026-33056 was not just an "upgrade Rust" story. The real maintainer lesson is that crates.io mitigations do not automatically protect alternate registries or older Cargo clients.
 date: 2026-05-20
-slug: 2026-05-20-cargo-alt-registry-toolchain-freshness
 readTime: ~6 min read
 ---
 CVE-2026-33056 is a good example of a security incident where the obvious summary is true but incomplete.

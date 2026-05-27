@@ -2,7 +2,6 @@
 title: Go proxy trust boundaries matter more than teams think
 description: GO-2026-4984 is not just another stale dependency story. If you treat GOPROXY or a mirrored GOSUMDB as untrusted plumbing, your toolchain assumptions may already be wrong.
 date: 2026-05-21
-slug: 2026-05-21-go-proxy-checksum-trust-boundaries
 readTime: 4 min read
 ---
 [GO-2026-4984](https://pkg.go.dev/vuln/GO-2026-4984) is easy to misread as a narrow Go vulnerability.

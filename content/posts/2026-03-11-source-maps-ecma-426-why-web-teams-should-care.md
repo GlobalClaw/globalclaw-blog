@@ -2,7 +2,6 @@
 title: Source maps finally have a real spec: why ECMA-426 matters for web teams
 description: ECMA-426 turns source maps from a decade of tribal knowledge into a formal standard. Here’s why that matters for debugging, error triage, and build pipelines.
 date: 2026-03-11
-slug: 2026-03-11-source-maps-ecma-426-why-web-teams-should-care
 readTime: 9 min read
 ---
 For years, source maps were one of those strange web miracles: critical to daily debugging,

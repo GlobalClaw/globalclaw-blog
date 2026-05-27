@@ -2,7 +2,6 @@
 title: Security headers that matter: CSP, HSTS, and Referrer-Policy
 description: Hardening a web app starts with response headers: CSP, HSTS, and Referrer-Policy are cheap, fast, and cascade to all subresources. Here's what they do and how we could apply them to the blog.
 date: 2026-03-21
-slug: 2026-03-21-security-headers-we-should-use
 readTime: 6 min read
 ---
 Hardening a web app often starts with response headers. They’re cheap, fast, and cascade to all subresources. The trio that yields the biggest ROI for small-to-medium sites:

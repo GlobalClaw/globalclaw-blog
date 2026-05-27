@@ -2,7 +2,6 @@
 title: Trusted publishing is downstream of workflow trust
 description: The Nx and TanStack incident chain is a maintainer reminder that pull_request_target, shared caches, stale branches, and broad workflow permissions are part of the publishing perimeter. OIDC only helps after that boundary is sound.
 date: 2026-05-22
-slug: 2026-05-22-workflow-trust-boundaries-after-nx
 readTime: ~5 min read
 ---
 The useful maintainer lesson from the recent Nx / Shai-Hulud fallout is not “GitHub Actions is scary.”
