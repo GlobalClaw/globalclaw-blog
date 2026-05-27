@@ -58,6 +58,13 @@ function formatDisplayDate(dateStr, readTime) {
   return readTime ? `${dateStr} · ${readTime}` : dateStr;
 }
 
+function parseRedirectPaths(value = '') {
+  return String(value)
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 async function ensureDir(p) {
   await fs.mkdir(p, { recursive: true });
 }
@@ -278,6 +285,7 @@ async function readMarkdownPosts() {
       description: data.description || '',
       date: data.date || '1970-01-01',
       readTime: data.readTime || '',
+      redirectFrom: parseRedirectPaths(data.redirectFrom),
       bodyHtml: preserved.restore(marked.parse(preserved.markdown)),
       outputPath: `/posts/${slug}.html`
     });
@@ -380,6 +388,23 @@ function assertNoFutureDatedPosts(posts) {
   ].join('\n'));
 }
 
+function redirectHtml(destinationPath) {
+  return shell({
+    title: `Redirecting… — ${site.siteTitle}`,
+    description: `Redirecting to ${destinationPath}`,
+    navCurrent: 'posts',
+    currentPath: destinationPath,
+    robots: 'noindex,follow',
+    body: `    <article class="card">
+      <h2>Redirecting…</h2>
+      <p><a href="${escapeHtml(destinationPath)}">Continue to the canonical post</a>.</p>
+    </article>`,
+    extraHead: `
+  <meta http-equiv="refresh" content="0;url=${escapeHtml(destinationPath)}" />
+  <script>location.replace(${JSON.stringify(destinationPath)});</script>`
+  });
+}
+
 async function buildMarkdownPost(post) {
   const html = shell({
     title: `${post.title} — GlobalClaw`,
@@ -400,6 +425,19 @@ async function buildMarkdownPost(post) {
     </article>`
   });
   await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), html);
+
+  for (const redirectPath of post.redirectFrom || []) {
+    if (!redirectPath.startsWith('/')) {
+      throw new Error(`Invalid redirectFrom path for ${post.slug}: expected an absolute site path, got "${redirectPath}"`);
+    }
+    if (redirectPath === post.outputPath) {
+      throw new Error(`Invalid redirectFrom path for ${post.slug}: redirectFrom cannot equal the canonical output path.`);
+    }
+    const relativePath = redirectPath.replace(/^\//, '');
+    const redirectOutputPath = path.join(outDir, relativePath);
+    await ensureDir(path.dirname(redirectOutputPath));
+    await fs.writeFile(redirectOutputPath, redirectHtml(post.outputPath));
+  }
 }
 
 async function copyLegacyPosts(posts) {
@@ -684,6 +722,17 @@ async function validateOutputs(allPosts) {
   assert(latestPostHtml.includes('<meta name="twitter:card" content="summary" />'), `Latest post ${latest.slug} is missing its Twitter card tag.`);
   assert(rssXml.includes(`<link>${site.siteUrl}${latest.outputPath}</link>`), `RSS feed does not include latest post ${latest.slug}.`);
   assert(sitemapXml.includes(`<loc>${site.siteUrl}${latest.outputPath}</loc>`), `Sitemap does not include latest post ${latest.slug}.`);
+
+  for (const post of allPosts.filter((item) => item.source === 'markdown')) {
+    for (const redirectPath of post.redirectFrom || []) {
+      const redirectFile = path.join(outDir, redirectPath.replace(/^\//, ''));
+      const redirectContents = await fs.readFile(redirectFile, 'utf8');
+      assert(redirectContents.includes(`content="0;url=${post.outputPath}"`), `Redirect ${redirectPath} does not point at ${post.outputPath}.`);
+      assert(redirectContents.includes(`<link rel="canonical" href="${site.siteUrl}${post.outputPath}" />`), `Redirect ${redirectPath} is missing canonical metadata for ${post.outputPath}.`);
+      assert(redirectContents.includes('<meta name="robots" content="noindex,follow" />'), `Redirect ${redirectPath} should stay noindex.`);
+    }
+  }
+
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/license.html</loc>`), 'Sitemap does not include license page.');
   assert(!sitemapXml.includes(`<loc>${site.siteUrl}/index.html</loc>`), 'Sitemap should not include /index.html once canonical URLs are enforced.');
