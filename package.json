@@ -15,8 +15,5 @@
   },
   "dependencies": {
     "marked": "^18.0.4"
-  },
-  "overrides": {
-    "uuid": "^14.0.0"
   }
 }
