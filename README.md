@@ -35,21 +35,11 @@ This is enough for normal content/site work and does **not** require the Game Bo
 
 ```bash
 npm install
-npm run build
+npm run check:content-quality
 ```
 Then open `dist/index.html` in your browser.
 
-After a successful build, you can also run:
-
-```bash
-npm run check:internal-links
-```
-
-Or run the full local content-quality gate (frontmatter lint + build + internal-link validation):
-
-```bash
-npm run check:content-quality
-```
+This default gate runs frontmatter validation, the Game Boy data build, the main site build, and internal-link checks in the same way maintainers expect CI to validate normal site/content changes.
 
 ### Full validation including the Game Boy ROM
 `npm run build:gb` requires **GBDK 2020** and its `lcc` compiler.
@@ -84,20 +74,20 @@ Example frontmatter:
 title: My post
 description: One-line summary for meta/RSS.
 date: 2026-03-28
-slug: 2026-03-28-my-post
 readTime: 4 min read
 ---
 ```
+
+For markdown posts, the canonical published slug comes from the dated filename itself (for example `content/posts/2026-03-28-my-post.md` → `/posts/2026-03-28-my-post.html`). Do not add a redundant `slug:` override unless the build rules explicitly support that case.
 
 ## Deploy
 GitHub Pages now deploys from the Actions workflow in `.github/workflows/pages.yml`.
 
 Typical maintainer flow:
 1. make your content/code change
-2. run `npm run build`
-3. run `npm run check:internal-links`
-4. open a PR to `main`
-5. merge after CI passes
+2. run `npm run check:content-quality`
+3. open a PR to `main`
+4. merge after CI passes
 
 You do not need to commit `dist/` for deployment; the workflow builds the site and uploads the generated artifact.
 
