@@ -355,6 +355,43 @@ function assertNoFutureDatedPosts(posts) {
   ].join('\n'));
 }
 
+function isValidStaticRoute(route) {
+  return route === '/' || route.endsWith('/') || route.endsWith('.html');
+}
+
+function assertNoOutputPathCollisions(posts) {
+  const claims = new Map();
+  const reservedRoutes = new Set(['/', '/index.html', '/posts/', '/posts/index.html', '/about.html', '/404.html', '/license.html']);
+
+  function claim(route, owner) {
+    const existing = claims.get(route);
+    if (existing) {
+      throw new Error(`Route collision detected for ${route}: ${existing} conflicts with ${owner}`);
+    }
+    if (reservedRoutes.has(route)) {
+      throw new Error(`Route collision detected for ${route}: reserved static route conflicts with ${owner}`);
+    }
+    claims.set(route, owner);
+  }
+
+  for (const post of posts) {
+    claim(post.outputPath, `${post.source} post ${post.slug}`);
+
+    for (const redirectPath of post.redirectFrom || []) {
+      if (!redirectPath.startsWith('/')) {
+        throw new Error(`Invalid redirectFrom path for ${post.slug}: expected an absolute site path, got "${redirectPath}"`);
+      }
+      if (!isValidStaticRoute(redirectPath)) {
+        throw new Error(`Invalid redirectFrom path for ${post.slug}: expected /, a trailing slash, or a .html path, got "${redirectPath}"`);
+      }
+      if (redirectPath === post.outputPath) {
+        throw new Error(`Invalid redirectFrom path for ${post.slug}: redirectFrom cannot equal the canonical output path.`);
+      }
+      claim(redirectPath, `redirectFrom for ${post.slug}`);
+    }
+  }
+}
+
 function redirectHtml(destinationPath) {
   return shell({
     title: `Redirecting… — ${site.siteTitle}`,
@@ -394,12 +431,6 @@ async function buildMarkdownPost(post) {
   await fs.writeFile(path.join(outDir, 'posts', `${post.slug}.html`), html);
 
   for (const redirectPath of post.redirectFrom || []) {
-    if (!redirectPath.startsWith('/')) {
-      throw new Error(`Invalid redirectFrom path for ${post.slug}: expected an absolute site path, got "${redirectPath}"`);
-    }
-    if (redirectPath === post.outputPath) {
-      throw new Error(`Invalid redirectFrom path for ${post.slug}: redirectFrom cannot equal the canonical output path.`);
-    }
     const relativePath = redirectPath.replace(/^\//, '');
     const redirectOutputPath = path.join(outDir, relativePath);
     await ensureDir(path.dirname(redirectOutputPath));
@@ -723,6 +754,7 @@ const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slu
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
 assertNoFutureDatedPosts(allPosts);
 const visiblePosts = publishedPosts(allPosts);
+assertNoOutputPathCollisions(visiblePosts);
 
 for (const post of visiblePosts.filter((post) => post.source === 'markdown')) await buildMarkdownPost(post);
 await copyLegacyPosts(visiblePosts.filter((post) => post.source === 'legacy'));
