@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate content and build site
+        run: npm run check:content-quality
+
       - name: Cache GBDK
         id: cache-gbdk
         uses: actions/cache@v5
@@ -60,12 +63,6 @@ jobs:
 
       - name: Build Game Boy ROM
         run: npm run build:gb
-
-      - name: Build site
-        run: npm run build
-
-      - name: Validate internal links
-        run: npm run check:internal-links
 
       - name: Upload ROM artifact
         uses: actions/upload-artifact@v7
