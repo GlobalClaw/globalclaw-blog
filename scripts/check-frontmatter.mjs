@@ -21,7 +21,16 @@ async function listMarkdownFiles(dir) {
 function validatePost(file, raw, errors) {
   const rel = path.relative(root, file);
   const name = path.basename(file);
-  const { data, body, hasFrontmatter } = parseFrontmatter(raw);
+  let parsed;
+
+  try {
+    parsed = parseFrontmatter(raw);
+  } catch (error) {
+    errors.push(`${rel}: ${error.message}`);
+    return;
+  }
+
+  const { data, body, hasFrontmatter } = parsed;
 
   if (!hasFrontmatter) {
     errors.push(`${rel}: missing frontmatter block`);
@@ -49,7 +58,16 @@ function validatePost(file, raw, errors) {
 
 function validatePage(file, raw, errors) {
   const rel = path.relative(root, file);
-  const { data, body, hasFrontmatter } = parseFrontmatter(raw);
+  let parsed;
+
+  try {
+    parsed = parseFrontmatter(raw);
+  } catch (error) {
+    errors.push(`${rel}: ${error.message}`);
+    return;
+  }
+
+  const { data, body, hasFrontmatter } = parsed;
 
   if (!hasFrontmatter) {
     errors.push(`${rel}: missing frontmatter block`);
