@@ -1,21 +1,62 @@
+function unsupportedValueReason(value) {
+  if (value === '|' || value === '>') return 'block scalars are not supported';
+  if (value.startsWith('[') || value.startsWith('{')) return 'flow collections are not supported';
+  if (value.startsWith('&') || value.startsWith('*')) return 'anchors and aliases are not supported';
+  if (value.startsWith('!')) return 'tagged values are not supported';
+  return null;
+}
+
+function parseScalarValue(key, value, lineNumber) {
+  const unsupported = unsupportedValueReason(value);
+  if (unsupported) {
+    throw new Error(`Frontmatter line ${lineNumber}: field "${key}" uses unsupported YAML; ${unsupported}`);
+  }
+
+  if ((value.startsWith('"') && !value.endsWith('"')) || (value.startsWith("'") && !value.endsWith("'"))) {
+    throw new Error(`Frontmatter line ${lineNumber}: field "${key}" has an unterminated quoted value`);
+  }
+
+  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+    return value.slice(1, -1);
+  }
+
+  return value;
+}
+
 export function parseFrontmatter(raw) {
   if (!raw.startsWith('---\n')) return { data: {}, body: raw, hasFrontmatter: false };
   const end = raw.indexOf('\n---\n', 4);
   if (end === -1) return { data: {}, body: raw, hasFrontmatter: false };
 
-  const fm = raw.slice(4, end).trim();
+  const fm = raw.slice(4, end);
   const body = raw.slice(end + 5);
   const data = {};
+  const seenKeys = new Set();
 
-  for (const line of fm.split('\n')) {
-    const idx = line.indexOf(':');
-    if (idx === -1) continue;
-    const key = line.slice(0, idx).trim();
-    let value = line.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
+  for (const [index, rawLine] of fm.split('\n').entries()) {
+    const lineNumber = index + 2;
+    const line = rawLine.trimEnd();
+
+    if (!line.trim()) continue;
+    if (/^\s/.test(rawLine)) {
+      throw new Error(`Frontmatter line ${lineNumber}: indented or multiline values are not supported`);
     }
-    data[key] = value;
+    if (line.startsWith('#')) {
+      throw new Error(`Frontmatter line ${lineNumber}: comments are not supported`);
+    }
+
+    const match = line.match(/^([A-Za-z0-9_-]+):(?:\s(.*)|\s*)$/);
+    if (!match) {
+      throw new Error(`Frontmatter line ${lineNumber}: expected "key: value"`);
+    }
+
+    const [, key, rawValue = ''] = match;
+    if (seenKeys.has(key)) {
+      throw new Error(`Frontmatter line ${lineNumber}: duplicate field "${key}"`);
+    }
+    seenKeys.add(key);
+
+    data[key] = parseScalarValue(key, rawValue, lineNumber);
   }
 
   return { data, body, hasFrontmatter: true };
