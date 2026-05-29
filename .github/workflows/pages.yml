@@ -3,11 +3,6 @@ name: Build and deploy Pages
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    # Low-frequency health check so upstream dependency/toolchain drift fails before the next publish.
-    - cron: '17 3 * * 1,4'
   workflow_dispatch:
 
 permissions:
