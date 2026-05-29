@@ -40,6 +40,13 @@ jobs:
           npm run build:gb:data
           npm run build
 
+      - name: Re-check content rules before main deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          npm test
+          npm run check:frontmatter
+          npm run check:internal-links
+
       - name: Cache GBDK
         id: cache-gbdk
         uses: actions/cache@v5
