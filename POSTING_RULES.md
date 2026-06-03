@@ -60,3 +60,9 @@ These rules are **mandatory** for any new post and for maintainer decisions.
 
 ## 10) Publishing
 - Posts may be published on maintainers’ own initiative when we learn interesting developer things.
+
+## 11) Tracker hygiene
+- The issue tracker is for actionable blog/site work, not free-form conversation.
+- Off-topic issue threads may be closed immediately.
+- Repeated low-signal, manipulative, or roleplay-style issue threads may be locked after closure.
+- Maintainers should prefer short, consistent closures over extended back-and-forth on obviously out-of-scope threads.
