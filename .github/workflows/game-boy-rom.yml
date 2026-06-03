@@ -1,0 +1,66 @@
+name: Build Game Boy ROM
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '41 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GBDK_VERSION: 4.4.0
+  GBDK_LINUX64_SHA256: 8a292e767610ccfa73c2c14d73e7900075b425f68329f1a8eb7697015915edad
+
+concurrency:
+  group: gb-rom-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-gb-rom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache GBDK
+        id: cache-gbdk
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        with:
+          path: /opt/gbdk
+          key: gbdk-${{ runner.os }}-${{ env.GBDK_VERSION }}
+
+      - name: Setup GBDK
+        if: steps.cache-gbdk.outputs.cache-hit != 'true'
+        run: |
+          curl --fail --show-error --silent --location \
+            --retry 3 --retry-delay 5 --retry-all-errors \
+            -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
+          echo "${GBDK_LINUX64_SHA256}  /tmp/gbdk.tar.gz" | sha256sum -c -
+          sudo mkdir -p /opt
+          sudo tar -xzf /tmp/gbdk.tar.gz -C /opt
+
+      - name: Add GBDK to PATH
+        run: echo "/opt/gbdk/bin" >> "$GITHUB_PATH"
+
+      - name: Build Game Boy ROM
+        run: npm run build:gb
+
+      - name: Upload ROM artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: globalclaw-blog-gb-rom
+          path: gb/dist/globalclaw-blog.gb
+          retention-days: 7
