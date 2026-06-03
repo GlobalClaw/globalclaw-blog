@@ -76,6 +76,7 @@ jobs:
         with:
           name: globalclaw-blog-gb-rom
           path: gb/dist/globalclaw-blog.gb
+          retention-days: 7
 
       - name: Configure Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
