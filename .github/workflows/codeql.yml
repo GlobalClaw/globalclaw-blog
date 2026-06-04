@@ -13,6 +13,14 @@ on:
       - '.github/workflows/codeql.yml'
   pull_request:
     branches: [main]
+    paths:
+      - 'assets/js/**'
+      - 'gb/**'
+      - 'scripts/**'
+      - 'test/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/codeql.yml'
   schedule:
     - cron: '29 4 * * 1'
   workflow_dispatch:
