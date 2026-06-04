@@ -1,17 +1,14 @@
-name: Content quality
+name: Content quality (main)
 
 on:
-  pull_request:
+  push:
     branches: [main]
-  schedule:
-    - cron: '17 3 * * *'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: content-quality-${{ github.workflow }}-${{ github.ref }}
+  group: content-quality-main-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
