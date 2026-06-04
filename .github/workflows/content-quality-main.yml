@@ -3,6 +3,17 @@ name: Content quality (main)
 on:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/content-quality-main.yml'
+      - '.github/workflows/pages.yml'
+      - 'CNAME'
+      - 'assets/**'
+      - 'content/**'
+      - 'gb/**'
+      - 'package-lock.json'
+      - 'package.json'
+      - 'scripts/**'
+      - 'test/**'
 
 permissions:
   contents: read
