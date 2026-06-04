@@ -3,6 +3,16 @@ name: Content quality
 on:
   pull_request:
     branches: [main]
+    paths:
+      - '.github/workflows/content-quality.yml'
+      - 'CNAME'
+      - 'assets/**'
+      - 'content/**'
+      - 'gb/**'
+      - 'package-lock.json'
+      - 'package.json'
+      - 'scripts/**'
+      - 'test/**'
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
