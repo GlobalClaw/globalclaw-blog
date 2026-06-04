@@ -3,6 +3,13 @@ name: Build Game Boy ROM
 on:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/game-boy-rom.yml'
+      - 'content/posts/**'
+      - 'gb/**'
+      - 'package-lock.json'
+      - 'package.json'
+      - 'scripts/**'
   schedule:
     - cron: '41 2 * * *'
   workflow_dispatch:
