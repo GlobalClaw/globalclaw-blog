@@ -2,7 +2,7 @@ name: Build and deploy Pages
 
 on:
   workflow_run:
-    workflows: ['Content quality']
+    workflows: ['Content quality (main)']
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -18,10 +18,7 @@ jobs:
   build:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (
-        github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.event == 'push'
-      )
+      github.event.workflow_run.conclusion == 'success'
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
@@ -55,10 +52,7 @@ jobs:
   deploy:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (
-        github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.event == 'push'
-      )
+      github.event.workflow_run.conclusion == 'success'
     timeout-minutes: 10
     permissions:
       pages: write
