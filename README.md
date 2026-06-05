@@ -80,6 +80,11 @@ readTime: 4 min read
 
 For markdown posts, the canonical published slug comes from the dated filename itself (for example `content/posts/2026-03-28-my-post.md` → `/posts/2026-03-28-my-post.html`). Do not add a redundant `slug:` override unless the build rules explicitly support that case.
 
+## Dependency update policy
+
+- Safe Dependabot npm patch/minor updates are auto-merged after required checks pass.
+- Major npm bumps and GitHub Actions / workflow updates stay on manual maintainer review.
+
 ## Deploy
 GitHub Pages now deploys from the Actions workflow in `.github/workflows/pages.yml`.
 
