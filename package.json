@@ -15,6 +15,6 @@
     "build:gb": "bash scripts/build-gb-rom.sh"
   },
   "dependencies": {
-    "marked": "^18.0.4"
+    "marked": "^18.0.5"
   }
 }
