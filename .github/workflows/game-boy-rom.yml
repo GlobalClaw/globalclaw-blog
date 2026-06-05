@@ -7,9 +7,9 @@ on:
       - '.github/workflows/game-boy-rom.yml'
       - 'content/posts/**'
       - 'gb/**'
-      - 'package-lock.json'
-      - 'package.json'
-      - 'scripts/**'
+      - 'scripts/build-gb-rom.sh'
+      - 'scripts/build-gb.mjs'
+      - 'scripts/post-metadata.mjs'
   schedule:
     - cron: '41 2 * * *'
   workflow_dispatch:
