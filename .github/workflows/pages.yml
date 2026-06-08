@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -23,23 +24,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
-        with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 22
           cache: npm
 
       - name: Install dependencies
+        if: github.event_name == 'workflow_dispatch'
         run: npm ci
 
       - name: Build site assets for Pages
+        if: github.event_name == 'workflow_dispatch'
         run: |
           npm run build:gb:data
           npm run build
+
+      - name: Download validated site artifact
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@c850b930e2b3a2dbdde36f7f834e4037fbfbb2b2 # v4.1.9
+        with:
+          name: validated-site-dist
+          path: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Configure Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
