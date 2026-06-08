@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/content-quality.yml'
+      - '.github/workflows/content-quality-main.yml'
+      - '.github/workflows/dependabot-auto-merge.yml'
+      - '.github/workflows/game-boy-rom.yml'
+      - '.github/workflows/pages.yml'
       - 'CNAME'
       - 'assets/**'
       - 'content/**'
