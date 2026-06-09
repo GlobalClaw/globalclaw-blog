@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths: &rom_paths
       - '.github/workflows/game-boy-rom.yml'
+      - 'config/workflow-trigger-policy.json'
       - 'content/posts/**'
       - 'gb/**'
       - 'scripts/build-gb-rom.sh'
@@ -40,6 +41,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      - name: Check workflow trigger policy
+        run: npm run check:workflow-trigger-policy
 
       - name: Install dependencies
         run: npm ci

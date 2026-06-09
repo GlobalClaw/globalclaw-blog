@@ -1,0 +1,152 @@
+{
+  "workflows": [
+    {
+      "id": "content-quality",
+      "file": ".github/workflows/content-quality.yml",
+      "events": {
+        "pull_request": [
+          ".github/workflows/content-quality.yml",
+          ".github/workflows/content-quality-main.yml",
+          ".github/workflows/game-boy-rom.yml",
+          ".github/workflows/pages.yml",
+          "CNAME",
+          "assets/**",
+          "config/workflow-trigger-policy.json",
+          "content/**",
+          "gb/**",
+          "package-lock.json",
+          "package.json",
+          "scripts/**",
+          "test/**"
+        ]
+      }
+    },
+    {
+      "id": "content-quality-main",
+      "file": ".github/workflows/content-quality-main.yml",
+      "events": {
+        "push": [
+          ".github/workflows/content-quality.yml",
+          ".github/workflows/content-quality-main.yml",
+          ".github/workflows/pages.yml",
+          "CNAME",
+          "assets/**",
+          "config/workflow-trigger-policy.json",
+          "content/**",
+          "gb/**",
+          "package-lock.json",
+          "package.json",
+          "scripts/**",
+          "test/**"
+        ]
+      }
+    },
+    {
+      "id": "codeql",
+      "file": ".github/workflows/codeql.yml",
+      "events": {
+        "push": [
+          "assets/js/**",
+          "config/workflow-trigger-policy.json",
+          "gb/**",
+          "scripts/**",
+          "test/**",
+          "package.json",
+          "package-lock.json",
+          ".github/workflows/codeql.yml"
+        ],
+        "pull_request": [
+          "assets/js/**",
+          "config/workflow-trigger-policy.json",
+          "gb/**",
+          "scripts/**",
+          "test/**",
+          "package.json",
+          "package-lock.json",
+          ".github/workflows/codeql.yml"
+        ]
+      }
+    },
+    {
+      "id": "game-boy-rom",
+      "file": ".github/workflows/game-boy-rom.yml",
+      "events": {
+        "push": [
+          ".github/workflows/game-boy-rom.yml",
+          "config/workflow-trigger-policy.json",
+          "content/posts/**",
+          "gb/**",
+          "scripts/build-gb-rom.sh",
+          "scripts/build-gb.mjs",
+          "scripts/post-metadata.mjs"
+        ],
+        "pull_request": [
+          ".github/workflows/game-boy-rom.yml",
+          "config/workflow-trigger-policy.json",
+          "content/posts/**",
+          "gb/**",
+          "scripts/build-gb-rom.sh",
+          "scripts/build-gb.mjs",
+          "scripts/post-metadata.mjs"
+        ]
+      }
+    },
+    {
+      "id": "pages",
+      "file": ".github/workflows/pages.yml",
+      "notes": [
+        "workflow_run driven; documented here for policy context but not path-checked"
+      ]
+    }
+  ],
+  "symmetryRules": [
+    {
+      "name": "site-affecting workflow edits stay symmetrical across PR and main validation",
+      "left": ["content-quality", "pull_request"],
+      "right": ["content-quality-main", "push"],
+      "paths": [
+        ".github/workflows/content-quality.yml",
+        ".github/workflows/content-quality-main.yml",
+        ".github/workflows/pages.yml",
+        "CNAME",
+        "assets/**",
+        "config/workflow-trigger-policy.json",
+        "content/**",
+        "gb/**",
+        "package-lock.json",
+        "package.json",
+        "scripts/**",
+        "test/**"
+      ]
+    },
+    {
+      "name": "codeql trigger coverage stays symmetrical across PR and main",
+      "left": ["codeql", "pull_request"],
+      "right": ["codeql", "push"],
+      "paths": [
+        "assets/js/**",
+        "config/workflow-trigger-policy.json",
+        "gb/**",
+        "scripts/**",
+        "test/**",
+        "package.json",
+        "package-lock.json",
+        ".github/workflows/codeql.yml"
+      ]
+    },
+    {
+      "name": "game-boy-rom trigger coverage stays symmetrical across PR and main",
+      "left": ["game-boy-rom", "pull_request"],
+      "right": ["game-boy-rom", "push"],
+      "paths": [
+        ".github/workflows/game-boy-rom.yml",
+        "config/workflow-trigger-policy.json",
+        "content/posts/**",
+        "gb/**",
+        "scripts/build-gb-rom.sh",
+        "scripts/build-gb.mjs",
+        "scripts/post-metadata.mjs"
+      ]
+    }
+  ]
+}
