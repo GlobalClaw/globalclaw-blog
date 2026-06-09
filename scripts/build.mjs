@@ -33,6 +33,10 @@ function parseRedirectPaths(value = '') {
     .filter(Boolean);
 }
 
+function staticPageOutputPath(name) {
+  return `/${name}.html`;
+}
+
 async function ensureDir(p) {
   await fs.mkdir(p, { recursive: true });
 }
@@ -260,6 +264,34 @@ async function readMarkdownPosts() {
   return posts;
 }
 
+async function readMarkdownPages() {
+  const dir = path.join(root, 'content', 'pages');
+  let names = [];
+  try {
+    names = (await fs.readdir(dir)).filter((name) => name.endsWith('.md'));
+  } catch {
+    return [];
+  }
+
+  const pages = [];
+  for (const name of names) {
+    const raw = await fs.readFile(path.join(dir, name), 'utf8');
+    const { data, body } = parseFrontmatter(raw);
+    const slug = path.basename(name, '.md');
+    const preserved = preserveRawBlocks(body);
+    pages.push({
+      slug,
+      title: data.title || slug,
+      description: data.description || '',
+      meta: data.meta || '',
+      outputPath: staticPageOutputPath(slug),
+      bodyHtml: preserved.restore(marked.parse(preserved.markdown))
+    });
+  }
+
+  return pages.sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
 function stripTags(html) {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
@@ -361,7 +393,7 @@ function isValidStaticRoute(route) {
 
 function assertNoOutputPathCollisions(posts) {
   const claims = new Map();
-  const reservedRoutes = new Set(['/', '/index.html', '/posts/', '/posts/index.html', '/about.html', '/404.html', '/license.html']);
+  const reservedRoutes = new Set(['/', '/index.html', '/posts/', '/posts/index.html', '/license.html']);
 
   function claim(route, owner) {
     const existing = claims.get(route);
@@ -450,47 +482,27 @@ async function copyLegacyPosts(posts) {
   }
 }
 
-async function buildAbout() {
-  const raw = await fs.readFile(path.join(root, 'content/pages/about.md'), 'utf8');
-  const { data, body } = parseFrontmatter(raw);
+async function buildStaticPage(page) {
+  const isAbout = page.slug === 'about';
+  const isNotFound = page.slug === '404';
   const html = shell({
-    title: `${data.title || 'About'} — GlobalClaw`,
-    description: data.description || '',
-    navCurrent: 'about',
-    currentPath: '/about.html',
+    title: `${page.title} — ${site.siteTitle}`,
+    description: page.description || (isNotFound ? 'The page you requested could not be found.' : ''),
+    navCurrent: isAbout ? 'about' : undefined,
+    currentPath: page.outputPath,
+    robots: isNotFound ? 'noindex,follow' : 'index,follow',
     body: `    <article class="post card">
       <header class="post-header">
-        <h2>${escapeHtml(data.title || 'About')}</h2>
-        <p class="meta">${escapeHtml(data.meta || '')}</p>
+        <h2>${escapeHtml(page.title)}</h2>
+        ${page.meta ? `<p class="meta">${escapeHtml(page.meta)}</p>` : ''}
       </header>
 
-      ${marked.parse(body)}
+      ${page.bodyHtml}
 
       <p class="backlink"><a href="/">← Back home</a></p>
     </article>`
   });
-  await fs.writeFile(path.join(outDir, 'about.html'), html);
-}
-
-async function build404() {
-  const raw = await fs.readFile(path.join(root, 'content/pages/404.md'), 'utf8');
-  const { data, body } = parseFrontmatter(raw);
-  const html = shell({
-    title: `${data.title || 'Not Found'} — ${site.siteTitle}`,
-    description: data.description || 'The page you requested could not be found.',
-    currentPath: '/404.html',
-    robots: 'noindex,follow',
-    body: `    <article class="post card">
-      <header class="post-header">
-        <h2>${escapeHtml(data.title || 'Not Found')}</h2>
-      </header>
-
-      ${marked.parse(body)}
-
-      <p class="backlink"><a href="/">← Back home</a></p>
-    </article>`
-  });
-  await fs.writeFile(path.join(outDir, '404.html'), html);
+  await fs.writeFile(path.join(outDir, page.outputPath.replace(/^\//, '')), html);
 }
 
 async function buildLegal() {
@@ -627,12 +639,12 @@ ${items}
   await fs.writeFile(path.join(outDir, 'rss.xml'), rss);
 }
 
-async function buildSitemap(allPosts) {
+async function buildSitemap(allPosts, pages) {
   const urls = [
     '/',
     '/posts/',
-    '/about.html',
     '/license.html',
+    ...pages.filter((page) => page.slug !== '404').map((page) => page.outputPath),
     ...allPosts.map((post) => post.outputPath)
   ];
   const uniqueUrls = [...new Set(urls.map((url) => canonicalPathFor(url)))];
@@ -669,7 +681,7 @@ async function copyStaticBits() {
   await fs.copyFile(path.join(root, 'CNAME'), path.join(outDir, 'CNAME'));
 }
 
-async function validateOutputs(allPosts) {
+async function validateOutputs(allPosts, pages) {
   assert(allPosts.length > 0, 'Build produced no posts. Refusing to write an empty homepage/feed.');
 
   const slugs = new Set();
@@ -690,17 +702,20 @@ async function validateOutputs(allPosts) {
     if (error && error.code !== 'ENOENT') throw error;
   }
 
-  const [indexHtml, postsIndexHtml, aboutHtml, legalHtml, notFoundHtml, latestPostHtml, rssXml, sitemapXml, robotsTxt] = await Promise.all([
+  const [indexHtml, postsIndexHtml, legalHtml, latestPostHtml, rssXml, sitemapXml, robotsTxt, ...pageHtmls] = await Promise.all([
     fs.readFile(path.join(outDir, 'index.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'posts', 'index.html'), 'utf8'),
-    fs.readFile(path.join(outDir, 'about.html'), 'utf8'),
     fs.readFile(path.join(outDir, 'license.html'), 'utf8'),
-    fs.readFile(path.join(outDir, '404.html'), 'utf8'),
     fs.readFile(path.join(outDir, latest.outputPath.replace(/^\//, '')), 'utf8'),
     fs.readFile(path.join(outDir, 'rss.xml'), 'utf8'),
     fs.readFile(path.join(outDir, 'sitemap.xml'), 'utf8'),
-    fs.readFile(path.join(outDir, 'robots.txt'), 'utf8')
+    fs.readFile(path.join(outDir, 'robots.txt'), 'utf8'),
+    ...pages.map((page) => fs.readFile(path.join(outDir, page.outputPath.replace(/^\//, '')), 'utf8'))
   ]);
+
+  const pageHtmlBySlug = new Map(pages.map((page, index) => [page.slug, pageHtmls[index]]));
+  const aboutHtml = pageHtmlBySlug.get('about');
+  const notFoundHtml = pageHtmlBySlug.get('404');
 
   assert(indexHtml.includes(`href="${latest.outputPath}"`), `Homepage CTA does not point at latest post ${latest.slug}.`);
   assert(indexHtml.includes('href="/license.html"'), 'Homepage footer is missing the licensing link.');
@@ -708,10 +723,12 @@ async function validateOutputs(allPosts) {
   assert(indexHtml.includes(`<meta property="og:url" content="${site.siteUrl}/" />`), 'Homepage is missing its Open Graph URL tag.');
   assert(postsIndexHtml.includes(`href="${latest.outputPath}"`), `Posts index CTA does not point at latest post ${latest.slug}.`);
   assert(postsIndexHtml.includes(`<link rel="canonical" href="${site.siteUrl}/posts/" />`), 'Posts index is missing its canonical URL tag.');
+  assert(aboutHtml, 'About page was not built from content/pages/about.md.');
   assert(aboutHtml.includes('← Back home'), 'About page lost its backlink to the homepage.');
   assert(aboutHtml.includes(`<link rel="canonical" href="${site.siteUrl}/about.html" />`), 'About page is missing its canonical URL tag.');
   assert(legalHtml.includes('code is MIT; the writing and branding are not'), 'License page lost its plain-language summary.');
   assert(legalHtml.includes(`<link rel="canonical" href="${site.siteUrl}/license.html" />`), 'License page is missing its canonical URL tag.');
+  assert(notFoundHtml, '404 page was not built from content/pages/404.md.');
   assert(notFoundHtml.includes('Nothing here.'), '404 page did not render the expected fallback copy.');
   assert(notFoundHtml.includes('href="/posts/"'), '404 page does not link to the posts index.');
   assert(notFoundHtml.includes('<meta name="robots" content="noindex,follow" />'), '404 page should stay noindex.');
@@ -733,6 +750,7 @@ async function validateOutputs(allPosts) {
 
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/about.html</loc>`), 'Sitemap does not include about page.');
   assert(sitemapXml.includes(`<loc>${site.siteUrl}/license.html</loc>`), 'Sitemap does not include license page.');
+  assert(!sitemapXml.includes(`<loc>${site.siteUrl}/404.html</loc>`), 'Sitemap should not include the 404 page.');
   assert(!sitemapXml.includes(`<loc>${site.siteUrl}/index.html</loc>`), 'Sitemap should not include /index.html once canonical URLs are enforced.');
   assert(!sitemapXml.includes(`<loc>${site.siteUrl}/posts/index.html</loc>`), 'Sitemap should not include /posts/index.html once canonical URLs are enforced.');
   assert(robotsTxt.includes('User-agent: *'), 'robots.txt is missing its default crawler scope.');
@@ -750,6 +768,7 @@ async function validateOutputs(allPosts) {
 await cleanDist();
 await copyStaticBits();
 const markdownPosts = await readMarkdownPosts();
+const staticPages = await readMarkdownPages();
 const legacyPosts = await readLegacyPosts(new Set(markdownPosts.map((p) => p.slug)));
 const allPosts = sortPosts([...markdownPosts, ...legacyPosts]);
 assertNoFutureDatedPosts(allPosts);
@@ -758,12 +777,11 @@ assertNoOutputPathCollisions(visiblePosts);
 
 for (const post of visiblePosts.filter((post) => post.source === 'markdown')) await buildMarkdownPost(post);
 await copyLegacyPosts(visiblePosts.filter((post) => post.source === 'legacy'));
-await buildAbout();
-await build404();
+for (const page of staticPages) await buildStaticPage(page);
 await buildLegal();
 await buildIndexes(visiblePosts);
 await buildRss(visiblePosts);
-await buildSitemap(visiblePosts);
+await buildSitemap(visiblePosts, staticPages);
 await buildRobots();
-await validateOutputs(visiblePosts);
+await validateOutputs(visiblePosts, staticPages);
 console.log(`Built dist/ with ${visiblePosts.length} published posts (${markdownPosts.length} markdown total, ${legacyPosts.length} legacy total).`);

@@ -24,8 +24,9 @@ function sourceOutputPath(file) {
     const slug = path.basename(rel, path.extname(rel));
     return `/posts/${slug}.html`;
   }
-  if (rel === path.join('content', 'pages', 'about.md')) return '/about.html';
-  if (rel === path.join('content', 'pages', '404.md')) return '/404.html';
+  if (rel.startsWith(`content${path.sep}pages${path.sep}`)) {
+    return `/${path.basename(rel, path.extname(rel))}.html`;
+  }
   if (rel.startsWith(`posts${path.sep}`)) return `/posts/${path.basename(rel)}`;
   return '/index.html';
 }
@@ -101,7 +102,7 @@ async function validateSourceLinks(errors) {
     ...(await listFilesIfPresent(path.join(root, 'posts'), (name) => name.endsWith('.html') && name !== 'index.html'))
   ];
 
-  const knownRoutes = new Set(['/','/index.html','/posts/','/posts/index.html','/about.html','/404.html','/license.html']);
+  const knownRoutes = new Set(['/','/index.html','/posts/','/posts/index.html','/license.html']);
 
   for (const file of sourceFiles) {
     knownRoutes.add(sourceOutputPath(file));
