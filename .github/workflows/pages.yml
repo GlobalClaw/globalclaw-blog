@@ -38,11 +38,9 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: npm ci
 
-      - name: Build site assets for Pages
+      - name: Validate content and build site assets
         if: github.event_name == 'workflow_dispatch'
-        run: |
-          npm run build:gb:data
-          npm run build
+        run: npm run check:content-quality
 
       - name: Download validated site artifact
         if: github.event_name == 'workflow_run'
