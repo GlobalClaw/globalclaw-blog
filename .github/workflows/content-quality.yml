@@ -10,6 +10,7 @@ on:
       - '.github/workflows/pages.yml'
       - 'CNAME'
       - 'assets/**'
+      - 'config/workflow-trigger-policy.json'
       - 'content/**'
       - 'gb/**'
       - 'package-lock.json'
