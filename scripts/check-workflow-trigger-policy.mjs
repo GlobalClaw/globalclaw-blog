@@ -47,7 +47,6 @@ function extractEventPaths(content, eventName) {
   }
 
   const match = pathLine.line.match(/^    paths:\s*(?:&([A-Za-z0-9_-]+)|\*([A-Za-z0-9_-]+))?\s*$/);
-  const definedAnchor = match?.[1] ?? null;
   const referencedAnchor = match?.[2] ?? null;
 
   if (referencedAnchor) {
