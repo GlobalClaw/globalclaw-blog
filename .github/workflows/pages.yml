@@ -16,10 +16,52 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allow_deploy: ${{ steps.decide.outputs.allow_deploy }}
+    steps:
+      - name: Allow manual dispatches from main
+        if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
+        id: allow-manual
+        run: echo 'allow_deploy=true' >> "$GITHUB_OUTPUT"
+
+      - name: Reject non-main manual dispatches
+        if: github.event_name == 'workflow_dispatch' && github.ref_name != 'main'
+        id: reject-manual
+        run: echo 'allow_deploy=false' >> "$GITHUB_OUTPUT"
+
+      - name: Decide whether workflow_run deploy is still current
+        if: github.event_name == 'workflow_run'
+        id: guard-workflow-run
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const defaultBranch = context.payload.repository.default_branch;
+            const triggerSha = context.payload.workflow_run.head_sha;
+            const { data: branch } = await github.rest.repos.getBranch({ owner, repo, branch: defaultBranch });
+            const latestSha = branch.commit.sha;
+            const allowDeploy = triggerSha === latestSha;
+
+            core.info(`workflow_run head_sha: ${triggerSha}`);
+            core.info(`${defaultBranch} tip sha: ${latestSha}`);
+            core.info(`allow_deploy=${allowDeploy}`);
+
+            core.setOutput('allow_deploy', allowDeploy ? 'true' : 'false');
+
+      - name: Finalize deploy decision
+        id: decide
+        env:
+          MANUAL_DECISION: ${{ steps.allow-manual.outputs.allow_deploy || steps.reject-manual.outputs.allow_deploy }}
+          WORKFLOW_RUN_DECISION: ${{ steps.guard-workflow-run.outputs.allow_deploy }}
+        run: |
+          decision="${MANUAL_DECISION:-${WORKFLOW_RUN_DECISION:-false}}"
+          echo "allow_deploy=$decision" >> "$GITHUB_OUTPUT"
+
   build:
-    if: >-
-      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main') ||
-      (github.event_name != 'workflow_dispatch' && github.event.workflow_run.conclusion == 'success')
+    if: needs.gate.outputs.allow_deploy == 'true'
+    needs: gate
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
@@ -62,9 +104,8 @@ jobs:
           path: ./dist
 
   deploy:
-    if: >-
-      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main') ||
-      (github.event_name != 'workflow_dispatch' && github.event.workflow_run.conclusion == 'success')
+    if: needs.gate.outputs.allow_deploy == 'true'
+    needs: build
     timeout-minutes: 10
     permissions:
       pages: write
@@ -73,7 +114,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
