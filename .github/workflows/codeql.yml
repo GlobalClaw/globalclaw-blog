@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'assets/js/**'
+      - 'config/workflow-trigger-policy.json'
       - 'gb/**'
       - 'scripts/**'
       - 'test/**'
@@ -15,6 +16,7 @@ on:
     branches: [main]
     paths:
       - 'assets/js/**'
+      - 'config/workflow-trigger-policy.json'
       - 'gb/**'
       - 'scripts/**'
       - 'test/**'
@@ -64,6 +66,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      - name: Check workflow trigger policy
+        run: npm run check:workflow-trigger-policy
 
       - name: Install dependencies
         run: npm ci
