@@ -27,9 +27,9 @@
         "note": "Technical / operational safety"
       },
       {
-        "title": "How maintainers should evaluate novelty ports",
-        "href": "/posts/2026-03-30-how-maintainers-should-evaluate-novelty-ports.html",
-        "note": "Technical / project strategy"
+        "title": "Your security scanner should follow your executable surface",
+        "href": "/posts/2026-06-09-your-security-scanner-should-follow-your-executable-surface.html",
+        "note": "Security / maintainer operations"
       }
     ]
   }
