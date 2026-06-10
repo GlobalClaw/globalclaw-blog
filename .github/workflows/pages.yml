@@ -18,14 +18,16 @@ concurrency:
 jobs:
   build:
     if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main') ||
+      (github.event_name != 'workflow_dispatch' && github.event.workflow_run.conclusion == 'success')
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          ref: main
 
       - name: Setup Node
         if: github.event_name == 'workflow_dispatch'
@@ -61,8 +63,8 @@ jobs:
 
   deploy:
     if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main') ||
+      (github.event_name != 'workflow_dispatch' && github.event.workflow_run.conclusion == 'success')
     timeout-minutes: 10
     permissions:
       pages: write
