@@ -1,13 +1,9 @@
 name: Report scheduled workflow failures
 
 on:
-  workflow_run:
-    workflows:
-      - Content quality
-      - Build Game Boy ROM
-      - CodeQL
-    types: [completed]
-    branches: [main]
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
 
 permissions:
   actions: read
@@ -15,65 +11,122 @@ permissions:
   issues: write
 
 concurrency:
-  group: scheduled-failure-report-${{ github.event.workflow_run.id }}
+  group: scheduled-failure-report
   cancel-in-progress: true
 
 jobs:
   report-failure:
-    if: github.event.workflow_run.event == 'schedule' && github.event.workflow_run.conclusion != 'success'
     runs-on: ubuntu-latest
     steps:
-      - name: Open or refresh failure issue
+      - name: Open, refresh, or close scheduled failure issues
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const { owner, repo } = context.repo;
-            const run = context.payload.workflow_run;
-            const workflowName = run.name;
-            const workflowSlug = workflowName
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/^-+|-+$/g, '');
-            const title = `ops: scheduled workflow failing - ${workflowName}`;
+            const monitoredWorkflows = [
+              'Content quality',
+              'Build Game Boy ROM',
+              'CodeQL'
+            ];
             const labels = ['backlog', 'github_actions'];
-            const body = [
-              `Scheduled workflow failure detected for \`${workflowName}\`.`,
-              '',
-              `- Run: ${run.html_url}`,
-              `- Branch: \`${run.head_branch}\``,
-              `- SHA: \`${run.head_sha}\``,
-              `- Conclusion: \`${run.conclusion || 'unknown'}\``,
-              '',
-              'Keeping this as one rolling issue per workflow so repeated failures surface without creating tracker spam.'
-            ].join('\n');
+            const markerPrefix = '<!-- scheduled-run-id:';
 
-            const { data: issues } = await github.rest.issues.listForRepo({
-              owner,
-              repo,
-              state: 'open',
-              labels: labels.join(','),
-              per_page: 100
-            });
-
-            const existing = issues.find((issue) => issue.title === title);
-
-            if (existing) {
-              await github.rest.issues.createComment({
+            async function findOpenIssue(title) {
+              const { data: issues } = await github.rest.issues.listForRepo({
                 owner,
                 repo,
-                issue_number: existing.number,
-                body
+                state: 'open',
+                labels: labels.join(','),
+                per_page: 100
               });
-              core.info(`Updated existing issue #${existing.number}`);
-              return;
+              return issues.find((issue) => issue.title === title);
             }
 
-            const { data: created } = await github.rest.issues.create({
-              owner,
-              repo,
-              title,
-              body,
-              labels
-            });
+            function issueBodyFor(run) {
+              return [
+                `Scheduled workflow failure detected for \`${run.name}\`.`,
+                '',
+                `- Run: ${run.html_url}`,
+                `- Branch: \`${run.head_branch}\``,
+                `- SHA: \`${run.head_sha}\``,
+                `- Conclusion: \`${run.conclusion || 'unknown'}\``,
+                `- Finished: ${run.updated_at}`,
+                '',
+                'Keeping this as one rolling issue per workflow so repeated failures surface without creating tracker spam.',
+                `${markerPrefix}${run.id} -->`
+              ].join('\n');
+            }
 
-            core.info(`Created issue #${created.number}`);
+            for (const workflowName of monitoredWorkflows) {
+              const title = `ops: scheduled workflow failing - ${workflowName}`;
+              const existing = await findOpenIssue(title);
+              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner,
+                repo,
+                event: 'schedule',
+                branch: 'main',
+                per_page: 100
+              });
+
+              const latest = runs.workflow_runs.find((run) => run.name === workflowName);
+
+              if (!latest) {
+                core.info(`No scheduled runs found yet for ${workflowName}`);
+                continue;
+              }
+
+              if (latest.conclusion === 'success') {
+                if (existing) {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: existing.number,
+                    body: `Latest scheduled run succeeded again: ${latest.html_url}`
+                  });
+                  await github.rest.issues.update({
+                    owner,
+                    repo,
+                    issue_number: existing.number,
+                    state: 'closed'
+                  });
+                  core.info(`Closed resolved issue #${existing.number} for ${workflowName}`);
+                }
+                continue;
+              }
+
+              const body = issueBodyFor(latest);
+              const alreadyRecorded = existing && existing.body && existing.body.includes(`${markerPrefix}${latest.id} -->`);
+
+              if (existing) {
+                if (alreadyRecorded) {
+                  core.info(`Issue #${existing.number} already reflects scheduled run ${latest.id}`);
+                  continue;
+                }
+
+                await github.rest.issues.update({
+                  owner,
+                  repo,
+                  issue_number: existing.number,
+                  body,
+                  state: 'open'
+                });
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: existing.number,
+                  body: `Failure persists on a newer scheduled run: ${latest.html_url}`
+                });
+                core.info(`Updated existing issue #${existing.number}`);
+                continue;
+              }
+
+              const { data: created } = await github.rest.issues.create({
+                owner,
+                repo,
+                title,
+                body,
+                labels
+              });
+
+              core.info(`Created issue #${created.number}`);
+            }
