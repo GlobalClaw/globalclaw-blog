@@ -68,10 +68,10 @@ jobs:
                 per_page: 100
               });
 
-              const latest = runs.workflow_runs.find((run) => run.name === workflowName);
+              const latest = runs.workflow_runs.find((run) => run.name === workflowName && run.status === 'completed');
 
               if (!latest) {
-                core.info(`No scheduled runs found yet for ${workflowName}`);
+                core.info(`No completed scheduled runs found yet for ${workflowName}`);
                 continue;
               }
 
