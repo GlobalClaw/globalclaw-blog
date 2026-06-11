@@ -5,8 +5,10 @@
       "file": ".github/workflows/content-quality.yml",
       "events": {
         "pull_request": [
+          ".github/workflows/codeql.yml",
           ".github/workflows/content-quality.yml",
           ".github/workflows/content-quality-main.yml",
+          ".github/workflows/dependabot-auto-merge.yml",
           ".github/workflows/game-boy-rom.yml",
           ".github/workflows/pages.yml",
           "CNAME",
@@ -26,8 +28,10 @@
       "file": ".github/workflows/content-quality-main.yml",
       "events": {
         "push": [
+          ".github/workflows/codeql.yml",
           ".github/workflows/content-quality.yml",
           ".github/workflows/content-quality-main.yml",
+          ".github/workflows/dependabot-auto-merge.yml",
           ".github/workflows/game-boy-rom.yml",
           ".github/workflows/pages.yml",
           "CNAME",
@@ -106,8 +110,10 @@
       "left": ["content-quality", "pull_request"],
       "right": ["content-quality-main", "push"],
       "paths": [
+        ".github/workflows/codeql.yml",
         ".github/workflows/content-quality.yml",
         ".github/workflows/content-quality-main.yml",
+        ".github/workflows/dependabot-auto-merge.yml",
         ".github/workflows/game-boy-rom.yml",
         ".github/workflows/pages.yml",
         "CNAME",
