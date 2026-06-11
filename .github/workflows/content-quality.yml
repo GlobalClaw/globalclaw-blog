@@ -10,6 +10,7 @@ on:
       - '.github/workflows/dependabot-auto-merge.yml'
       - '.github/workflows/game-boy-rom.yml'
       - '.github/workflows/pages.yml'
+      - '.github/workflows/scheduled-failure-report.yml'
       - 'CNAME'
       - 'assets/**'
       - 'config/workflow-trigger-policy.json'

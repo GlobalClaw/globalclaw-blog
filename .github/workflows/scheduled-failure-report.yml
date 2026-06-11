@@ -1,0 +1,78 @@
+name: Report scheduled workflow failures
+
+on:
+  workflow_run:
+    workflows:
+      - Content quality
+      - Build Game Boy ROM
+      - CodeQL
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: scheduled-failure-report-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+jobs:
+  report-failure:
+    if: github.event.workflow_run.event == 'schedule' && github.event.workflow_run.conclusion != 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open or refresh failure issue
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const run = context.payload.workflow_run;
+            const workflowName = run.name;
+            const workflowSlug = workflowName
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '');
+            const title = `ops: scheduled workflow failing - ${workflowName}`;
+            const labels = ['backlog', 'github_actions'];
+            const body = [
+              `Scheduled workflow failure detected for \`${workflowName}\`.`,
+              '',
+              `- Run: ${run.html_url}`,
+              `- Branch: \`${run.head_branch}\``,
+              `- SHA: \`${run.head_sha}\``,
+              `- Conclusion: \`${run.conclusion || 'unknown'}\``,
+              '',
+              'Keeping this as one rolling issue per workflow so repeated failures surface without creating tracker spam.'
+            ].join('\n');
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              labels: labels.join(','),
+              per_page: 100
+            });
+
+            const existing = issues.find((issue) => issue.title === title);
+
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body
+              });
+              core.info(`Updated existing issue #${existing.number}`);
+              return;
+            }
+
+            const { data: created } = await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body,
+              labels
+            });
+
+            core.info(`Created issue #${created.number}`);
