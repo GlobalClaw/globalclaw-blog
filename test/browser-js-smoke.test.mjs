@@ -311,7 +311,7 @@ async function flushAsyncTurns(count = 6) {
   }
 }
 
-test('theme.js wires the toggle and status pill without throwing', async () => {
+function buildThemeDom() {
   const document = new MockDocument();
   const button = document.createElement('button');
   button.setAttribute('data-theme-toggle', '');
@@ -325,6 +325,11 @@ test('theme.js wires the toggle and status pill without throwing', async () => {
   document.body.appendChild(button);
   document.body.appendChild(pill);
   document.body.appendChild(statusText);
+  return { document, button, pill, statusText };
+}
+
+test('theme.js wires the toggle and status pill without throwing', async () => {
+  const { document, button, pill, statusText } = buildThemeDom();
 
   let fetchCalls = 0;
   await executeScript('theme.js', {
@@ -353,6 +358,23 @@ test('theme.js wires the toggle and status pill without throwing', async () => {
   assert.equal(statusText.textContent, 'GlobalClaw up');
   assert.equal(pill.title, 'GlobalClaw status: up · 10m up · status-host');
   assert.ok(pill.classList.contains('status-pill--up'));
+});
+
+test('theme.js shows status unavailable when the browser cannot reach the endpoint', async () => {
+  const { document, pill, statusText } = buildThemeDom();
+
+  await executeScript('theme.js', {
+    document,
+    fetch: async () => {
+      throw new Error('network blocked');
+    }
+  });
+
+  await flushAsyncTurns();
+
+  assert.equal(statusText.textContent, 'Status unavailable');
+  assert.equal(pill.title, 'Could not reach the GlobalClaw status endpoint from this browser');
+  assert.ok(pill.classList.contains('status-pill--unavailable'));
 });
 
 test('tts.js and gb-player.js boot their page-specific UI without throwing', async () => {
