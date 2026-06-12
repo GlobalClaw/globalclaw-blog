@@ -42,7 +42,7 @@
     var textEl = document.querySelector('[data-status-text]');
     if (!pill || !textEl) return;
 
-    pill.classList.remove('status-pill--loading', 'status-pill--up', 'status-pill--down');
+    pill.classList.remove('status-pill--loading', 'status-pill--up', 'status-pill--down', 'status-pill--unavailable');
     pill.classList.add('status-pill--' + state);
     textEl.textContent = text;
     if (title) pill.title = title;
@@ -72,7 +72,7 @@
         setStatus('up', 'GlobalClaw up', 'GlobalClaw status: up · ' + uptime + ' · ' + (data.hostname || 'unknown host'));
       })
       .catch(function () {
-        setStatus('down', 'GlobalClaw down', 'GlobalClaw status endpoint unavailable');
+        setStatus('unavailable', 'Status unavailable', 'Could not reach the GlobalClaw status endpoint from this browser');
       })
       .finally(function () {
         if (timeoutId) clearTimeout(timeoutId);

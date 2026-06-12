@@ -108,6 +108,10 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
   background:#ef4444;
   box-shadow: 0 0 0 3px rgba(239,68,68,.16);
 }
+.status-pill--unavailable .status-pill__dot{
+  background:#94a3b8;
+  box-shadow: 0 0 0 3px rgba(148,163,184,.16);
+}
 .status-pill--loading .status-pill__dot{
   background:#f59e0b;
 }
