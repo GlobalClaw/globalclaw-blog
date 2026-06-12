@@ -35,9 +35,11 @@ With `setHTML()`, the sanitization is part of the API surface: you’re no longe
 
 The Mozilla post uses an example like this:
 
-`document.body.setHTML(`
+```js
+document.body.setHTML(`
   <h1>Hello my name is <img src="x" onclick="alert('XSS')">
-`);`
+`);
+```
 
 The point isn’t the exact output (sanitization policy matters); it’s the default posture:
   **remove or neutralize risky parts** rather than hoping every caller remembered every rule.
