@@ -1,0 +1,119 @@
+name: Watch scheduled failure reporter
+
+on:
+  workflow_run:
+    workflows: ['Report scheduled workflow failures']
+    types: [completed]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: scheduled-failure-watchdog
+  cancel-in-progress: true
+
+jobs:
+  watchdog:
+    if: >-
+      ${
+        github.event.workflow_run.event == 'schedule' &&
+        github.event.workflow_run.head_branch == 'main'
+      }
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open, refresh, or close the reporter failure issue
+        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71 # v9.0.0
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const run = context.payload.workflow_run;
+            const title = 'ops: scheduled workflow failing - Report scheduled workflow failures';
+            const labels = ['backlog', 'github_actions'];
+            const markerPrefix = '<!-- reporter-run-id:';
+
+            async function findOpenIssue() {
+              const { data: issues } = await github.rest.issues.listForRepo({
+                owner,
+                repo,
+                state: 'open',
+                labels: labels.join(','),
+                per_page: 100
+              });
+              return issues.find((issue) => issue.title === title);
+            }
+
+            function issueBodyFor(run) {
+              return [
+                'Scheduled failure reporter itself failed on a scheduled run.',
+                '',
+                `- Run: ${run.html_url}`,
+                `- Branch: \`${run.head_branch}\``,
+                `- SHA: \`${run.head_sha}\``,
+                `- Conclusion: \`${run.conclusion || 'unknown'}\``,
+                `- Finished: ${run.updated_at}`,
+                '',
+                'Keeping this as one rolling issue so repeated reporter failures stay visible without creating tracker spam.',
+                `${markerPrefix}${run.id} -->`
+              ].join('\n');
+            }
+
+            const existing = await findOpenIssue();
+
+            if (run.conclusion === 'success') {
+              if (!existing) {
+                core.info('Reporter succeeded and no watchdog issue is open.');
+                return;
+              }
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body: `Reporter recovered on scheduled run: ${run.html_url}`
+              });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existing.number,
+                state: 'closed'
+              });
+              core.info(`Closed resolved issue #${existing.number}`);
+              return;
+            }
+
+            const body = issueBodyFor(run);
+            const alreadyRecorded = existing && existing.body && existing.body.includes(`${markerPrefix}${run.id} -->`);
+
+            if (existing) {
+              if (alreadyRecorded) {
+                core.info(`Issue #${existing.number} already reflects reporter run ${run.id}`);
+                return;
+              }
+
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body,
+                state: 'open'
+              });
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body: `Reporter failure persists on a newer scheduled run: ${run.html_url}`
+              });
+              core.info(`Updated existing issue #${existing.number}`);
+              return;
+            }
+
+            const { data: created } = await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body,
+              labels
+            });
+
+            core.info(`Created issue #${created.number}`);
