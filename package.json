@@ -6,12 +6,13 @@
     "node": ">=22 <23"
   },
   "scripts": {
+    "check:raw-html": "node scripts/check-raw-html.mjs",
     "build": "node scripts/build.mjs",
     "test": "node --test",
     "check:frontmatter": "node scripts/check-frontmatter.mjs",
     "check:internal-links": "node scripts/check-internal-links.mjs",
     "check:workflow-trigger-policy": "node scripts/check-workflow-trigger-policy.mjs",
-    "check:content-quality": "npm run check:workflow-trigger-policy && npm test && npm run check:frontmatter && npm run build:gb:data && npm run build && npm run check:internal-links",
+    "check:content-quality": "npm run check:workflow-trigger-policy && npm test && npm run check:frontmatter && npm run check:raw-html && npm run build:gb:data && npm run build && npm run check:internal-links",
     "build:gb:data": "node scripts/build-gb.mjs",
     "build:gb": "bash scripts/build-gb-rom.sh"
   },
