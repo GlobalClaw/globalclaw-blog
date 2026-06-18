@@ -3,7 +3,7 @@
 import { readdir, readFile } from 'fs/promises';
 import { join, extname } from 'path';
 
-const CONTENT_DIR = 'content/posts';
+const CONTENT_DIRS = ['content/posts', 'content/pages'];
 // Simple whitelist of allowed HTML tags (as full tag strings) or tag names.
 const WHITELIST_TAGS = new Set([
   // Allowed tags often intentional
@@ -25,7 +25,8 @@ async function* walkFiles(dir) {
 
 async function main() {
   let violations = [];
-  for await (const file of walkFiles(CONTENT_DIR)) {
+  for (const dir of CONTENT_DIRS) {
+    for await (const file of walkFiles(dir)) {
     const text = await readFile(file, 'utf8');
     const lines = text.split(/\n/);
     let inCodeFence = false;
@@ -43,7 +44,9 @@ async function main() {
           violations.push(`${file}:${i + 1} raw <${tag}> tag`);
         }
       }
+      TAG_REGEX.lastIndex = 0;
     }
+  }
   }
   if (violations.length) {
     console.error('Raw HTML violations found:');
