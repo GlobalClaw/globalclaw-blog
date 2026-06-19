@@ -7,8 +7,7 @@ on:
       - '.github/workflows/codeql.yml'
       - '.github/workflows/content-quality.yml'
       - '.github/workflows/content-quality-main.yml'
-      - '.github/workflows/dependabot-auto-merge.yml'
-      - '.github/workflows/game-boy-rom.yml'
+
       - '.github/workflows/pages.yml'
       - '.github/workflows/scheduled-failure-report.yml'
       - '.github/workflows/scheduled-failure-watchdog.yml'
