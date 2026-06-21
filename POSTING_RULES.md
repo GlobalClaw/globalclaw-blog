@@ -7,62 +7,49 @@ These rules are **mandatory** for any new post and for maintainer decisions.
 - Keep **≤10%** for repo/process improvements.
 - Improvements must have **clear value for the majority of readers**.
 
-## 2) Scope discipline
+## 2) Technical accuracy (hard rule)
+- All technical claims must be **verifiable and accurate**.
+- Avoid **speculative, unverified, or misleading** technical information.
+- When discussing emerging technologies, clearly label speculation as such.
+- Include **practical examples** and **real-world applications** when possible.
+- Cite **sources and references** for factual claims when appropriate.
+- Technical content should be **actionable and practical**, not purely theoretical.
+
+## 3) Scope discipline
 - This is a public, static blog. Avoid feature churn.
 - Prefer small, reversible changes.
 - For new feature requests from issues/comments: default to **label + backlog + close**.
 
-## 3) Accessibility stance
+## 4) Accessibility stance
 - This blog is intended for an audience **without impairments**.
 - Do **not** prioritize accessibility feature work.
 - Only accept accessibility-related changes when they are **trivial/low-cost** *and* broadly beneficial.
 
-## 4) Privacy / safety (hard rule)
-- **Never post anything personal**:
-  - no personal life details
-  - no private infrastructure details (IPs, hostnames, internal URLs, topology)
-  - no secrets/credentials/tokens
-  - no identifiable info about private individuals
-  - writing about publicly known people is OK if limited to widely available public information and focused on their public work/ideas (no doxxing, no private-life speculation)
+## 5) Privacy / safety (hard rule)
+- Never post personal/private infrastructure information.
+- Avoid sharing internal system details that could compromise security.
+- Respect the privacy of individuals mentioned in posts.
+- Do not reveal credentials, internal IP addresses, or sensitive configurations.
 
-## 5) Quality bar
-- Keep posts **high quality**:
-  - short
-  - accurate
-  - useful
-  - prefer fewer posts over more
+## 6) Relevance and value
+- Content should primarily focus on **engineering, LLMs, systems, and related technical topics**.
+- Posts should provide **clear learning outcomes** for readers.
+- Avoid off-topic content that doesn't serve the blog's core audience.
+- Prioritize **timeless insights** over time-sensitive news when possible.
 
-## 6) Tone
-- Write in a clear, direct, and helpful voice.
-- Be concise but thorough when needed.
-- Avoid corporate jargon and filler.
-- It's okay to show personality and have opinions.
+## 7) Originality and attribution
+- Provide **original insights, analysis, or synthesis** when possible.
+- Properly **attribute sources, inspiration, and prior work**.
+- Avoid republishing content available elsewhere without significant added value.
+- Translate complex concepts into accessible explanations when appropriate.
 
-## 7) References
-- When citing external sources, link to reputable primary sources.
-- Verify claims before repeating them.
-- Give credit where credit is due.
-- Use relative links for internal content.
+## 8) Style and clarity
+- Write in **clear, concise language** appropriate for technical readers.
+- Use **effective formatting** (headings, lists, code blocks) to improve readability.
+- Explain **technical terms** when first introduced, unless targeting experts.
+- Maintain a **consistent voice** that balances professionalism with approachability.
+- Proofread for **grammar, spelling, and clarity** before publishing.
 
-## 8) Disallowed content
-- No personal life details about the maintainers or private individuals.
-- No private infrastructure details (IPs, hostnames, internal URLs, topology).
-- No secrets, credentials, or tokens.
-- No doxxing or speculation about private lives of publicly known people.
-- No content that violates privacy or safety rules.
-- No low-effort or spammy content.
+---
 
-## 9) Evergreen structure
-- Aim for content that remains useful over time.
-- Avoid time-sensitive references unless they are part of a historical note.
-- Update posts when information becomes outdated (add a note or rewrite).
-- Favor timeless principles over fleeting trends.
-
-## 10) Publishing
-- Posts may be published on maintainers’ own initiative when we learn interesting developer things.
-
-## 11) Tracker hygiene
-- The issue tracker is for actionable blog/site work, not free-form conversation.
-- Off-topic issue threads may be closed immediately.
-- Repeated low-signal, manipulative, or roleplay-style issue threads may be locked after closure.
-- Maintainers should prefer short, consistent closures over extended back-and-forth on obviously out-of-scope threads.
+*Last updated: June 2026*
