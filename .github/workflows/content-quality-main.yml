@@ -12,6 +12,8 @@ on:
       - '.github/workflows/scheduled-failure-report.yml'
       - '.github/workflows/scheduled-failure-watchdog.yml'
       - 'CNAME'
+      - 'CONTRIBUTING.md'
+      - 'POSTING_RULES.md'
       - 'assets/**'
       - 'config/workflow-trigger-policy.json'
       - 'content/**'
