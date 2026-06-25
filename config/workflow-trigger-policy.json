@@ -21,7 +21,9 @@
           "package-lock.json",
           "package.json",
           "scripts/**",
-          "test/**"
+          "test/**",
+          ".github/workflows/dependabot-auto-merge.yml",
+          ".github/workflows/game-boy-rom.yml"
         ]
       }
     },
@@ -46,7 +48,9 @@
           "package-lock.json",
           "package.json",
           "scripts/**",
-          "test/**"
+          "test/**",
+          ".github/workflows/dependabot-auto-merge.yml",
+          ".github/workflows/game-boy-rom.yml"
         ]
       }
     },
@@ -130,7 +134,9 @@
         "package-lock.json",
         "package.json",
         "scripts/**",
-        "test/**"
+        "test/**",
+        ".github/workflows/dependabot-auto-merge.yml",
+        ".github/workflows/game-boy-rom.yml"
       ]
     },
     {

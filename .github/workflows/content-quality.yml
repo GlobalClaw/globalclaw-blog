@@ -22,6 +22,8 @@ on:
       - 'package.json'
       - 'scripts/**'
       - 'test/**'
+      - '.github/workflows/dependabot-auto-merge.yml'
+      - '.github/workflows/game-boy-rom.yml'
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
