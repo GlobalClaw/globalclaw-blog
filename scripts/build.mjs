@@ -370,6 +370,10 @@ function assert(condition, message) {
   }
 }
 
+function requiresGbRom() {
+  return process.env.REQUIRE_GB_ROM === '1';
+}
+
 function assertNoFutureDatedPosts(posts) {
   const futurePosts = futureDatedPosts(posts);
   if (!futurePosts.length) return;
@@ -760,6 +764,7 @@ async function validateOutputs(allPosts, pages) {
     assert(indexHtml.includes('href="/assets/roms/globalclaw-blog.gb"'), 'Homepage lost the Game Boy ROM download link even though the ROM was built.');
     assert(indexHtml.includes('id="gb-player-status"'), 'Homepage lost the Game Boy player shell even though the ROM was built.');
   } else {
+    assert(!requiresGbRom(), 'Build is configured to require the Game Boy ROM, but dist/assets/roms/globalclaw-blog.gb is missing.');
     assert(!indexHtml.includes('Try out the new ClawBlog experience'), 'Homepage should not advertise the Game Boy experience when no ROM is attached to the deploy.');
     assert(!indexHtml.includes('The web build is live, but the downloadable ROM is not attached to this deploy yet.'), 'Homepage should not leak maintainer-only ROM fallback copy.');
   }
