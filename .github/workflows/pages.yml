@@ -11,6 +11,10 @@ permissions:
   actions: read
   contents: read
 
+env:
+  GBDK_VERSION: 4.4.0
+  GBDK_LINUX64_SHA256: 8a292e767610ccfa73c2c14d73e7900075b425f68329f1a8eb7697015915edad
+
 concurrency:
   group: pages-${{ github.event.workflow_run.head_branch || github.ref_name }}
   cancel-in-progress: true
@@ -82,9 +86,35 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: npm ci
 
+      - name: Cache GBDK
+        if: github.event_name == 'workflow_dispatch'
+        id: cache-gbdk
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: /opt/gbdk
+          key: gbdk-${{ runner.os }}-${{ env.GBDK_VERSION }}
+
+      - name: Setup GBDK
+        if: github.event_name == 'workflow_dispatch' && steps.cache-gbdk.outputs.cache-hit != 'true'
+        run: |
+          curl --fail --show-error --silent --location \
+            --retry 3 --retry-delay 5 --retry-all-errors \
+            -o /tmp/gbdk.tar.gz "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz"
+          echo "${GBDK_LINUX64_SHA256}  /tmp/gbdk.tar.gz" | sha256sum -c -
+          sudo mkdir -p /opt
+          sudo tar -xzf /tmp/gbdk.tar.gz -C /opt
+
+      - name: Add GBDK to PATH
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "/opt/gbdk/bin" >> "$GITHUB_PATH"
+
+      - name: Build Game Boy ROM
+        if: github.event_name == 'workflow_dispatch'
+        run: npm run build:gb
+
       - name: Validate content and build site assets
         if: github.event_name == 'workflow_dispatch'
-        run: npm run check:content-quality
+        run: REQUIRE_GB_ROM=1 npm run check:content-quality
 
       - name: Download validated site artifact
         if: github.event_name == 'workflow_run'
