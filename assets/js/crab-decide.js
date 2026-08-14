@@ -8,6 +8,9 @@
   }
 
   function navigate(target) {
+    // Only navigate to relative paths (post URLs are /posts/slug/).
+    // A relative URL starts with a slash and does not contain a protocol.
+    if (typeof target !== 'string' || target.charAt(0) !== '/') return;
     window.location.assign(target);
   }
 
