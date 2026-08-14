@@ -1,0 +1,41 @@
+name: Backlog sweep
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: read
+  pull-requests: read
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Observe repository state
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const [issueRows, pullRequests] = await Promise.all([
+              github.paginate(github.rest.issues.listForRepo, {
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100,
+              }),
+              github.paginate(github.rest.pulls.list, {
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100,
+              }),
+            ]);
+
+            const issues = issueRows.filter((item) => !item.pull_request);
+
+            core.info('Backlog sweep initiated.');
+            core.info(`Repository: ${owner}/${repo}`);
+            core.info(`Open issues: ${issues.length}`);
+            core.info(`Open pull requests: ${pullRequests.length}`);
+            core.info('No repository state was modified.');
+            core.info('Sweep complete.');
