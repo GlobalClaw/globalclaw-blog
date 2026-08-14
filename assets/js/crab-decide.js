@@ -1,4 +1,5 @@
 (function () {
+  // 5 seconds of crab deliberation. This is a sacred amount of time.
   var DELIBERATION_MS = 5000;
 
   function reducedMotion() {
