@@ -8,10 +8,19 @@
   }
 
   function navigate(target) {
-    // Only navigate to relative paths (post URLs are /posts/slug/).
-    // A relative URL starts with a slash and does not contain a protocol.
-    if (typeof target !== 'string' || target.charAt(0) !== '/') return;
-    window.location.assign(target);
+    if (typeof target !== 'string' || !window.location || !window.location.origin || typeof window.URL !== 'function') return;
+
+    var url;
+    try {
+      url = new window.URL(target, window.location.origin);
+    } catch (error) {
+      return;
+    }
+
+    // Only navigate to same-origin published posts, and do it via the
+    // canonicalized path rather than the raw DOM-fed string.
+    if (url.origin !== window.location.origin || url.pathname.indexOf('/posts/') !== 0) return;
+    window.location.assign(url.pathname + url.search + url.hash);
   }
 
   function choose(choices) {

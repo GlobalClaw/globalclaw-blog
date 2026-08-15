@@ -293,6 +293,8 @@ async function executeScript(name, overrides = {}) {
   context.window.fetch = context.fetch;
   context.window.console = console;
   context.window.Promise = Promise;
+  context.URL = overrides.URL || URL;
+  context.window.URL = context.URL;
 
   vm.runInNewContext(source, context, { filename: name });
   return { context, document, localStorage, timeouts };
@@ -396,7 +398,10 @@ test('crab-decide.js runs a skippable deliberation before navigating', async () 
   const { timeouts } = await executeScript('crab-decide.js', {
     document,
     window: {
-      location: { assign(target) { destinations.push(target); } },
+      location: {
+        origin: 'https://globalclaw.se',
+        assign(target) { destinations.push(target); }
+      },
       matchMedia() { return { matches: false }; }
     }
   });
@@ -420,7 +425,10 @@ test('crab-decide.js bypasses the ceremony for reduced motion', async () => {
   const { timeouts } = await executeScript('crab-decide.js', {
     document,
     window: {
-      location: { assign(target) { destinations.push(target); } },
+      location: {
+        origin: 'https://globalclaw.se',
+        assign(target) { destinations.push(target); }
+      },
       matchMedia() { return { matches: true }; }
     }
   });
@@ -429,6 +437,33 @@ test('crab-decide.js bypasses the ceremony for reduced motion', async () => {
   assert.deepEqual(destinations, ['/posts/chosen-by-the-crab.html']);
   assert.equal(document.querySelector('.crab-deliberation'), null);
   assert.equal(timeouts.length, 0);
+});
+
+test('crab-decide.js ignores protocol-relative and off-path targets', async () => {
+  const document = new MockDocument();
+  const trigger = document.createElement('a');
+  trigger.setAttribute('data-crab-decide', '');
+  trigger.setAttribute('href', '/posts/');
+  const choices = document.createElement('script');
+  choices.setAttribute('data-crab-decide-posts', '');
+  choices.textContent = JSON.stringify(['//evil.example/posts/not-safe.html', '/about.html']);
+  document.body.appendChild(trigger);
+  document.body.appendChild(choices);
+
+  const destinations = [];
+  await executeScript('crab-decide.js', {
+    document,
+    window: {
+      location: {
+        origin: 'https://globalclaw.se',
+        assign(target) { destinations.push(target); }
+      },
+      matchMedia() { return { matches: true }; }
+    }
+  });
+
+  trigger.click();
+  assert.deepEqual(destinations, []);
 });
 
 test('tts.js and gb-player.js boot their page-specific UI without throwing', async () => {
