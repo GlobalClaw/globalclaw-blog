@@ -332,6 +332,69 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 .post-header h2{margin:0 0 6px}
 .post .backlink{margin-top: 18px}
 
+.crab-decide{
+  margin: 22px auto;
+  max-width: 760px;
+  padding: 24px;
+  color: #fff;
+  background: #b00068;
+  border: 4px solid #ffe600;
+  border-radius: 8px 28px 12px 32px;
+  box-shadow: 9px 9px 0 #00e5ff;
+  text-align: center;
+}
+.crab-decide__eyebrow{margin:0 0 6px; color:#ffe600; font-size:13px; font-weight:900; letter-spacing:.09em}
+.crab-decide h3{margin:0; color:#fff; font-size:clamp(28px, 7vw, 46px); line-height:1.05; text-transform:uppercase; text-shadow:3px 3px 0 #4a0030}
+.crab-decide > p:not(.crab-decide__eyebrow):not(.crab-decide__fallback){margin:12px auto; max-width:48ch; font-size:18px; font-weight:700}
+.crab-decide__button{
+  display:inline-block;
+  margin:8px 0 10px;
+  padding:13px 18px;
+  color:#24002d;
+  background:#00e5ff;
+  border:3px solid #fff;
+  border-radius:999px;
+  box-shadow:5px 5px 0 #4a0030;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-decoration:none;
+}
+.crab-decide__button:hover,.crab-decide__button:focus-visible{color:#24002d; background:#fff; text-decoration:none; transform:translate(2px, 2px); box-shadow:3px 3px 0 #4a0030}
+.crab-decide__button:focus-visible,.crab-deliberation__skip:focus-visible{outline:3px solid #fff; outline-offset:4px}
+.crab-decide__button--deciding{pointer-events:none; opacity:.7}
+.crab-decide__fallback{margin:0; color:#fff; font-size:13px}
+
+.crab-deliberation{
+  position:fixed;
+  z-index:1000;
+  inset:0;
+  display:grid;
+  place-content:center;
+  gap:12px;
+  overflow:hidden;
+  padding:24px;
+  color:#fff;
+  background:#b00068;
+  text-align:center;
+}
+.crab-deliberation__crab{
+  display:block;
+  font-size:clamp(120px, 28vw, 360px);
+  line-height:1;
+  transform:scale(.2) rotate(-8deg);
+  transition:transform 5s cubic-bezier(.15,.8,.16,1);
+  filter:drop-shadow(10px 10px 0 #4a0030);
+}
+.crab-deliberation--active .crab-deliberation__crab{transform:scale(12) rotate(8deg)}
+.crab-deliberation__message{position:relative; margin:0; color:#ffe600; font-size:clamp(20px, 4vw, 32px); font-weight:900; text-shadow:3px 3px 0 #4a0030}
+.crab-deliberation__skip{position:relative; justify-self:center; padding:8px 12px; color:#24002d; background:#00e5ff; border:2px solid #fff; border-radius:999px; font:inherit; font-weight:800; cursor:pointer}
+.crab-deliberation--departing{pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  .crab-decide__button:hover,.crab-decide__button:focus-visible{transform:none}
+  .crab-deliberation__crab{transition:none}
+}
+
 .home-link{text-decoration:none}
 
 .site-footer{padding: 18px 0 28px; color: var(--muted); font-size: 13px}
@@ -399,6 +462,13 @@ a:hover{color:white; text-decoration-color: rgba(34,197,94,.8)}
 [data-theme="a11y-ry"] .logo{ color:#ffeb00; background: #b00000; }
 [data-theme="a11y-ry"] .button{ background: #b00000; border-color: #7a0000; color: #ffeb00; }
 [data-theme="a11y-ry"] .button.secondary{ background: rgba(255,255,255,.55); color: #b00000; border-color: rgba(176,0,0,.35); }
+[data-theme="a11y-ry"] .crab-decide{color:#b00000; background:#ffeb00; border-color:#b00000; box-shadow:none}
+[data-theme="a11y-ry"] .crab-decide__eyebrow{color:#b00000}
+[data-theme="a11y-ry"] .crab-decide h3{color:#b00000; text-shadow:none}
+[data-theme="a11y-ry"] .crab-decide__fallback{color:#7a0000}
+[data-theme="a11y-ry"] .crab-decide__button,[data-theme="a11y-ry"] .crab-deliberation__skip{color:#ffeb00; background:#b00000; border-color:#7a0000; box-shadow:none}
+[data-theme="a11y-ry"] .crab-deliberation{color:#ffeb00; background:#b00000}
+[data-theme="a11y-ry"] .crab-deliberation__message{color:#ffeb00; text-shadow:none}
 
 .tts-player{
   position: fixed;

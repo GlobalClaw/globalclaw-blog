@@ -6,7 +6,7 @@ import vm from 'node:vm';
 
 const repoRoot = path.resolve(import.meta.dirname, '..');
 const jsDir = path.join(repoRoot, 'assets', 'js');
-const jsFiles = ['theme.js', 'tts.js', 'gb-player.js'];
+const jsFiles = ['theme.js', 'tts.js', 'gb-player.js', 'crab-decide.js'];
 
 class ClassList {
   constructor(initial = []) {
@@ -293,6 +293,8 @@ async function executeScript(name, overrides = {}) {
   context.window.fetch = context.fetch;
   context.window.console = console;
   context.window.Promise = Promise;
+  context.URL = overrides.URL || URL;
+  context.window.URL = context.URL;
 
   vm.runInNewContext(source, context, { filename: name });
   return { context, document, localStorage, timeouts };
@@ -375,6 +377,93 @@ test('theme.js shows status unavailable when the browser cannot reach the endpoi
   assert.equal(statusText.textContent, 'Status unavailable');
   assert.equal(pill.title, 'Could not reach the GlobalClaw status endpoint from this browser');
   assert.ok(pill.classList.contains('status-pill--unavailable'));
+});
+
+function buildCrabDecideDom() {
+  const document = new MockDocument();
+  const trigger = document.createElement('a');
+  trigger.setAttribute('data-crab-decide', '');
+  trigger.setAttribute('href', '/posts/');
+  const choices = document.createElement('script');
+  choices.setAttribute('data-crab-decide-posts', '');
+  choices.textContent = JSON.stringify(['/posts/chosen-by-the-crab.html']);
+  document.body.appendChild(trigger);
+  document.body.appendChild(choices);
+  return { document, trigger };
+}
+
+test('crab-decide.js runs a skippable deliberation before navigating', async () => {
+  const { document, trigger } = buildCrabDecideDom();
+  const destinations = [];
+  const { timeouts } = await executeScript('crab-decide.js', {
+    document,
+    window: {
+      location: {
+        origin: 'https://globalclaw.se',
+        assign(target) { destinations.push(target); }
+      },
+      matchMedia() { return { matches: false }; }
+    }
+  });
+
+  trigger.click();
+  const overlay = document.querySelector('.crab-deliberation');
+  const skip = document.querySelector('[data-crab-skip]');
+  assert.ok(overlay, 'expected the crab deliberation overlay');
+  assert.ok(skip, 'expected a skip control');
+  assert.equal(destinations.length, 0);
+  assert.equal(timeouts.length, 5);
+
+  skip.click();
+  assert.deepEqual(destinations, ['/posts/chosen-by-the-crab.html']);
+  assert.ok(overlay.classList.contains('crab-deliberation--departing'));
+});
+
+test('crab-decide.js bypasses the ceremony for reduced motion', async () => {
+  const { document, trigger } = buildCrabDecideDom();
+  const destinations = [];
+  const { timeouts } = await executeScript('crab-decide.js', {
+    document,
+    window: {
+      location: {
+        origin: 'https://globalclaw.se',
+        assign(target) { destinations.push(target); }
+      },
+      matchMedia() { return { matches: true }; }
+    }
+  });
+
+  trigger.click();
+  assert.deepEqual(destinations, ['/posts/chosen-by-the-crab.html']);
+  assert.equal(document.querySelector('.crab-deliberation'), null);
+  assert.equal(timeouts.length, 0);
+});
+
+test('crab-decide.js ignores protocol-relative and off-path targets', async () => {
+  const document = new MockDocument();
+  const trigger = document.createElement('a');
+  trigger.setAttribute('data-crab-decide', '');
+  trigger.setAttribute('href', '/posts/');
+  const choices = document.createElement('script');
+  choices.setAttribute('data-crab-decide-posts', '');
+  choices.textContent = JSON.stringify(['//evil.example/posts/not-safe.html', '/about.html']);
+  document.body.appendChild(trigger);
+  document.body.appendChild(choices);
+
+  const destinations = [];
+  await executeScript('crab-decide.js', {
+    document,
+    window: {
+      location: {
+        origin: 'https://globalclaw.se',
+        assign(target) { destinations.push(target); }
+      },
+      matchMedia() { return { matches: true }; }
+    }
+  });
+
+  trigger.click();
+  assert.deepEqual(destinations, []);
 });
 
 test('tts.js and gb-player.js boot their page-specific UI without throwing', async () => {

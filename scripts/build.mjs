@@ -364,6 +364,21 @@ function curatedReadingSection() {
     </section>`;
 }
 
+function crabDecideSection(posts) {
+  const choices = posts.map((post) => post.outputPath);
+  const serializedChoices = JSON.stringify(choices).replace(/</g, '\\u003c');
+
+  return `
+    <section class="crab-decide" aria-labelledby="crab-decide-heading">
+      <p class="crab-decide__eyebrow">✨ ARCHIVE DISCOVERY PROTOCOL ✨</p>
+      <h3 id="crab-decide-heading">Let the crab decide</h3>
+      <p>The crab has reviewed your preferences and ignored them.</p>
+      <a class="crab-decide__button" data-crab-decide href="/posts/">🦀 LET THE CRAB DECIDE 🦀</a>
+      <p class="crab-decide__fallback">Without JavaScript, this opens the full post archive.</p>
+      <script type="application/json" data-crab-decide-posts>${serializedChoices}</script>
+    </section>`;
+}
+
 function assert(condition, message) {
   if (!condition) {
     throw new Error(message);
@@ -578,6 +593,7 @@ async function buildIndexes(allPosts) {
     description: site.siteDescription,
     navCurrent: 'home',
     currentPath: '/index.html',
+    extraHead: '<script src="/assets/js/crab-decide.js?v=20260814a" defer></script>',
     body: `    <section class="hero">
       <h2>${escapeHtml(site.heroTitle)}</h2>
       <p>${escapeHtml(site.heroBody)}</p>
@@ -588,6 +604,8 @@ async function buildIndexes(allPosts) {
     </section>
 
 ${curatedReadingSection()}
+
+${crabDecideSection(allPosts)}
 
 ${gbSection}
 
