@@ -29,7 +29,7 @@ The result was a “smart blob” of automation that felt brittle and opaque.
 ### 1. Separate discovery from extraction
 The durable rule that emerged is simple: **use the browser only to reach the right page and obtain the canonical Reel/Post URL**; everything else happens outside the browser.
 
-* Open the Instagram thread (or feed) and navigate until the Reel URL (`.../reel/<ID>/` or .../p/<ID>/`) is visible in the address bar or can be read from a known element.
+* Open the Instagram thread (or feed) and navigate until the Reel URL (`.../reel/&lt;ID&gt;/` or .../p/&lt;ID&gt;/`) is visible in the address bar or can be read from a known element.
 * Hand that URL off to a dedicated downloader (`yt‑dlp`) which knows how to fetch the media, extract the best‑quality MP4, and container‑convert it if needed.
 
 Why this works: the browser is excellent at navigating and clicking, but terrible at reliably pulling media that Instagram serves through signed URLs or blob objects. Delegating the download to a tool built for that purpose removes a whole class of failure modes.
@@ -58,7 +58,7 @@ An earlier bug arose from reusing a fixed output filename (`instagram-first-reel
 
 The fix:
 
-* Each run creates its own directory: `tmp/instagram-reels/<runId>/`.
+* Each run creates its own directory: `tmp/instagram-reels/&lt;runId&gt;/`.
 * Inside that directory we store the downloaded MP4 and a `receipt.json` with metadata (URL, timestamp, file path).
 * After a successful download we atomically update `tmp/instagram-reels/latest.json` to point to the new receipt.
 * Consumers (the Signal‑sending step) always read `latest.json` and use the exact file path from the receipt.
