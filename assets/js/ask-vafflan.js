@@ -22,7 +22,15 @@
     '.av-jar{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:.85rem;opacity:.85}',
     '.av-bar{flex:1;height:8px;border-radius:99px;background:rgba(128,128,128,.25);overflow:hidden}',
     '.av-bar i{display:block;height:100%;background:#e8b84b}',
-    '.av-jar[hidden]{display:none}'
+    '.av-jar[hidden]{display:none}',
+    '.av-note{margin:0 0 12px;font-size:.82rem;opacity:.6}',
+    '.av-wall{margin-top:22px}',
+    '.av-wall h3{font-size:1rem;margin:0 0 10px}',
+    '.av-item{border-top:1px solid rgba(128,128,128,.25);padding:10px 0}',
+    '.av-item p{margin:0 0 4px}',
+    '.av-item .av-q{opacity:.7;font-size:.9rem}',
+    '.av-item .av-a{white-space:pre-wrap}',
+    '.av-item .av-a b{font-weight:700}'
   ].join('');
 
   mount.innerHTML =
@@ -30,6 +38,7 @@
     '<div class="av-card">' +
     '<div class="av-jar" id="av-jar" hidden><span>🍬 godis kvar idag: <b id="av-jarn">–</b></span><span class="av-bar"><i id="av-jarb" style="width:0%"></i></span></div>' +
     '<label class="av-label" for="av-q">Din fråga (max 100 tecken) — han svarar själv, kort.</label>' +
+    '<p class="av-note">Frågor kan komma att visas här under. Han har sista ordet.</p>' +
     '<textarea id="av-q" class="av-input" maxlength="100" rows="3" placeholder="t.ex. Vad tycker du om dammsugarn?"></textarea>' +
     '<div class="av-row">' +
     '<input id="av-name" class="av-input" maxlength="24" placeholder="Ditt namn (frivilligt)">' +
@@ -37,13 +46,15 @@
     '</div>' +
     '<div id="av-a" class="av-answer"><span class="av-who">Våfflan:</span> …</div>' +
     '<div id="av-m" class="av-meta"></div>' +
-    '</div>';
+    '</div>' +
+    '<div class="av-wall" id="av-wall" hidden></div>';
 
   var qEl = document.getElementById('av-q');
   var nEl = document.getElementById('av-name');
   var bEl = document.getElementById('av-send');
   var aEl = document.getElementById('av-a');
   var mEl = document.getElementById('av-m');
+  var wallEl = document.getElementById('av-wall');
   var jarEl = document.getElementById('av-jar');
   var jarN = document.getElementById('av-jarn');
   var jarB = document.getElementById('av-jarb');
@@ -56,10 +67,33 @@
     jarB.style.width = Math.round(Math.max(0, Math.min(1, n / total)) * 100) + '%';
   }
 
-  fetch(API, { method: 'GET' })
-    .then(function (r) { return r.json(); })
-    .then(function (d) { if (d && typeof d.remaining === 'number') renderJar(d.remaining, d.budget); })
-    .catch(function () {});
+  function renderWall(items) {
+    if (!wallEl) return;
+    if (!items || !items.length) { wallEl.hidden = true; return; }
+    var html = '<h3>Sist frågat</h3>';
+    for (var i = 0; i < items.length; i++) {
+      html +=
+        '<div class="av-item">' +
+        '<p class="av-q">— ' + esc(items[i].q) + '</p>' +
+        '<p class="av-a"><b>Våfflan:</b> ' + esc(items[i].a) + '</p>' +
+        '</div>';
+    }
+    wallEl.innerHTML = html;
+    wallEl.hidden = false;
+  }
+
+  function loadState() {
+    fetch(API, { method: 'GET' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d) return;
+        if (typeof d.remaining === 'number') renderJar(d.remaining, d.budget);
+        renderWall(d.wall);
+      })
+      .catch(function () {});
+  }
+
+  loadState();
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -85,6 +119,7 @@
         if (d && d.cached) bits.push('svarat innan');
         if (d && typeof d.remaining === 'number') { bits.push('godis kvar idag: ' + d.remaining); renderJar(d.remaining); }
         mEl.textContent = bits.join(' · ');
+        loadState();
       })
       .catch(function () {
         aEl.innerHTML = '<span class="av-who">Våfflan:</span> Zzzz.';
